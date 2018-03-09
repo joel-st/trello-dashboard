@@ -13,7 +13,7 @@
 		$MASTERactionsOBJ = json_decode($MASTERactionsJson, true);
 
 
-		$GetOrganisationActions =  file_get_contents('https://api.trello.com/1/organizations/thevenusproject1/boards?key='.$key.'&token='.$token.'&limit=999&filter=open'); 
+		$GetOrganisationActions =  file_get_contents('https://api.trello.com/1/organizations/thevenusproject1/boards?key='.$APIkey.'&token='.$token.'&limit=999&filter=open'); 
 		$GetOrganisationActionsResult = json_decode($GetOrganisationActions, true);
 
 		// show how many users in atleaset 1 board
@@ -61,7 +61,7 @@
 		}
 
 		//create all the actions
-		$addMemberToBoardURL = file_get_contents('https://api.trello.com/1/boards/'.$_GET['id'].'/actions?key='.$key.'&token='.$token.'&limit=999'.$urlvars);
+		$addMemberToBoardURL = file_get_contents('https://api.trello.com/1/boards/'.$_GET['id'].'/actions?key='.$APIkey.'&token='.$token.'&limit=999'.$urlvars);
 		$addMemberToBoardURLactions = json_decode($addMemberToBoardURL, true);
 
         $ia = 0;
@@ -124,7 +124,7 @@
 		$urlvarsb = "&since=".$_GET['membersinteammongotimestampb'];
 		}
 
-		$OrganisationMembershipsURL = file_get_contents('https://api.trello.com/1/organizations/thevenusproject1/memberships?member=true&key='.$key.'&token='.$token.'&limit=999'.$urlvarsb);
+		$OrganisationMembershipsURL = file_get_contents('https://api.trello.com/1/organizations/thevenusproject1/memberships?member=true&key='.$APIkey.'&token='.$token.'&limit=999'.$urlvarsb);
 		$OrganisationMemberships = json_decode($OrganisationMembershipsURL, true);
 		$OrganisationMemberships = array_reverse($OrganisationMemberships);
 
@@ -156,12 +156,12 @@
 
 		// get all the board memberships
 
-		$Getboards =  file_get_contents('https://api.trello.com/1/organizations/thevenusproject1/boards?key='.$key.'&token='.$token.'&limit=999&filter=open'); 
+		$Getboards =  file_get_contents('https://api.trello.com/1/organizations/thevenusproject1/boards?key='.$APIkey.'&token='.$token.'&limit=999&filter=open'); 
 		$GetboardsResult = json_decode($Getboards, true);
 
 		foreach($GetboardsResult as $valboard){
 
-		$boardMembershipsURL = file_get_contents('https://api.trello.com/1/boards/'.$valboard['shortLink'].'/memberships?member=true&key='.$key.'&token='.$token.'&limit=999'.$urlvars);
+		$boardMembershipsURL = file_get_contents('https://api.trello.com/1/boards/'.$valboard['shortLink'].'/memberships?member=true&key='.$APIkey.'&token='.$token.'&limit=999'.$urlvars);
 		$boardMembershipsURLONJ = json_decode($boardMembershipsURL, true);
 
 
