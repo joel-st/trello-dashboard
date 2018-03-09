@@ -1,3 +1,4 @@
 # Don't sync config file
+/config/credentials.php
 .htaccess
 *.json
