@@ -293,17 +293,20 @@
 			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['fullName'] = $valuea['memberCreator']['fullName'];	
 			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['username'] = $valuea['memberCreator']['username'];	
 			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['memberID'] = $valuea['memberCreator']['id'];	
-
+ 			
 			}
-
+			
+			//make the breakdown of actions per team per person
+			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['ActionType'] = $valuea['type'];
+			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['BoardName'] = $valuea['data']['board']['name'];
+			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['UserName'] = $valuea['memberCreator']['username'];			 
+		 
 		}
 
 	// get the 1000 most recent memberships for this board
 
 	}
-	 
-
-
+ 
 	//write the updated json to disk 
 	$MASTEROBJ = array_reverse($MASTEROBJ);
 	trelloDash::writeJsontoDisk($MASTEROBJ, $MASTERJsonLoc);
@@ -404,11 +407,24 @@
 	if(is_array($addedtoboard[$keyop])){ 
 	 
 	$OrganisationbreakdownOutput .= '<ul>';
-	foreach($addedtoboard[$keyop] as $keyu => $valc){
-	$OrganisationbreakdownOutput .= '<li>'.$valc.'</li>';
+		foreach($addedtoboard[$keyop] as $keyu => $valc){
+		
+		// get the actions per team per user details here
+		$OrganisationbreakdownOutput .= '<li>'.$valc;
+		
+		foreach($usernameByActionByTeam[$keyu] as  $FEboardID){
+			$ActionsOnBoard=0;
+			foreach($FEboardID as $TeamID => $FEActionID){
+				 $ActionsOnBoard++;
+			}
+			$OrganisationbreakdownOutput .= '<ul><li style="font-size: 14px;">'.$FEActionID['BoardName'].': <b>'.$ActionsOnBoard.'</b></li></ul>';
+		}
+		$OrganisationbreakdownOutput .= '</li>';
 	}
 	$OrganisationbreakdownOutput .= '</ul><hr/></div>';
 	}
+	
+	
 	}
 	}	
 
