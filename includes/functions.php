@@ -410,7 +410,7 @@
 		foreach($addedtoboard[$keyop] as $keyu => $valc){
 		
 		// get the actions per team per user details here
-		$OrganisationbreakdownOutput .= '<li>'.$valc;
+		$OrganisationbreakdownOutput .= '<li><b>'.$valc.'</b>';
 		
 		foreach($usernameByActionByTeam[$keyu] as  $FEboardID){
 			$ActionsOnBoard=0;
