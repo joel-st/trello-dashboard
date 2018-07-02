@@ -2,3 +2,4 @@
 /config/credentials.php
 .htaccess
 *.json
+/cache
