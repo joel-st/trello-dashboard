@@ -313,9 +313,9 @@
 	trelloDash::writeJsontoDisk($MASTERactionsOBJ, $MASTERactionsJsonLoc);
 	///// completed undate new data to existing saved data (last 999 memberships returned from trello)
 	// create additional comparison data
-	foreach ($MASTEROBJ as $val){	
+	foreach ($MASTEROBJ as $val){
 	foreach($val['meberAddedtoTeam'] as $valb){
-		 
+
 	$boardjoincomparison[$valb['memberid']]['fullName'] = $valb['fullName'];	
 	$boardjoincomparison[$valb['memberid']]['memid'] = $valb['memberid'];	
 	$boardjoincomparison[$valb['memberid']]['timestampjoinedteam'] = $valb['timestamp'];
@@ -329,17 +329,22 @@
 	}
 	}
 
+	$membersWithActionsWithin2Months = [];
+	$twoMonthsAgo = strtotime('-2 months');
 
 	$actionsperboardpermonth = [];
 	foreach ($MASTERactionsOBJ as $value){
-	foreach($value['actions'] as $key => $valuea){
-	$dateparse = trelloDash::parsedate($valuea['date']);
-	$actionsperboardpermonth[$dateparse['dateID']][$valuea['boardID']]['boardactioncount'] = ++$actioncount[$dateparse['dateID']][$valuea['boardID']];
-	$actionsperboardpermonth[$dateparse['dateID']][$valuea['boardID']]['boardname'] = $valuea['boardname'];
-	$actionsperboardpermonth[$dateparse['dateID']][$valuea['boardID']]['actions'][$key] = $valuea['type'];
-	$countentriesperboard[$valuea['boardID']]++;
-	$totalactionsperboard[$valuea['boardID']] = ++$totalactioncount[$valuea['boardID']];
-	}
+		foreach($value['actions'] as $key => $valuea){
+			$dateparse = trelloDash::parsedate($valuea['date']);
+			$actionsperboardpermonth[$dateparse['dateID']][$valuea['boardID']]['boardactioncount'] = ++$actioncount[$dateparse['dateID']][$valuea['boardID']];
+			$actionsperboardpermonth[$dateparse['dateID']][$valuea['boardID']]['boardname'] = $valuea['boardname'];
+			$actionsperboardpermonth[$dateparse['dateID']][$valuea['boardID']]['actions'][$key] = $valuea['type'];
+			$countentriesperboard[$valuea['boardID']]++;
+			$totalactionsperboard[$valuea['boardID']] = ++$totalactioncount[$valuea['boardID']];
+			if ($valuea['timestamp'] > $twoMonthsAgo) {
+				$membersWithActionsWithin2Months[$valuea['memberID']] = 1;
+			}
+		}
 	}
 
 
@@ -362,8 +367,8 @@
 	<div class="boardreveal a'.$value['year'].$value['month'].'">';
 	}
 	
-	
-	
+
+
 	$OrganisationbreakdownOutput .= '<b>Number of people added to the organization in '.$value['month'].' : '.$totalmembersaddedthismonth.'</b><br/>';
 	if(is_array($addedtoboard[$keyop])){
 	$howmany = trelloDash::stasfrommems($addedtoboard[$keyop], $boardjoincomparison);
@@ -463,6 +468,7 @@
 	<br/> Total members = <b>$OrganisationMembershipsResultCount</b><br/>
 	Total members who joined atleast 1 board =  <b>$totalmemberswhojoined1board</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,$totalmemberswhojoined1board)." %</b>)<br/>
 	Total members who performed atleast 1 action = <b>$totalmemberswhotookatleast1action</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,$totalmemberswhotookatleast1action)." %</b>)<br/>
+	Total members who performed atleast 1 action within 2 months = <b>".count($membersWithActionsWithin2Months)."</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,count($membersWithActionsWithin2Months))." %</b>)<br/>
 	<a href='?refresh=TVP' title='Refresh Data'>last update ".date('Y-m-d H:i:s')."<br/>Click here to refresh data <br/>($processtime)</a> 
 	<br/>
 	<br/>
