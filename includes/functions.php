@@ -468,7 +468,7 @@
 	<br/> Total members = <b>$OrganisationMembershipsResultCount</b><br/>
 	Total members who joined atleast 1 board =  <b>$totalmemberswhojoined1board</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,$totalmemberswhojoined1board)." %</b>)<br/>
 	Total members who performed atleast 1 action = <b>$totalmemberswhotookatleast1action</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,$totalmemberswhotookatleast1action)." %</b>)<br/>
-	Total members who performed atleast 1 action within 2 months = <b>".count($membersWithActionsWithin2Months)."</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,count($membersWithActionsWithin2Months))." %</b>)<br/>
+	Total members who performed atleast 1 action within the last 2 months = <b>".count($membersWithActionsWithin2Months)."</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,count($membersWithActionsWithin2Months))." %</b>)<br/>
 	<a href='?refresh=TVP' title='Refresh Data'>last update ".date('Y-m-d H:i:s')."<br/>Click here to refresh data <br/>($processtime)</a> 
 	<br/>
 	<br/>
