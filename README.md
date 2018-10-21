@@ -1,7 +1,7 @@
 # Trello Dashboard
 This tool uses the Trello API to pull statistical data about an organization's use of Trello. The statistical data is displayed in a dashboard. 
 
-The following statistics are provided by this Trello Dashboard (everything below is boards, members and actions belonging to a given organization):
+The following statistics are provided by this Trello Dashboard. Eeverything below is boards, members and actions belonging to the organization. xx is used in this desription instead of the numbers and percentages given by the tool.
 
 ```
 
@@ -21,7 +21,7 @@ Board 2:
 - xx members in board
 - xx Total Actions
 
-(And so on for the rest of the boards belonging to the organization.)
+[And so on for the rest of the boards belonging to the organization.]
 
 Organisation monthly breakdown:
 
@@ -60,7 +60,7 @@ Members who were added to the organization in September:
 
 August 2018
 
-(And so on for each previous month, till the beginning of the organization's use of Trello.)
+[And so on for each previous month, till the beginning of the organization's use of Trello.]
 
 ```
 
