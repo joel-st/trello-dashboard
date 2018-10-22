@@ -1,7 +1,7 @@
 # Trello Dashboard
 This tool uses the Trello API to pull statistical data about an organization's use of Trello. The statistical data is displayed in a dashboard. 
 
-The following statistics are provided by this Trello Dashboard. Eeverything below is boards, members and actions belonging to the organization. xx is used in this desription instead of the numbers and percentages given by the tool.
+The statistical data pertains to an organization's boards, members and actions. The data mostly provides a high-level overview of the activity of the organization's boards and members, as well as the level of involvement and integration of new members. (xx is used in the description below instead of the actual numbers and percentages.)
 
 ```
 
@@ -21,9 +21,9 @@ Board 2:
 - xx members in board
 - xx Total Actions
 
-[And so on for the rest of the boards belonging to the organization.]
+[And so on for the rest of the organization's boards.]
 
-Organisation monthly breakdown:
+Organization monthly breakdown:
 
 September 2018
 
@@ -49,14 +49,14 @@ how many people performed actions (for all time):
 Number of actions within each board this month:
 Board 1 (xx actions)
 Board 2 (xx actions)
-(And so on for the rest of the boards.)
+[And so on for the rest of the boards.]
 
 Members who were added to the organization in September:
 - @member1
   * Board 1: Performed xx actions
 - @member2
   * Board 2: Performed xx actions
-
+[And so on for the rest of the members.]
 
 August 2018
 
@@ -72,7 +72,7 @@ A lot of work has been done already and the dashboard shows lots of useful data.
 
 A rebuild tool is found in /rebuild/ and this tool is only ever needed if the json files are either lost or corrupt, or if a hidden board with more than 1000 actions is un hidden.
 
-A refresh of the data via the cron tab twice daily is recommended, but can be done as many times as you wish. If time elapses and more than 1000 actions have happened since the last refresh, you will need to ue the rebuild tool.
+A refresh of the data via the cron tab twice daily is recommended, but can be done as many times as you wish. If time elapses and more than 1000 actions have happened since the last refresh, you will need to use the rebuild tool.
 
 
 
