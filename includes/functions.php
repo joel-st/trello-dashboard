@@ -629,10 +629,8 @@
 	// latest news links
 	$hub .= "<ul>";
 	$hub .= "<h4><b>Latest News</b></h4>";
-	$hub .= "<li><a href='#' target='_blank' title='news 1'>News 1</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='news 2'>News 2</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='news 3'>News 3</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='news 4'>News 4</a></li>";
+	$hub .= "<li><a href='https://www.resourcebasedeconomy.org/center-for-resource-management/' target='_blank' title='Roadmap and Progress Report for the Center for Resource Management now available'>Roadmap and Progress Report for the Center for Resource Management now available</a></li>";
+	$hub .= "<li><a href='https://www.thevenusproject.com/february-2019-updates/' target='_blank' title='The Venus Project February 2019 Updates'>The Venus Project February 2019 Updates</a></li>";
 	$hub .= "</ul>";
 
 	// help needed links
@@ -651,19 +649,16 @@
 	// helpful information
 	$hub .= "<ul>";
 	$hub .= "<h4><b>Helpful Information</b></h4>";
-	$hub .= "<li><a href='#' target='_blank' title='helpful 1'>Helpful 1</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='helpful 2'>Helpful 2</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='helpful 3'>Helpful 3</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='helpful 4'>Helpful 4</a></li>";
+	$hub .= "<li><a href='https://www.youtube.com/watch?v=8ae7YjaLBgk' target='_blank' title='Introduction video for new volunteers'>Introduction video for new volunteers</a></li>";
+	$hub .= "<li><a href='https://help.trello.com/article/793-receiving-trello-notifications' target='_blank' title='Receiving Trello Notifications'>Receiving Trello Notifications</a></li>";
+	$hub .= "<li><a href='https://help.trello.com/article/808-searching-for-cards-all-boards' target='_blank' title='Searching for information in Trello'>Searching for information in Trello</a></li>";
 	$hub .= "</ul>";
 
-	// help needed links
+	// Volunteer Resources links
 	$hub .= "<ul>";
 	$hub .= "<h4><b>Volunteer Resources</b></h4>";
-	$hub .= "<li><a href='#' target='_blank' title='resource 1'>Resource 1</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='resource 2'>Resource 2</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='resource 3'>Resource 3</a></li>";
-	$hub .= "<li><a href='#' target='_blank' title='resource 4'>Resource 4</a></li>";
+	$hub .= "<li><a href='https://docs.google.com/document/d/1DkRl1aIHA-fp8sHsuyryjJ31xUv8-8jcqteEOgv_zM0/edit' target='_blank' title='Protocol for Collaboration'>Protocol for Collaboration</a></li>";
+	$hub .= "<li><a href='https://trello.com/c/e47A4Xhy/108-volunteer-hub-feedback-and-additions' target='_blank' title='Feedback/Changes/Additions to this Volunteer Hub'>Feedback/Changes/Additions to this Volunteer Hub</a></li>";
 	$hub .= "</ul>";
 
 	$hub .= "</div>"; // vhub-right
