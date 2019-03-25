@@ -3,35 +3,35 @@
 
 	//private functions
 
-	private function CollectResults($trelloURL){	 
-	$ListResult = @ file_get_contents($trelloURL); 
-	if($ListResult === FALSE) { 
+	private function CollectResults($trelloURL){
+	$ListResult = @ file_get_contents($trelloURL);
+	if($ListResult === FALSE) {
 	return false;
 	}
 	$newJson = json_decode($ListResult, true);
-	return $newJson;	 
+	return $newJson;
 	}
 
-	private function BoardMemberResults($boardID){	 
+	private function BoardMemberResults($boardID){
 	global $APIkey;
 	global $token;
 	if(!$boardID){
 	return false;
 	}else{
 	$trelloURL = 'https://api.trello.com/1/boards/'.$boardID.'/memberships?limit=1000&key='.$APIkey.'&token='.$token;
-	$ListResult = @ file_get_contents($trelloURL); 
-	if($ListResult === FALSE) { 
+	$ListResult = @ file_get_contents($trelloURL);
+	if($ListResult === FALSE) {
 	return false;
 	}
 	$newJson = json_decode($ListResult, true);
-	return $newJson;	 
+	return $newJson;
 	}
 	}
 
 	private function parsedate($date){
 	$dateparse = [];
 	$datea = explode('T',$date);
-	$dateparts = explode( '-',$datea[0]); 
+	$dateparts = explode( '-',$datea[0]);
 	$dater = $dateparts[2].'/'.$dateparts[1].'/'.$dateparts[0];
 	$dateObj   = DateTime::createFromFormat('!m', $dateparts[1]);
 	$monthstr = $dateObj->format('F');
@@ -65,25 +65,25 @@
 
 	private function parseMASTERJson($JsonLoc){
 	// check to see if OrganisationActions object exists
-	$json = @ file_get_contents($JsonLoc); 
-	if($json === FALSE) { 
+	$json = @ file_get_contents($JsonLoc);
+	if($json === FALSE) {
 	// no JSON found - create new one
 	touch($JsonLoc);
 	$json = [];
 	}else{
 	if($json != ""){
-	$json = json_decode($json, true);	
+	$json = json_decode($json, true);
 	}else{
 	$json = [];
-	} 
+	}
 	}
 	return array_reverse($json);
-	} 
+	}
 
 
 
 	// get the stats for how many actions a user has made
-	private function stasformemactions($arrayofmems, $MASTERactionsOBJ){ 
+	private function stasformemactions($arrayofmems, $MASTERactionsOBJ){
 	$totalmems = count($arrayofmems);
 	$totatlactionsforthisuser = 0;
 	$actioncount = [];
@@ -97,7 +97,7 @@
 	foreach($arrayofmems as $keyi => $val){
 	$totatlactionsforthisuser = count($MASTERactionsOBJ[$keyi]['actions']);
 		if($totatlactionsforthisuser == 0){
-		$actioncount['none']['count']++;	
+		$actioncount['none']['count']++;
 		}
 		if($totatlactionsforthisuser >= 1){
 		$actioncount['one']['count']++;
@@ -123,7 +123,7 @@
 
 
 	// now get the stats for how many joined a board this month
-	private function stasfrommems($arrayofmems, $boardjoincomparison){ 
+	private function stasfrommems($arrayofmems, $boardjoincomparison){
 	$totalmems = count($arrayofmems);
 	$howmany = [];
 	$howmany['noboardsjoined']['count'] = 0;
@@ -142,35 +142,35 @@
 
 	//private functions
 
-	private function CollectResults($trelloURL){	 
-	$ListResult = @ file_get_contents($trelloURL); 
-	if($ListResult === FALSE) { 
+	private function CollectResults($trelloURL){
+	$ListResult = @ file_get_contents($trelloURL);
+	if($ListResult === FALSE) {
 	return false;
 	}
 	$newJson = json_decode($ListResult, true);
-	return $newJson;	 
+	return $newJson;
 	}
 
-	private function BoardMemberResults($boardID){	 
+	private function BoardMemberResults($boardID){
 	global $APIkey;
 	global $token;
 	if(!$boardID){
 	return false;
 	}else{
 	$trelloURL = 'https://api.trello.com/1/boards/'.$boardID.'/memberships?limit=1000&key='.$APIkey.'&token='.$token;
-	$ListResult = @ file_get_contents($trelloURL); 
-	if($ListResult === FALSE) { 
+	$ListResult = @ file_get_contents($trelloURL);
+	if($ListResult === FALSE) {
 	return false;
 	}
 	$newJson = json_decode($ListResult, true);
-	return $newJson;	 
+	return $newJson;
 	}
 	}
 
 	private function parsedate($date){
 	$dateparse = [];
 	$datea = explode('T',$date);
-	$dateparts = explode( '-',$datea[0]); 
+	$dateparts = explode( '-',$datea[0]);
 	$dater = $dateparts[2].'/'.$dateparts[1].'/'.$dateparts[0];
 	$dateObj   = DateTime::createFromFormat('!m', $dateparts[1]);
 	$monthstr = $dateObj->format('F');
@@ -204,25 +204,25 @@
 
 	private function parseMASTERJson($JsonLoc){
 	// check to see if OrganisationActions object exists
-	$json = @ file_get_contents($JsonLoc); 
-	if($json === FALSE) { 
+	$json = @ file_get_contents($JsonLoc);
+	if($json === FALSE) {
 	// no JSON found - create new one
 	touch($JsonLoc);
 	$json = [];
 	}else{
 	if($json != ""){
-	$json = json_decode($json, true);	
+	$json = json_decode($json, true);
 	}else{
 	$json = [];
-	} 
+	}
 	}
 	return array_reverse($json);
-	} 
+	}
 
 
 
 	// get the stats for how many actions a user has made
-	private function stasformemactions($arrayofmems, $MASTERactionsOBJ){ 
+	private function stasformemactions($arrayofmems, $MASTERactionsOBJ){
 	$totalmems = count($arrayofmems);
 	$totatlactionsforthisuser = 0;
 	$actioncount = [];
@@ -236,7 +236,7 @@
 	foreach($arrayofmems as $keyi => $val){
 	$totatlactionsforthisuser = count($MASTERactionsOBJ[$keyi]['actions']);
 		if($totatlactionsforthisuser == 0){
-		$actioncount['none']['count']++;	
+		$actioncount['none']['count']++;
 		}
 		if($totatlactionsforthisuser >= 1){
 		$actioncount['one']['count']++;
@@ -262,7 +262,7 @@
 
 
 	// now get the stats for how many joined a board this month
-	private function stasfrommems($arrayofmems, $boardjoincomparison){ 
+	private function stasfrommems($arrayofmems, $boardjoincomparison){
 	$totalmems = count($arrayofmems);
 	$howmany = [];
 	$howmany['noboardsjoined']['count'] = 0;
@@ -288,12 +288,12 @@
 		if($timeJB < $joinedteamplus7 && $timeJB !=""){
 		$howmany['within1']['count']++;
 		$howmany['totalmemberswhojoined1board']++;
-		}	
-		if($timeJB < $joinedteamplus14 && $timeJB >= $joinedteamplus7 && $timeJB !=""){	   
+		}
+		if($timeJB < $joinedteamplus14 && $timeJB >= $joinedteamplus7 && $timeJB !=""){
 		$howmany['between1n2']['count']++ ;
 		$howmany['totalmemberswhojoined1board']++;
 		}
-		if($timeJB < $joinedteamplus21 && $timeJB >= $joinedteamplus14 && $timeJB !=""){	   
+		if($timeJB < $joinedteamplus21 && $timeJB >= $joinedteamplus14 && $timeJB !=""){
 		$howmany['between2n3']['count']++ ;
 		$howmany['totalmemberswhojoined1board']++;
 		}
@@ -303,15 +303,15 @@
 		}
 		if($timeJB > $joinedteamplus28 && $timeJB !=""){
 		$howmany['totalmemberswhojoined1board']++;
-		$howmany['fourormore']['count']++;	
+		$howmany['fourormore']['count']++;
 		}
-	
+
 	}
-	
-	foreach($howmany as $key => $val){ 
-	$howmany[$key]['pct'] = trelloDash::getpct($totalmems, $howmany[$key]['count'] );	
+
+	foreach($howmany as $key => $val){
+	$howmany[$key]['pct'] = trelloDash::getpct($totalmems, $howmany[$key]['count'] );
 	}
-	
+
 	return $howmany;
 	}
 	// get percentage func
@@ -347,19 +347,19 @@
 
 	if($viewName == 'DashMain'){
 
-	// get the organisation actions  
+	// get the organisation actions
 	$OrganisationMembershipsResult = trelloDash::CollectResults($OrganisationMembershipsURL);
 	$OrganisationMembershipsResultCount = count ($OrganisationMembershipsResult);
 
-	// get the total boards  
+	// get the total boards
 	$organisationBoardsResult = trelloDash::CollectResults($organisationBoardsURL);
 	$organisationBoardsResultCount = count ($organisationBoardsResult);
 
 	// parse master json files
 	$MASTEROBJ = trelloDash::parseMASTERJson($MASTERJsonLoc);
 	$MASTERactionsOBJ = trelloDash::parseMASTERJson($MASTERactionsJsonLoc);
-	 
-	// Each time the data is refreshed, it will modify the Master Json file to add anything new and keep all the existing data. 
+
+	// Each time the data is refreshed, it will modify the Master Json file to add anything new and keep all the existing data.
 
 	// iterate through the new organization/memberships add new memberships to masterJSON
 		foreach ($OrganisationMembershipsResult as $value){
@@ -380,9 +380,9 @@
 	$MASTEROBJ[$dateparse['dateID']]['meberAddedtoTeam'][$id]['timestamp'] = $dateparse['timestamp'];
 	}
 		}
-		
+
 	// iterate through the new organization/boards and add the new board memberships to masterJSON
-		
+
 	// get all the board memberships
 
 	foreach($organisationBoardsResult as $valboard){
@@ -396,7 +396,7 @@
 
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['boardShortLink'] = $valboard['shortlink'];
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['boardID'] = $valboard['id'];
-					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['boardName'] = $valboard['name'];	
+					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['boardName'] = $valboard['name'];
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['members'][$valuea['idMember']]['memberName'] = $valuea['fullName'];
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['members'][$valuea['idMember']]['memberID'] = $valuea['memberID'];
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['members'][$valuea['idMember']]['memberType'] =  $valuea['memberType'];
@@ -407,7 +407,7 @@
 
 				}
 
-			} 
+			}
 		}
 
 	//create all the actions
@@ -422,71 +422,71 @@
 
 			// format - memberid - actions - boardID - arr
 			if(!isset($MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['type'])){
-	
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['type'] = $valuea['type'];	
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['timestamp'] = $dateparse['timestamp'];	
+
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['type'] = $valuea['type'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['timestamp'] = $dateparse['timestamp'];
 			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['date'] = $valuea['date'];
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['boardID'] = $valuea['data']['board']['id'];			
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['boardname'] = $valuea['data']['board']['name'];			
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['shortLink'] = $valuea['data']['board']['shortLink'];			
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['fullName'] = $valuea['memberCreator']['fullName'];	
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['username'] = $valuea['memberCreator']['username'];	
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['memberID'] = $valuea['memberCreator']['id'];	
- 			
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['boardID'] = $valuea['data']['board']['id'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['boardname'] = $valuea['data']['board']['name'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['shortLink'] = $valuea['data']['board']['shortLink'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['fullName'] = $valuea['memberCreator']['fullName'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['username'] = $valuea['memberCreator']['username'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['memberID'] = $valuea['memberCreator']['id'];
+
 			}
-			
+
 			//make the breakdown of actions per team per person
 			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['ActionType'] = $valuea['type'];
 			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['BoardName'] = $valuea['data']['board']['name'];
-			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['UserName'] = $valuea['memberCreator']['username'];			 
-		 
+			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['UserName'] = $valuea['memberCreator']['username'];
+
 		}
 
 	// get the 1000 most recent memberships for this board
 
 	}
- 
-	//write the updated json to disk 
+
+	//write the updated json to disk
 	$MASTEROBJ = array_reverse($MASTEROBJ);
 	trelloDash::writeJsontoDisk($MASTEROBJ, $MASTERJsonLoc);
 	trelloDash::writeJsontoDisk($MASTERactionsOBJ, $MASTERactionsJsonLoc);
 	///// completed undate new data to existing saved data (last 999 memberships returned from trello)
-	
-	
-	
+
+
+
 	// create additional comparison data
 	foreach ($MASTEROBJ as $val){
 	foreach($val['meberAddedtoTeam'] as $valb){
 
-	$boardjoincomparison[$valb['memberid']]['fullName'] = $valb['fullName'];	
-	$boardjoincomparison[$valb['memberid']]['memid'] = $valb['memberid'];	
+	$boardjoincomparison[$valb['memberid']]['fullName'] = $valb['fullName'];
+	$boardjoincomparison[$valb['memberid']]['memid'] = $valb['memberid'];
 	$boardjoincomparison[$valb['memberid']]['timestampjoinedteam'] = $valb['timestamp'];
-	$addedtoboard['ID'.$val['year'].$val['month']][$valb['memberid']] = '@'.$valb['username'];	
+	$addedtoboard['ID'.$val['year'].$val['month']][$valb['memberid']] = '@'.$valb['username'];
 	}
 	foreach($val['admembertoboard'] as $valbc){
-	foreach($valbc['members'] as $keyp =>  $valbcde){	
-	$boardjoincomparison[$keyp]['boardname'] = $valbc['boardName'];			  
-	$boardjoincomparison[$keyp]['boardjoinedtimestamp'] = $valb['timestamp'];	
+	foreach($valbc['members'] as $keyp =>  $valbcde){
+	$boardjoincomparison[$keyp]['boardname'] = $valbc['boardName'];
+	$boardjoincomparison[$keyp]['boardjoinedtimestamp'] = $valb['timestamp'];
 	}
 	}
 	}
-	
+
 	// get the total number of members who performed an action in th elast 7 days
-	 
+
 	$memberNamesWhoPerformedActionsWithin7daysArray = [];
 	$boardnamesWhoPerformedActionsWithin7daysArray = [];
-	
+
 	$breakdownOf7days = [];
-	
+
 	$SevenDaysAgo = strtotime('-7 days');
-	 
+
 	$membersWithActionsWithin2Months = [];
 	$twoMonthsAgo = strtotime('-2 months');
 
 	$actionsperboardpermonth = [];
-	
+
 	$memberNamesWhoPerformedActionsArray = [];
-	
+
 	foreach ($MASTERactionsOBJ as $value){
 		foreach($value['actions'] as $key => $valuea){
 			$dateparse = trelloDash::parsedate($valuea['date']);
@@ -499,32 +499,189 @@
 				$membersWithActionsWithin2Months[$valuea['memberID']] = 1;
 			}
 			if ($valuea['timestamp'] > $SevenDaysAgo) {
-				
+
 				// count the individual people who performed actions in the last 7 days
 				$memberNamesWhoPerformedActionsWithin7daysArray[$valuea['username']] = $valuea['username'];
 				$boardnamesWhoPerformedActionsWithin7daysArray[$valuea['boardname']] = $valuea['boardname'];
 				++$totalactioncountinLast7Days;
-				
+
 				$breakdownOf7days[$valuea['username']]['name'] = $valuea['username'];
 				$breakdownOf7days[$valuea['username']]['totalActions']++;
 				$breakdownOf7days[$valuea['username']]['teamActions'][$valuea['boardname']]++;
-				
-				 
+
+
 			}
 		}
 	}
-	
-	
+
+
 	// create the output
+	// <!-- inserted by @joelstuedle on 24.03.2019
+	// css
+
+	$hubcss = "<style type='text/css'>";
+	$hubcss .= "
+
+	.vhub ul {
+		margin-left: 0;
+	}
+
+	.vhub-head {
+		text-align: center;
+	}
+
+	@media (min-width: 768px) {
+
+		.vhub-content {
+			margin: 0; padding: 0;
+		}
+
+		.vhub-content * {
+			margin: 0;
+			padding: 0;
+		}
+
+		.vhub-content {
+			margin: 0; padding: 0;
+			display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+			display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+			display: -ms-flexbox;      /* TWEENER - IE 10 */
+			display: -webkit-flex;     /* NEW - Chrome */
+			display: flex;
+		}
+
+		.vhub-content-left {
+			width: 20%;
+			-webkit-box-ordinal-group: 1;
+			-moz-box-ordinal-group: 1;
+			-ms-flex-order: 1;
+			-webkit-order: 1;
+			order: 1;
+		}
+
+		.vhub-content-middle {
+			width: 60%;
+			-webkit-box-ordinal-group: 2;
+			-moz-box-ordinal-group: 2;
+			-ms-flex-order: 2;
+			-webkit-order: 2;
+			order: 2;
+			padding: 0 1rem;
+		}
+
+		.vhub-content-right {
+			width: 20%;
+			-webkit-box-ordinal-group: 3;
+			-moz-box-ordinal-group: 3;
+			-ms-flex-order: 3;
+			-webkit-order: 3;
+			order: 3;
+		}
+
+	}
+
+	";
+	$hubcss .= "</style>";
+
+
+	// html
+	$hub = "<div class='vhub'>";
+
+	$hub .= "<div class='vhub-head'>";
+	$hub .= "<h1><b>The Venus Project Volunteer Hub</b></h1>";
+	$hub .= "<h2>This is the hub for all volunteers of The Venus Project</h2>";
+	$hub .= "</div>"; // vhub-head
+
+	$hub .= "<div class='vhub-content'>";
+
+	$hub .= "<div class='vhub-content-middle'>";
+
+	// teams
+	$hub .= "<ul>";
+	$hub .= "<h4><b>Our Teams</b></h4>";
+
+	// create the board output
+	$boards = '';
+	foreach ($organisationBoardsResult as  $value){
+		if($value['closed'] == ""){
+			if ($value['name'] !== 'z[Unused board]') {
+				$boards .=  "<li><a href='".$value['url']."' target='_blank' title='".$value['name']."'><b>".$value['name']."</b></a></li>";
+			}
+		}
+	}
+	$hub .= $boards;
+
+	$hub .= "</ul>";
+
+	// activity
+	$hub .= "<ul>";
+	$hub .= "<h4><b>Recent activity</b></h4>";
+	$hub .= "<li><a href='#' target='_blank' title='activity 1'>Activity 1</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='activity 2'>Activity 2</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='activity 3'>Activity 3</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='activity 4'>Activity 4</a></li>";
+	$hub .= "</ul>";
+
+	$hub .= "</div>"; // vhub-middle
+
+	$hub .= "<div class='vhub-content-left'>";
+
+	// latest news links
+	$hub .= "<ul>";
+	$hub .= "<h4><b>Latest News</b></h4>";
+	$hub .= "<li><a href='#' target='_blank' title='news 1'>News 1</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='news 2'>News 2</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='news 3'>News 3</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='news 4'>News 4</a></li>";
+	$hub .= "</ul>";
+
+	// help needed links
+	$hub .= "<ul>";
+	$hub .= "<h4><b>Help Needed</b></h4>";
+	$hub .= "<li><a href='#' target='_blank' title='help 1'>Help at 1</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='help 2'>Help at 2</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='help 3'>Help at 3</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='help 4'>Help at 4</a></li>";
+	$hub .= "</ul>";
+
+	$hub .= "</div>"; // vhub-left
+
+	$hub .= "<div class='vhub-content-right'>";
+
+	// helpful information
+	$hub .= "<ul>";
+	$hub .= "<h4><b>Helpful Information</b></h4>";
+	$hub .= "<li><a href='#' target='_blank' title='helpful 1'>Helpful 1</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='helpful 2'>Helpful 2</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='helpful 3'>Helpful 3</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='helpful 4'>Helpful 4</a></li>";
+	$hub .= "</ul>";
+
+	// help needed links
+	$hub .= "<ul>";
+	$hub .= "<h4><b>Volunteer Resources</b></h4>";
+	$hub .= "<li><a href='#' target='_blank' title='resource 1'>Resource 1</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='resource 2'>Resource 2</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='resource 3'>Resource 3</a></li>";
+	$hub .= "<li><a href='#' target='_blank' title='resource 4'>Resource 4</a></li>";
+	$hub .= "</ul>";
+
+	$hub .= "</div>"; // vhub-right
+
+	$hub .= "</div>"; // vhub-content
+
+	$hub .= "</div>"; // vhub
+	// --> inserted by @joelstuedle on 24.03.2019
+
 	$head = "<h1><b>The Venus Project Trello Dashboard</b></h1>";
-	$OrganisationbreakdownOutput = "<h2 id='OrganisationActions'><b>Organisation monthly breakdown</b></h2>"; 
-	// create the month by month view 
+	$OrganisationbreakdownOutput = "<h2 id='OrganisationActions'><b>Organisation monthly breakdown</b></h2>";
+	// create the month by month view
 	foreach ($MASTEROBJ as $keyop => $value){
 	$total=0;
 	// array of dates by month
 	if($value['month']){
 	$totalmembersaddedthismonth = count($value['meberAddedtoTeam']);
-	
+
 	if($UOC == ""){
     $UOC = 1;
 	$OrganisationbreakdownOutput .= '<h3  class="clickme" data-ttext="'.$value['year'].' '.$value['month'].'" id="a'.$value['year'].$value['month'].'">Hide '.$value['year'].' '.$value['month'].' &uarr; </h3>
@@ -533,8 +690,8 @@
 	$OrganisationbreakdownOutput .= '<h3  class="clickme" data-ttext="'.$value['year'].' '.$value['month'].'" id="a'.$value['year'].$value['month'].'">Show '.$value['year'].' '.$value['month'].' &darr; </h3>
 	<div class="boardreveal a'.$value['year'].$value['month'].'">';
 	}
-	
-	
+
+
 
 	$OrganisationbreakdownOutput .= '<b>Number of people added to the organization in '.$value['month'].' : '.$totalmembersaddedthismonth.'</b><br/>';
 	if(is_array($addedtoboard[$keyop])){
@@ -544,7 +701,7 @@
 
 	$totalmemberswhotookatleast1action += $actionstats['one']['count'] ;
 	$totalmemberswhojoined1board += $howmany['totalmemberswhojoined1board'] ;
-	
+
 	$total = count($addedtoboard[$keyop]);
 
 	$OrganisationbreakdownOutput .= "Out of the $totalmembersaddedthismonth members added this month, <br/>
@@ -563,27 +720,27 @@
 	- At least 3 actions: <b>".$actionstats['three']['count']." (".$actionstats['three']['pct']."%)</b><br/>
 	- At least 5 actions: <b>".$actionstats['five']['count']." (".$actionstats['five']['pct']."%)</b><br/>
 	- At least 10 actions: <b>".$actionstats['ten']['count']." (".$actionstats['ten']['pct']."%)</b><br/>
-	- At least 20 actions: <b>".$actionstats['twenty']['count']." (".$actionstats['twenty']['pct']."%)</b><br/><br/>";	
+	- At least 20 actions: <b>".$actionstats['twenty']['count']." (".$actionstats['twenty']['pct']."%)</b><br/><br/>";
 	$OrganisationbreakdownOutput .= "Number of actions within each board this month:<br/>";
 	$boardactioncount="";
 	usort($actionsperboardpermonth['ID'.$value['year'].$value['month']], function ($a, $b) {
 	return $a['boardactioncount'] < $b['boardactioncount'];
 	});
 	foreach($actionsperboardpermonth['ID'.$value['year'].$value['month']] as $val){
-	$boardactioncount .= $val['boardname']."<b>(".$val['boardactioncount']." actions)</b> <br/>";	
+	$boardactioncount .= $val['boardname']."<b>(".$val['boardactioncount']." actions)</b> <br/>";
 	}
-	} 
+	}
 	}
 
 	$OrganisationbreakdownOutput .= $boardactioncount.'<br/><b>Members who were added to the organization in '.$value['month'].'</b>';
-	if(is_array($addedtoboard[$keyop])){ 
-	 
+	if(is_array($addedtoboard[$keyop])){
+
 	$OrganisationbreakdownOutput .= '<ul>';
 		foreach($addedtoboard[$keyop] as $keyu => $valc){
-		
+
 		// get the actions per team per user details here
 		$OrganisationbreakdownOutput .= '<li><b>'.$valc.'</b>';
-		
+
 		foreach($usernameByActionByTeam[$keyu] as  $FEboardID){
 			$ActionsOnBoard=0;
 			foreach($FEboardID as $TeamID => $FEActionID){
@@ -595,10 +752,10 @@
 	}
 	$OrganisationbreakdownOutput .= '</ul><hr/></div>';
 	}
-	
-	
+
+
 	}
-	}	
+	}
 
 
 	// create the board output
@@ -607,7 +764,7 @@
 	$boardCount++;
 	$boardOutput .=  "<li><b>".$value['name']."</b><ul>";
 	if($value['id'] != ""){
-	$BoardMemberListURL = trelloDash::BoardMemberResults($value['id']); 
+	$BoardMemberListURL = trelloDash::BoardMemberResults($value['id']);
 	$BoardMemberListURLCount = count ($BoardMemberListURL);
 	}else{
 	$BoardMemberListURLCount = "Id not found!";
@@ -616,16 +773,16 @@
 	$boardOutput .=  "<li><b>".$totalactionsperboard[$value['id']]."</b> Total Actions</li></ul></li>";
 	}
 	}
-	$boardOutput = '<h3 class="clickme"  data-ttext="boards" id="showtheboards" >Show boards &darr;</h3> 
+	$boardOutput = '<h3 class="clickme"  data-ttext="boards" id="showtheboards" >Show boards &darr;</h3>
 	<div class="boardreveal showtheboards" >
 	<ul >'.$boardOutput.'</ul>
 	</div>
 	<hr/>';
-	
+
 	//create the top stats
-	
+
 	$time = round(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]);
-    
+
 	if($isCron){
 	$processtime = "cron job exec took: $time seconds";
 	}else{
@@ -636,65 +793,65 @@
 	Total members who joined atleast 1 board =  <b>$totalmemberswhojoined1board</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,$totalmemberswhojoined1board)." %</b>)<br/>
 	Total members who performed atleast 1 action = <b>$totalmemberswhotookatleast1action</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,$totalmemberswhotookatleast1action)." %</b>)<br/>
 	Total members who performed atleast 1 action within the last 2 months = <b>".count($membersWithActionsWithin2Months)."</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,count($membersWithActionsWithin2Months))." %</b>)<br/>
-	<a href='?refresh=TVP' title='Refresh Data'>last update ".date('Y-m-d H:i:s')."<br/>Click here to refresh data <br/>($processtime)</a> 
+	<a href='?refresh=TVP' title='Refresh Data'>last update ".date('Y-m-d H:i:s')."<br/>Click here to refresh data <br/>($processtime)</a>
 	<br/>
 	<br/>
 	<hr/>
 	";
-	
+
 	//print_r($memberNamesWhoPerformedActionsWithin7daysArray);
 	//print_r($membersWithActionsWithin7days);
 	//print_r($boardnamesWhoPerformedActionsWithin7daysArray);
-	
+
 	//exit();
 	$last7DaysStats = '<h3>Last 7 days: </h3><b>'.count($memberNamesWhoPerformedActionsWithin7daysArray).'</b> people performed a total of <b>'.$totalactioncountinLast7Days.'</b> actions in <b>'.count($boardnamesWhoPerformedActionsWithin7daysArray).'</b> teams;<br/>';
-	
+
 	usort($breakdownOf7days, function ($a, $b) {
 		return $a['totalActions'] < $b['totalActions'];
 	});
-	
+
 	foreach ($breakdownOf7days as  $key => $value){
-		
+
 		$last7DaysStats .= '<br/>&nbsp;&nbsp;&nbsp;<b>'.$value['name'].'</b> has made <b>'.$value['totalActions'].'</b> actions<br/>';
 		foreach ($value['teamActions'] as  $keya => $valuea){
 			$last7DaysStats .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>".$keya."</b> actions: <b>".$valuea."</b><br/>";
-			
+
 		}
-		
+
 	}
 
-	
-	
-	 
-	 
+
+
+
+
 	$last7DaysStats .= ' <br/> <br/><hr/>';
-	
-	
+
+
 	$JSscript = '<script>
 	$( document ).ready(function() {
-	$(".clickme").on("click",function(){ 
+	$(".clickme").on("click",function(){
 		var link = $(this);
 		var linkID = link.attr("id");
 		var ttext = link.data("ttext");
 		console.log("hi" + linkID);
 		$("."+linkID).slideToggle("slow", function() {
 			if ($(this).is(":visible")) {
-            link.html("Hide "+ttext+" &uarr;");                
+            link.html("Hide "+ttext+" &uarr;");
 			} else {
-            link.html("Show "+ttext+" &darr;");                
-			} 
+            link.html("Show "+ttext+" &darr;");
+			}
 		});
 	});
 	});
  </script>';
-	
+
 	//return the full output
-	return  finaloutput($head.$JSscript.$stats.$last7DaysStats.$boardOutput.$OrganisationbreakdownOutput);
+	return  finaloutput($hubcss.$hub.$head.$JSscript.$stats.$last7DaysStats.$boardOutput.$OrganisationbreakdownOutput);
 	}// end dash main if block
 	}// end view
 	}// end class
 
-	
+
 	class login{
 
 	private $token;
@@ -709,7 +866,7 @@
 	$this->token = $token;
 
 	$trelloURL = 'https://api.trello.com/1/tokens/'.$this->token.'/member?fields=idOrganizations%2C%20id&key='.$APIkey.'&token='.$this->token;
-	$ListResult = @ file_get_contents($trelloURL); 
+	$ListResult = @ file_get_contents($trelloURL);
 	if($ListResult){
 	$newJson = json_decode($ListResult, true);
 	$this->userJSon = $newJson;
@@ -717,11 +874,11 @@
 	foreach ($newJson['idOrganizations'] as $val){
 	if($val == $TVPID){
 	$this->isTVP = "1" ;
-	} 			
 	}
 	}
 	}
-	
+	}
+
 	public function logout(){
 	unset($_COOKIE['memberIDC']);
 	unset($_COOKIE['UserTokenC']);
@@ -729,12 +886,12 @@
 	setcookie("memberIDC", FALSE , time() - 3600,"/", "dashboard.thevenusproject.com", true );
 	setcookie("UserTokenC" , FALSE , time() - 3600,"/", "dashboard.thevenusproject.com", true );
 	$_SESSION['memberIDS'] = "";
-	
+
 	}
 	}
 
 
-	
+
 	class cookieAuth{
 	private $cookieToken;
 	private $cookieUserID;
@@ -743,20 +900,20 @@
 	global $APIkey;
 	global $TVPID;
 	$trelloURL = 'https://api.trello.com/1/tokens/'.$cookieToken.'/member?fields=idOrganizations%2C%20id&key='.$APIkey.'&token='.$cookieToken;
-	$ListResult = @ file_get_contents($trelloURL); 
+	$ListResult = @ file_get_contents($trelloURL);
 	if($ListResult){
 	$newJson = json_decode($ListResult, true);
 	foreach ($newJson['idOrganizations'] as $val){
 	if($val == $TVPID && $cookieUserID == $newJson['id']){
 	$this->CookieAuthenticated = "1" ;
 	}
-	} 			
 	}
 	}
 	}
-	
-	
-	
+	}
+
+
+
 	?>
 
 	$joinedteamplus7 = strtotime('+7 days', $timeJT);
@@ -770,12 +927,12 @@
 		if($timeJB < $joinedteamplus7 && $timeJB !=""){
 		$howmany['within1']['count']++;
 		$howmany['totalmemberswhojoined1board']++;
-		}	
-		if($timeJB < $joinedteamplus14 && $timeJB >= $joinedteamplus7 && $timeJB !=""){	   
+		}
+		if($timeJB < $joinedteamplus14 && $timeJB >= $joinedteamplus7 && $timeJB !=""){
 		$howmany['between1n2']['count']++ ;
 		$howmany['totalmemberswhojoined1board']++;
 		}
-		if($timeJB < $joinedteamplus21 && $timeJB >= $joinedteamplus14 && $timeJB !=""){	   
+		if($timeJB < $joinedteamplus21 && $timeJB >= $joinedteamplus14 && $timeJB !=""){
 		$howmany['between2n3']['count']++ ;
 		$howmany['totalmemberswhojoined1board']++;
 		}
@@ -785,15 +942,15 @@
 		}
 		if($timeJB > $joinedteamplus28 && $timeJB !=""){
 		$howmany['totalmemberswhojoined1board']++;
-		$howmany['fourormore']['count']++;	
+		$howmany['fourormore']['count']++;
 		}
-	
+
 	}
-	
-	foreach($howmany as $key => $val){ 
-	$howmany[$key]['pct'] = trelloDash::getpct($totalmems, $howmany[$key]['count'] );	
+
+	foreach($howmany as $key => $val){
+	$howmany[$key]['pct'] = trelloDash::getpct($totalmems, $howmany[$key]['count'] );
 	}
-	
+
 	return $howmany;
 	}
 	// get percentage func
@@ -829,19 +986,19 @@
 
 	if($viewName == 'DashMain'){
 
-	// get the organisation actions  
+	// get the organisation actions
 	$OrganisationMembershipsResult = trelloDash::CollectResults($OrganisationMembershipsURL);
 	$OrganisationMembershipsResultCount = count ($OrganisationMembershipsResult);
 
-	// get the total boards  
+	// get the total boards
 	$organisationBoardsResult = trelloDash::CollectResults($organisationBoardsURL);
 	$organisationBoardsResultCount = count ($organisationBoardsResult);
 
 	// parse master json files
 	$MASTEROBJ = trelloDash::parseMASTERJson($MASTERJsonLoc);
 	$MASTERactionsOBJ = trelloDash::parseMASTERJson($MASTERactionsJsonLoc);
-	 
-	// Each time the data is refreshed, it will modify the Master Json file to add anything new and keep all the existing data. 
+
+	// Each time the data is refreshed, it will modify the Master Json file to add anything new and keep all the existing data.
 
 	// iterate through the new organization/memberships add new memberships to masterJSON
 		foreach ($OrganisationMembershipsResult as $value){
@@ -862,9 +1019,9 @@
 	$MASTEROBJ[$dateparse['dateID']]['meberAddedtoTeam'][$id]['timestamp'] = $dateparse['timestamp'];
 	}
 		}
-		
+
 	// iterate through the new organization/boards and add the new board memberships to masterJSON
-		
+
 	// get all the board memberships
 
 	foreach($organisationBoardsResult as $valboard){
@@ -878,7 +1035,7 @@
 
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['boardShortLink'] = $valboard['shortlink'];
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['boardID'] = $valboard['id'];
-					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['boardName'] = $valboard['name'];	
+					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['boardName'] = $valboard['name'];
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['members'][$valuea['idMember']]['memberName'] = $valuea['fullName'];
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['members'][$valuea['idMember']]['memberID'] = $valuea['memberID'];
 					$MASTEROBJ[$dateparse['dateID']]['admembertoboard'][$valboard['id']]['members'][$valuea['idMember']]['memberType'] =  $valuea['memberType'];
@@ -889,7 +1046,7 @@
 
 				}
 
-			} 
+			}
 		}
 
 	//create all the actions
@@ -904,31 +1061,31 @@
 
 			// format - memberid - actions - boardID - arr
 			if(!isset($MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['type'])){
-	
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['type'] = $valuea['type'];	
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['timestamp'] = $dateparse['timestamp'];	
+
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['type'] = $valuea['type'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['timestamp'] = $dateparse['timestamp'];
 			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['date'] = $valuea['date'];
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['boardID'] = $valuea['data']['board']['id'];			
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['boardname'] = $valuea['data']['board']['name'];			
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['shortLink'] = $valuea['data']['board']['shortLink'];			
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['fullName'] = $valuea['memberCreator']['fullName'];	
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['username'] = $valuea['memberCreator']['username'];	
-			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['memberID'] = $valuea['memberCreator']['id'];	
- 			
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['boardID'] = $valuea['data']['board']['id'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['boardname'] = $valuea['data']['board']['name'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['shortLink'] = $valuea['data']['board']['shortLink'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['fullName'] = $valuea['memberCreator']['fullName'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['username'] = $valuea['memberCreator']['username'];
+			$MASTERactionsOBJ[$valuea['memberCreator']['id']]['actions'][$valuea['id']]['memberID'] = $valuea['memberCreator']['id'];
+
 			}
-			
+
 			//make the breakdown of actions per team per person
 			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['ActionType'] = $valuea['type'];
 			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['BoardName'] = $valuea['data']['board']['name'];
-			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['UserName'] = $valuea['memberCreator']['username'];			 
-		 
+			 $usernameByActionByTeam[$valuea['memberCreator']['id']][$valuea['data']['board']['id']][$valuea['id']]['UserName'] = $valuea['memberCreator']['username'];
+
 		}
 
 	// get the 1000 most recent memberships for this board
 
 	}
- 
-	//write the updated json to disk 
+
+	//write the updated json to disk
 	$MASTEROBJ = array_reverse($MASTEROBJ);
 	trelloDash::writeJsontoDisk($MASTEROBJ, $MASTERJsonLoc);
 	trelloDash::writeJsontoDisk($MASTERactionsOBJ, $MASTERactionsJsonLoc);
@@ -937,15 +1094,15 @@
 	foreach ($MASTEROBJ as $val){
 	foreach($val['meberAddedtoTeam'] as $valb){
 
-	$boardjoincomparison[$valb['memberid']]['fullName'] = $valb['fullName'];	
-	$boardjoincomparison[$valb['memberid']]['memid'] = $valb['memberid'];	
+	$boardjoincomparison[$valb['memberid']]['fullName'] = $valb['fullName'];
+	$boardjoincomparison[$valb['memberid']]['memid'] = $valb['memberid'];
 	$boardjoincomparison[$valb['memberid']]['timestampjoinedteam'] = $valb['timestamp'];
-	$addedtoboard['ID'.$val['year'].$val['month']][$valb['memberid']] = '@'.$valb['username'];	
+	$addedtoboard['ID'.$val['year'].$val['month']][$valb['memberid']] = '@'.$valb['username'];
 	}
 	foreach($val['admembertoboard'] as $valbc){
-	foreach($valbc['members'] as $keyp =>  $valbcde){	
-	$boardjoincomparison[$keyp]['boardname'] = $valbc['boardName'];			  
-	$boardjoincomparison[$keyp]['boardjoinedtimestamp'] = $valb['timestamp'];	
+	foreach($valbc['members'] as $keyp =>  $valbcde){
+	$boardjoincomparison[$keyp]['boardname'] = $valbc['boardName'];
+	$boardjoincomparison[$keyp]['boardjoinedtimestamp'] = $valb['timestamp'];
 	}
 	}
 	}
@@ -971,14 +1128,14 @@
 
 	// create the output
 	$head = "<h1><b>The Venus Project Trello Dashboard</b></h1>";
-	$OrganisationbreakdownOutput = "<h2 id='OrganisationActions'><b>Organisation monthly breakdown</b></h2>"; 
-	// create the month by month view 
+	$OrganisationbreakdownOutput = "<h2 id='OrganisationActions'><b>Organisation monthly breakdown</b></h2>";
+	// create the month by month view
 	foreach ($MASTEROBJ as $keyop => $value){
 	$total=0;
 	// array of dates by month
 	if($value['month']){
 	$totalmembersaddedthismonth = count($value['meberAddedtoTeam']);
-	
+
 	if($UOC == ""){
     $UOC = 1;
 	$OrganisationbreakdownOutput .= '<h3  class="clickme" data-ttext="'.$value['year'].' '.$value['month'].'" id="a'.$value['year'].$value['month'].'">Hide '.$value['year'].' '.$value['month'].' &uarr; </h3>
@@ -987,7 +1144,7 @@
 	$OrganisationbreakdownOutput .= '<h3  class="clickme" data-ttext="'.$value['year'].' '.$value['month'].'" id="a'.$value['year'].$value['month'].'">Show '.$value['year'].' '.$value['month'].' &darr; </h3>
 	<div class="boardreveal a'.$value['year'].$value['month'].'">';
 	}
-	
+
 
 
 	$OrganisationbreakdownOutput .= '<b>Number of people added to the organization in '.$value['month'].' : '.$totalmembersaddedthismonth.'</b><br/>';
@@ -998,7 +1155,7 @@
 
 	$totalmemberswhotookatleast1action += $actionstats['one']['count'] ;
 	$totalmemberswhojoined1board += $howmany['totalmemberswhojoined1board'] ;
-	
+
 	$total = count($addedtoboard[$keyop]);
 
 	$OrganisationbreakdownOutput .= "Out of the $totalmembersaddedthismonth members added this month, <br/>
@@ -1017,27 +1174,27 @@
 	- At least 3 actions: <b>".$actionstats['three']['count']." (".$actionstats['three']['pct']."%)</b><br/>
 	- At least 5 actions: <b>".$actionstats['five']['count']." (".$actionstats['five']['pct']."%)</b><br/>
 	- At least 10 actions: <b>".$actionstats['ten']['count']." (".$actionstats['ten']['pct']."%)</b><br/>
-	- At least 20 actions: <b>".$actionstats['twenty']['count']." (".$actionstats['twenty']['pct']."%)</b><br/><br/>";	
+	- At least 20 actions: <b>".$actionstats['twenty']['count']." (".$actionstats['twenty']['pct']."%)</b><br/><br/>";
 	$OrganisationbreakdownOutput .= "Number of actions within each board this month:<br/>";
 	$boardactioncount="";
 	usort($actionsperboardpermonth['ID'.$value['year'].$value['month']], function ($a, $b) {
 	return $a['boardactioncount'] < $b['boardactioncount'];
 	});
 	foreach($actionsperboardpermonth['ID'.$value['year'].$value['month']] as $val){
-	$boardactioncount .= $val['boardname']."<b>(".$val['boardactioncount']." actions)</b> <br/>";	
+	$boardactioncount .= $val['boardname']."<b>(".$val['boardactioncount']." actions)</b> <br/>";
 	}
-	} 
+	}
 	}
 
 	$OrganisationbreakdownOutput .= $boardactioncount.'<br/><b>Members who were added to the organization in '.$value['month'].'</b>';
-	if(is_array($addedtoboard[$keyop])){ 
-	 
+	if(is_array($addedtoboard[$keyop])){
+
 	$OrganisationbreakdownOutput .= '<ul>';
 		foreach($addedtoboard[$keyop] as $keyu => $valc){
-		
+
 		// get the actions per team per user details here
 		$OrganisationbreakdownOutput .= '<li><b>'.$valc.'</b>';
-		
+
 		foreach($usernameByActionByTeam[$keyu] as  $FEboardID){
 			$ActionsOnBoard=0;
 			foreach($FEboardID as $TeamID => $FEActionID){
@@ -1049,10 +1206,10 @@
 	}
 	$OrganisationbreakdownOutput .= '</ul><hr/></div>';
 	}
-	
-	
+
+
 	}
-	}	
+	}
 
 
 	// create the board output
@@ -1061,7 +1218,7 @@
 	$boardCount++;
 	$boardOutput .=  "<li><b>".$value['name']."</b><ul>";
 	if($value['id'] != ""){
-	$BoardMemberListURL = trelloDash::BoardMemberResults($value['id']); 
+	$BoardMemberListURL = trelloDash::BoardMemberResults($value['id']);
 	$BoardMemberListURLCount = count ($BoardMemberListURL);
 	}else{
 	$BoardMemberListURLCount = "Id not found!";
@@ -1070,16 +1227,16 @@
 	$boardOutput .=  "<li><b>".$totalactionsperboard[$value['id']]."</b> Total Actions</li></ul></li>";
 	}
 	}
-	$boardOutput = '<h3 class="clickme"  data-ttext="boards" id="showtheboards" >Show boards &darr;</h3> 
+	$boardOutput = '<h3 class="clickme"  data-ttext="boards" id="showtheboards" >Show boards &darr;</h3>
 	<div class="boardreveal showtheboards" >
 	<ul >'.$boardOutput.'</ul>
 	</div>
 	<hr/>';
-	
+
 	//create the top stats
-	
+
 	$time = round(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]);
-    
+
 	if($isCron){
 	$processtime = "cron job exec took: $time seconds";
 	}else{
@@ -1090,37 +1247,37 @@
 	Total members who joined atleast 1 board =  <b>$totalmemberswhojoined1board</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,$totalmemberswhojoined1board)." %</b>)<br/>
 	Total members who performed atleast 1 action = <b>$totalmemberswhotookatleast1action</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,$totalmemberswhotookatleast1action)." %</b>)<br/>
 	Total members who performed atleast 1 action within the last 2 months = <b>".count($membersWithActionsWithin2Months)."</b> (<b>".trelloDash::getpct($OrganisationMembershipsResultCount,count($membersWithActionsWithin2Months))." %</b>)<br/>
-	<a href='?refresh=TVP' title='Refresh Data'>last update ".date('Y-m-d H:i:s')."<br/>Click here to refresh data <br/>($processtime)</a> 
+	<a href='?refresh=TVP' title='Refresh Data'>last update ".date('Y-m-d H:i:s')."<br/>Click here to refresh data <br/>($processtime)</a>
 	<br/>
 	<br/>
 	<hr/>
 	";
-	
+
 	$JSscript = '<script>
 	$( document ).ready(function() {
-	$(".clickme").on("click",function(){ 
+	$(".clickme").on("click",function(){
 		var link = $(this);
 		var linkID = link.attr("id");
 		var ttext = link.data("ttext");
 		console.log("hi" + linkID);
 		$("."+linkID).slideToggle("slow", function() {
 			if ($(this).is(":visible")) {
-            link.html("Hide "+ttext+" &uarr;");                
+            link.html("Hide "+ttext+" &uarr;");
 			} else {
-            link.html("Show "+ttext+" &darr;");                
-			} 
+            link.html("Show "+ttext+" &darr;");
+			}
 		});
 	});
 	});
  </script>';
-	
+
 	//return the full output
 	return  finaloutput($head.$JSscript.$stats.$boardOutput.$OrganisationbreakdownOutput);
 	}// end dash main if block
 	}// end view
 	}// end class
 
-	
+
 	class login{
 
 	private $token;
@@ -1135,7 +1292,7 @@
 	$this->token = $token;
 
 	$trelloURL = 'https://api.trello.com/1/tokens/'.$this->token.'/member?fields=idOrganizations%2C%20id&key='.$APIkey.'&token='.$this->token;
-	$ListResult = @ file_get_contents($trelloURL); 
+	$ListResult = @ file_get_contents($trelloURL);
 	if($ListResult){
 	$newJson = json_decode($ListResult, true);
 	$this->userJSon = $newJson;
@@ -1143,11 +1300,11 @@
 	foreach ($newJson['idOrganizations'] as $val){
 	if($val == $TVPID){
 	$this->isTVP = "1" ;
-	} 			
 	}
 	}
 	}
-	
+	}
+
 	public function logout(){
 	unset($_COOKIE['memberIDC']);
 	unset($_COOKIE['UserTokenC']);
@@ -1155,12 +1312,12 @@
 	setcookie("memberIDC", FALSE , time() - 3600,"/", "dashboard.thevenusproject.com", true );
 	setcookie("UserTokenC" , FALSE , time() - 3600,"/", "dashboard.thevenusproject.com", true );
 	$_SESSION['memberIDS'] = "";
-	
+
 	}
 	}
 
 
-	
+
 	class cookieAuth{
 	private $cookieToken;
 	private $cookieUserID;
@@ -1169,18 +1326,18 @@
 	global $APIkey;
 	global $TVPID;
 	$trelloURL = 'https://api.trello.com/1/tokens/'.$cookieToken.'/member?fields=idOrganizations%2C%20id&key='.$APIkey.'&token='.$cookieToken;
-	$ListResult = @ file_get_contents($trelloURL); 
+	$ListResult = @ file_get_contents($trelloURL);
 	if($ListResult){
 	$newJson = json_decode($ListResult, true);
 	foreach ($newJson['idOrganizations'] as $val){
 	if($val == $TVPID && $cookieUserID == $newJson['id']){
 	$this->CookieAuthenticated = "1" ;
 	}
-	} 			
 	}
 	}
 	}
-	
-	
-	
+	}
+
+
+
 	?>
