@@ -207,67 +207,10 @@
 	<header id="masthead" class="site-header masthead-logo-in-menu" role="banner">
 	<nav role="navigation" class="site-navigation main-navigation primary use-sticky-menu mobile-navigation">
 	<div class="full-container">
-	<a href="https://www.thevenusproject.com/" title="The Venus Project" rel="home" class="logo"><img src="https://www.thevenusproject.com/wp-content/uploads/2015/08/logo_full_logo_gdt.svg" class="logo-no-height-constrain" alt="The Venus Project Logo" srcset="https://www.thevenusproject.com/wp-content/uploads/2015/08/logo_full_logo_gdt.svg 2x" /></a>
-	<div id="search-icon">
-	<div id="search-icon-icon"><div class="vantage-icon-search"></div></div>
-	<form method="get" class="searchform" action="https://www.thevenusproject.com/" role="search">
-	<input type="text" class="field" name="s" value="" placeholder="Search" />
-	</form>
-	</div>
-	<div id="so-mobilenav-standard-1" data-id="1" class="so-mobilenav-standard"></div><div class="menu-main-menu-container"><ul id="menu-main-menu" class="menu"><li id="menu-item-1714" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-841 current_page_item menu-item-1714"><a title="Home" href="https://www.thevenusproject.com/"><span class="fa fa-home"></span>.</a></li>
-	<li id="menu-item-185" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-185"><a title="About The Venus Project" href="https://www.thevenusproject.com/the-venus-project/">About</a>
-	<ul class="sub-menu">
-	<li id="menu-item-1893" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1893"><a href="https://www.thevenusproject.com/the-venus-project/aims-and-proposals/">Aims and Proposals</a></li>
-	<li id="menu-item-1639" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1639"><a title="Research Center" href="https://www.thevenusproject.com/the-venus-project/research-center/">Research Center/Tour</a></li>
-	<li id="menu-item-1638" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1638"><a title="Jacque Fresco" href="https://www.thevenusproject.com/the-venus-project/jacque-fresco/">Jacque Fresco</a></li>
-	<li id="menu-item-1637" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1637"><a title="Roxanne Meadows" href="https://www.thevenusproject.com/the-venus-project/roxanne-meadows/">Roxanne Meadows</a></li>
-	<li id="menu-item-2216" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2216"><a href="https://www.thevenusproject.com/the-venus-project/history/">History</a></li>
-	</ul>
-	</li>
-	<li id="menu-item-184" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-184"><a title="Resource Based Economy" href="https://www.thevenusproject.com/resource-based-economy/">Resource Based Economy</a>
-	<ul class="sub-menu">
-	<li id="menu-item-1797" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1797"><a href="https://www.thevenusproject.com/resource-based-economy/environment/">Environment</a>
-	<ul class="sub-menu">
-	<li id="menu-item-1798" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1798"><a href="https://www.thevenusproject.com/resource-based-economy/environment/circular-city/">Circular Cities</a></li>
-	<li id="menu-item-1799" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1799"><a href="https://www.thevenusproject.com/resource-based-economy/environment/total-enclosure-systems/">Total Enclosure Systems</a></li>
-	<li id="menu-item-1800" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1800"><a href="https://www.thevenusproject.com/resource-based-economy/environment/cities-in-the-sea/">Cities in the Sea</a></li>
-	</ul>
-	</li>
-	<li id="menu-item-1794" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1794"><a href="https://www.thevenusproject.com/resource-based-economy/technology/">Technology</a>
-	<ul class="sub-menu">
-	<li id="menu-item-1796" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1796"><a href="https://www.thevenusproject.com/resource-based-economy/technology/energy/">Energy</a></li>
-	<li id="menu-item-1847" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1847"><a href="https://www.thevenusproject.com/resource-based-economy/technology/construction/">Construction</a></li>
-	<li id="menu-item-1795" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1795"><a href="https://www.thevenusproject.com/resource-based-economy/technology/transportation/">Transportation</a></li>
-	<li id="menu-item-1836" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1836"><a href="https://www.thevenusproject.com/resource-based-economy/technology/space/">Space</a></li>
-	</ul>
-	</li>
-	<li id="menu-item-1803" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1803"><a href="https://www.thevenusproject.com/resource-based-economy/human-factors/">Human Factors</a>
-	<ul class="sub-menu">
-	<li id="menu-item-1806" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1806"><a href="https://www.thevenusproject.com/resource-based-economy/human-factors/scientific-method/">Scientific Method</a></li>
-	<li id="menu-item-1826" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1826"><a href="https://www.thevenusproject.com/resource-based-economy/human-factors/semantics-relevant-language/">Semantics</a></li>
-	<li id="menu-item-1811" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1811"><a href="https://www.thevenusproject.com/resource-based-economy/human-factors/values/">Values</a></li>
-	<li id="menu-item-1829" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1829"><a href="https://www.thevenusproject.com/resource-based-economy/human-factors/functional-design/">Functional Design</a></li>
-	</ul>
-	</li>
-	</ul>
-	</li>
-	<li id="menu-item-865" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-865"><a href="https://www.thevenusproject.com/learn-more/">Learn More</a>
-	<ul class="sub-menu">
-	<li id="menu-item-4082" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4082"><a href="https://www.thevenusproject.com/faqs/">FAQ</a></li>
-	<li id="menu-item-866" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-866"><a href="https://www.thevenusproject.com/news/"><span class="fa fa-pencil"></span>Latest News</a></li>
-	<li id="menu-item-1855" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1855"><a href="https://www.thevenusproject.com/learn-more/documentaries/">Watch our Documentaries</a></li>
-	<li id="menu-item-6655" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6655"><a href="https://www.thevenusproject.com/learn-more/free-e-books/">Free e-Books</a></li>
-	<li id="menu-item-2231" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2231"><a href="https://www.thevenusproject.com/learn-more/the-future-and-beyond/">The Future and Beyond</a></li>
-	<li id="menu-item-1710" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1710"><a title="Recommended Books" href="https://www.thevenusproject.com/learn-more/recommended-books/">Recommended Books</a></li>
-	</ul>
-	</li>
-	<li id="menu-item-6621" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6621"><a href="https://www.thevenusproject.com/become-a-volunteer/">Get Involved</a></li>
-	<li id="menu-item-858" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-858"><a href="https://www.thevenusproject.com/store/"><span class="fa fa-shopping-cart"></span>Store</a>
-	<ul class="sub-menu">
-	<li id="menu-item-3546" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3546"><a href="https://www.thevenusproject.com/store/my-account/">My Account</a></li>
-	</ul>
-	</li>
-	<li id="menu-item-1711" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1711"><a title="Donate to The Venus Project" href="https://www.thevenusproject.com/donations/">Donate</a></li>
+	<a href="https://dashboard.thevenusproject.com/" title="The Venus Project" rel="home" class="logo"><img src="https://www.thevenusproject.com/wp-content/uploads/2015/08/logo_full_logo_gdt.svg" class="logo-no-height-constrain" alt="The Venus Project Logo" srcset="https://www.thevenusproject.com/wp-content/uploads/2015/08/logo_full_logo_gdt.svg 2x" /></a>
+
+	<div id="so-mobilenav-standard-1" data-id="1" class="so-mobilenav-standard"></div><div class="menu-main-menu-container"><ul id="menu-main-menu" class="menu"><li id="menu-item-1714" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-841 current_page_item menu-item-1714"><a title="Home" href="https://www.thevenusproject.com/"><span class="fa fa-home"></span>Home</a></li>
+
 	</ul></div><div id="so-mobilenav-mobile-1" data-id="1" class="so-mobilenav-mobile"></div><div class="menu-mobilenav-container"><ul id="mobile-nav-item-wrap-1" class="menu"><li><a href="#" class="mobilenav-main-link" data-id="1"><span class="mobile-nav-icon"></span>Menu</a></li></ul></div> </div>
 	</nav>
 	</header>
