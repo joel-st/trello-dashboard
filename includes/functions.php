@@ -630,6 +630,8 @@
 	$hub .= "<ul>";
 	$hub .= "<h4><b>Latest News</b></h4>";
 	$hub .= "<li><a href='https://www.resourcebasedeconomy.org/center-for-resource-management/' target='_blank' title='Roadmap and Progress Report for the Center for Resource Management now available'>Roadmap and Progress Report for the Center for Resource Management now available</a></li>";
+	$hub .= "<li><a href='https://www.resourcebasedeconomy.org/partners/' target='_blank' title='Partners page added to the RBE website'>Partners page added to the RBE website</a></li>";
+	$hub .= "<li><a href='https://www.thevenusproject.com/march-2019-updates/' target='_blank' title='The Venus Project March 2019 Updates'>The Venus Project March 2019 Updates</a></li>";
 	$hub .= "<li><a href='https://www.thevenusproject.com/february-2019-updates/' target='_blank' title='The Venus Project February 2019 Updates'>The Venus Project February 2019 Updates</a></li>";
 	$hub .= "</ul>";
 
