@@ -13,7 +13,7 @@ TVP Trello Dashboard base structure:
 * `./tvp-trello-dashboard.php` Initializes the main plugin class and specifies spl_autoload_register class loader for this project. If plugin is loaded, plugin data is available via `TVP_TD()`;
 * `./Classes` Plugin classes.
 * `./assets` Plugin scripts, styles and media
-* `./assets` Plugin pot files
+* `./languages` Plugin internationalization data
 
 ## Features
 

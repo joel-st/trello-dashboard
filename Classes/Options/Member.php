@@ -24,12 +24,12 @@ class Member
 
 		$this->options = [
 			'key' => $this->prefix . '-text-fields',
-			'title' => __('Text', 'sht'),
+			'title' => __('Text', 'tvp-trello-dashboard'),
 			'fields' => [
 				[
 					'key' => $this->prefix . '-text',
 					'name' => $this->prefix . '-text',
-					'label' => __('Text', 'sht'),
+					'label' => __('Text', 'tvp-trello-dashboard'),
 					'type' => 'text',
 					'required' => 1,
 				],
