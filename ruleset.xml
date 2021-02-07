@@ -1,22 +1,23 @@
 <?xml version="1.0"?>
-<ruleset name="RandomGuy">
-    <description>Some random guys ruleset</description>
-
-    <!-- Use WPCS as a base -->
-    <rule ref="WordPress-Core">
-        <!-- Allow Tabs -->
-        <exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
-		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralDomain" />
-    </rule>
-
-    <!-- Disallow spaces as tabs -->
-    <rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
-
-    <!-- Define 4 spaces as a tab -->
-    <rule ref="Generic.WhiteSpace.ScopeIndent">
-        <properties>
-            <property name="indent" value="4"/>
-            <property name="tabIndent" value="true"/>
-        </properties>
-    </rule>
+<ruleset name="CustomStandard">
+	<description>PSR2 with tabs instead of spaces.</description>
+	<arg name="tab-width" value="4"/>
+	<rule ref="PSR2">
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+		<exclude name="Generic.Files.LineLength.TooLong"/>
+	</rule>
+	<rule ref="Generic.Arrays.ArrayIndent">
+		<properties>
+			<property name="indent" value="4"/>
+		</properties>
+	</rule>
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"/>
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<properties>
+			<property name="indent" value="4"/>
+			<property name="tabIndent" value="true"/>
+		</properties>
+	</rule>
 </ruleset>

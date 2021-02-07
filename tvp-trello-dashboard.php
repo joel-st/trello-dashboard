@@ -1,85 +1,79 @@
 <?php
 /**
- * @package TVP Trello Dashboard
+ * TVP Trello Dashboard
+ *
+ * // TODO: Add description
+ *
+ * @link    https://dashboard.thevenusproject.com/
+ * @since   1.0.0
+ * @package TVP_TD
+ *
+ * @wordpress-plugin
+ * Plugin Name:       TVP Trello Dashboard
+ * Plugin URI:        https://github.com/thevenusproject/trello-dashboard
+ * Description:       Customized Trello Dashboard for The Venus Project
+ * Version:           1.0.0
+ * Requires at least: 5.6
+ * Requires PHP:      8.0
+ * Author:            The Venus Project
+ * Author URI:        https://github.com/thevenusproject
+ * License:           –--
+ * License URI:       https://github.com/thevenusproject/trello-dashboard
+ * Text Domain:       tvp-trello-dashboard
+ * Domain Path:       /languages
  */
+
 /*
-Plugin Name: TVP Trello Dashboard
-Plugin URI: https://github.com/thevenusproject/trello-dashboard
-Description: Custom TVP Trello Dashboard for The Venus Project Website
-Version: 1.0.0
-Author: Website Team of The Venus Project
-Author URI: http://thevenusproject.com
-Text Domain: tvp_tdash
-Domain Path: /languages
-License: GPL2
+ * This lot auto-loads a class or trait just when you need it. You don't need to
+ * use require, include or anything to get the class/trait files, as long
+ * as they are stored in the correct folder and use the correct namespaces.
+ *
+ * See http://www.php-fig.org/psr/psr-4/ for an explanation of the file structure
+ * and https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md for usage examples.
+ */
 
-TVP Trello Dashboard is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-any later version.
+if (!defined('DISALLOW_FILE_EDIT')) {
+    define('DISALLOW_FILE_EDIT', true);
+}
 
-TVP Trello Dashboard is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+spl_autoload_register(
+    function ($class) {
+        // project-specific namespace prefix
+        $prefix = 'TVP\\TrelloDashboard\\';
 
-You should have received a copy of the GNU General Public License
-along with TVP Trello Dashboard. If not, see {License URI}.
-*/
+        // base directory for the namespace prefix
+        $baseDir = __DIR__ . '/Classes/';
 
-global $wp_version;
+        $relativeClass = str_replace($prefix, '', $class);
 
-if ( version_compare( $wp_version, '4.7', '<' ) || version_compare( PHP_VERSION, '5.4', '<' ) ) {
+        $file = $baseDir . str_replace('\\', '/', str_replace($prefix, '', $relativeClass)) . '.php';
+        $classExplode = explode('\\', $relativeClass);
 
+        // does the class use the namespace prefix?
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            // no, move to the next registered autoloader
+            return;
+        }
 
-	function tvp_tdash_compatability_warning() {
+        // if the file exists, require it
+        if (file_exists($file)) {
+            include $file;
+        }
+    }
+);
 
-		$plugin = get_file_data(
-			plugin_dir_path( __FILE__ ) . 'tvp-trello-dashboard.php',
-			[
-				'name'        => 'Plugin Name',
-				'version'     => 'Version',
-				'prefix'      => 'Text Domain',
-				'text_domain' => 'Text Domain',
-			],
-			'plugin'
-		);
-		$plugin = (object) $plugin;
+/**
+ * Returns the Plugin Instance
+ *
+ * @return Object Plugin Object
+ */
+if (!function_exists('TVP_TD')) {
+    function TVP_TD()
+    {
+        return TVP\TrelloDashboard\Plugin::getInstance(__FILE__);
+    }
 
-		echo '<div class="error"><p>';
-		// translators: Dependency waring
-		echo sprintf( __( '%1$s requires PHP %2$s (or newer) and WordPress %3$s (or newer) to function properly. Your site is using PHP %4$s and WordPress %5$s. Please upgrade. The plugin has been automatically deactivated.', $plugin->text_domain ), '<strong>' . $plugin->name . '</strong>', '5.3', '4.7', PHP_VERSION, $GLOBALS['wp_version'] );
-		echo '</p></div>';
-		if ( isset( $_GET['activate'] ) ) {
-			unset( $_GET['activate'] );
-		}
-	}
-
-	add_action( 'admin_notices', 'tvp_tdash_compatability_warning' );
-
-	function tvp_tdash_deactivate_self() {
-		deactivate_plugins( plugin_basename( __FILE__ ) );
-	}
-
-	add_action( 'admin_init', 'tvp_tdash_deactivate_self' );
-
-	return;
-
-} else {
-
-	require_once 'Classes/class-plugin.php';
-
-	/**
-	 * returns the plugin instance
-	 *
-	 * @return Object plugin object
-	 */
-	if ( ! function_exists( 'tvp_tdash_plugin' ) ) {
-		function tvp_tdash_plugin() {
-			return TvpTrelloDashboard\Plugin\Plugin::tvp_tdash_get_instance( __FILE__ );
-		}
-	}
-
-	tvp_tdash_plugin();
-	tvp_tdash_plugin()->run();
+    TVP_TD();
+    TVP_TD()->run();
 }
