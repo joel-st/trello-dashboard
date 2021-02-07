@@ -1,6 +1,6 @@
 # TVP Trello Dashboard
 
-Object-oriented WordPress Plugins for The Venus Project to connect a Trello Organization WordPress.
+Object-oriented WordPress Plugins for The Venus Project to connect a Trello Organization to WordPress.
 
 ## Dependencies
 
