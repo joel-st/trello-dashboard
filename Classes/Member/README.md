@@ -1,4 +1,4 @@
-# TVP Trello Dashboard Member Subclass
+# TVP Trello Dashboard Member Subclasses
 
 All the stuff for the custom member role and its functionality.
 

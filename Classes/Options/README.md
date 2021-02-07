@@ -1,4 +1,4 @@
-# TVP Trello Dashboard Options Subclass
+# TVP Trello Dashboard Options Subclasses
 
 Plugin options built with [Advanced Custom Fields](https://www.advancedcustomfields.com/)
 
