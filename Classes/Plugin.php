@@ -54,7 +54,7 @@ class Plugin
 			]
 		);
 
-		// internalization
+		// internationalization
 		add_action('plugins_loaded', [$this, 'loadPluginTextdomain']);
 	}
 

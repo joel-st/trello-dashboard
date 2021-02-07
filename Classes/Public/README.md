@@ -1,6 +1,6 @@
 # TVP Trello Dashboard Main Class
 
-The `Plugin.php` file is the starting point for the plugin. It returns the plugin main class, loads the subclasses and setup the plugin internalization.
+The `Plugin.php` file is the starting point for the plugin. It returns the plugin main class, loads the subclasses and setup the plugin internationalization.
 
 ## Adding new subclasses
 If you need to add a new subclass, add the file to the best matching directory. As example you would like to extend the Admin area with a `New` subclass.
