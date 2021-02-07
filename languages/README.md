@@ -1,4 +1,4 @@
-# TVP Trello Dashboard Plugin internationalization
+# TVP Trello Dashboard Plugin Internationalization
 
 TVP Trello Dashboard uses a variable to store the text domain used when internationalizing strings throughout the plugin. To take advantage of this method, there are tools that are recommended for providing correct, translatable files:
 
