@@ -14,10 +14,12 @@ Your new class will be autoloaded and available trough `TVP_TD()->Admin->New`;
 
 ## Contents
 
+Main Class: `TVP_TD()`
+
 The main class has several subclasses:
 * `./Admin` All stuff to provide admin interfaces.
 * `./API` All stuff to fetch relevant data provided by the plugin.
-* `./Trello` All stuff to connect to and fetch from a Trello Organization.
 * `./Member` All the stuff for the custom member role and its functionality.
 * `./Options` Plugin options built with [Advanced Custom Fields](https://www.advancedcustomfields.com/).
 * `./Public` All stuff to provide public (frontend) interfaces e.g. the Volunteer Hub.
+* `./Trello` All stuff to connect to and fetch from a Trello Organization.

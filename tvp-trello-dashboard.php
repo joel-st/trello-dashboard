@@ -33,34 +33,34 @@
  */
 
 if (!defined('DISALLOW_FILE_EDIT')) {
-    define('DISALLOW_FILE_EDIT', true);
+	define('DISALLOW_FILE_EDIT', true);
 }
 
 spl_autoload_register(
-    function ($class) {
-        // project-specific namespace prefix
-        $prefix = 'TVP\\TrelloDashboard\\';
+	function ($class) {
+		// project-specific namespace prefix
+		$prefix = 'TVP\\TrelloDashboard\\';
 
-        // base directory for the namespace prefix
-        $baseDir = __DIR__ . '/Classes/';
+		// base directory for the namespace prefix
+		$baseDir = __DIR__ . '/Classes/';
 
-        $relativeClass = str_replace($prefix, '', $class);
+		$relativeClass = str_replace($prefix, '', $class);
 
-        $file = $baseDir . str_replace('\\', '/', str_replace($prefix, '', $relativeClass)) . '.php';
-        $classExplode = explode('\\', $relativeClass);
+		$file = $baseDir . str_replace('\\', '/', str_replace($prefix, '', $relativeClass)) . '.php';
+		$classExplode = explode('\\', $relativeClass);
 
-        // does the class use the namespace prefix?
-        $len = strlen($prefix);
-        if (strncmp($prefix, $class, $len) !== 0) {
-            // no, move to the next registered autoloader
-            return;
-        }
+		// does the class use the namespace prefix?
+		$len = strlen($prefix);
+		if (strncmp($prefix, $class, $len) !== 0) {
+			// no, move to the next registered autoloader
+			return;
+		}
 
-        // if the file exists, require it
-        if (file_exists($file)) {
-            include $file;
-        }
-    }
+		// if the file exists, require it
+		if (file_exists($file)) {
+			include $file;
+		}
+	}
 );
 
 /**
@@ -69,11 +69,11 @@ spl_autoload_register(
  * @return Object Plugin Object
  */
 if (!function_exists('TVP_TD')) {
-    function TVP_TD()
-    {
-        return TVP\TrelloDashboard\Plugin::getInstance(__FILE__);
-    }
+	function TVP_TD()
+	{
+		return TVP\TrelloDashboard\Plugin::getInstance(__FILE__);
+	}
 
-    TVP_TD();
-    TVP_TD()->run();
+	TVP_TD();
+	TVP_TD()->run();
 }

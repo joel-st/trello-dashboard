@@ -2,6 +2,8 @@
 
 All stuff to provide public (frontend) interfaces e.g. the Volunteer Hub
 
+`TVP_TD()->Public`
+
 ## Contents
 
 The subclasses:

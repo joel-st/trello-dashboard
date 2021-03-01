@@ -11,6 +11,13 @@ class Plugin
 	public $textDomain = '';
 	public $prefix = '';
 
+	// security stuff
+	public $securityCiphering;
+	public $securityIvLength;
+	public $securityOptions;
+	public $securityIv;
+	public $securityKey;
+
 	/**
 	 * Creates an instance if one isn't already available,
 	 * then return the current instance.
@@ -28,6 +35,12 @@ class Plugin
 			self::$instance->textDomain = $data['TextDomain'];
 			self::$instance->pluginName = $data['Name'];
 			self::$instance->prefix = 'tvptd';
+
+			self::$instance->securityCiphering = 'AES-128-CTR';
+			self::$instance->securityIvLength = openssl_cipher_iv_length(self::$instance->securityCiphering); // Use OpenSSl Encryption method
+			self::$instance->securityOptions = 0;
+			self::$instance->securityIv = '4204204204204204'; // Non-NULL Initialization Vector for encryption
+			self::$instance->securityKey = 'tvptd'; // Store the encryption key
 		}
 
 		return self::$instance;
@@ -39,15 +52,18 @@ class Plugin
 	 */
 	public function run()
 	{
-		// load plugin classes
+		// load plugin classes, the order matters :D
 		$this->loadClasses(
 			[
 				Member\Role::class,
+				Member\UserMeta::class,
 				Admin\OptionPages::class,
 				Admin\Assets::class,
 				Options\TrelloIntegration::class,
 				Options\InformationManager::class,
 				Options\Member::class,
+				Trello\API::class,
+				Trello\Cron::class,
 				API\Member::class,
 				Public\Hub::class,
 				Public\Assets::class,
@@ -90,5 +106,29 @@ class Plugin
 	public function loadPluginTextdomain()
 	{
 		load_plugin_textdomain($this->textDomain, false, dirname(plugin_basename($this->file)) . '/languages');
+	}
+
+	/**
+	 * Password encryption function
+	 */
+	public function encryptPassword($password)
+	{
+		if (!empty($password)) {
+			$password = openssl_encrypt($password, $this->securityCiphering, $this->securityKey, $this->securityOptions, $this->securityIv);
+		}
+
+		return $password;
+	}
+
+	/**
+	 * Password decryption function
+	 */
+	public function decryptPassword($password)
+	{
+		if (!empty($password)) {
+			$password = openssl_decrypt($password, $this->securityCiphering, $this->securityKey, $this->securityOptions, $this->securityIv);
+		}
+
+		return $password;
 	}
 }

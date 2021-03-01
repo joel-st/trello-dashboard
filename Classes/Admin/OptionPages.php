@@ -19,6 +19,7 @@ class OptionPages
 	public $slugInformationManager = '';
 	public $slugMember = '';
 	public $optionPages = [];
+	public $subPages = [];
 
 	/**
 	 * Set Class Properties
@@ -61,15 +62,19 @@ class OptionPages
 				'parent_slug' => $this->optionSlug,
 				'capability'  => 'edit_theme_options',
 			],
+		];
 
+		$this->subPages = [
 			/**
 			 * Members
 			 */
 			$this->slugMember => [
-				'menu_title' => __('Members', 'tvp-trello-dashboard'),
-				'page_title' => __('Members', 'tvp-trello-dashboard'),
-				'parent_slug' => $this->optionSlug,
-				'capability'  => 'edit_theme_options',
+				$this->slugTrelloIntegration,
+				__('Members', 'tvp-trello-dashboard'),
+				__('Members', 'tvp-trello-dashboard'),
+				'edit_theme_options',
+				$this->slugMember,
+				[$this, 'memberRows']
 			],
 		];
 	}
@@ -82,6 +87,7 @@ class OptionPages
 	{
 		add_action('acf/init', [$this, 'addMenuItem']);
 		add_action('acf/init', [$this, 'addOptionPages']);
+		add_action('admin_menu', [$this, 'addMemberSubmenuPage'], 101); // prio 101 is higher than acf’s prio 99
 		// add_action('acf/init', [$this, 'addTrelloOptions']);
 	}
 
@@ -102,11 +108,40 @@ class OptionPages
 	 */
 	public function addOptionPages()
 	{
-		if (!empty($this->menuItem)&& function_exists('acf_add_options_sub_page')) {
+		if (!empty($this->menuItem) && function_exists('acf_add_options_sub_page')) {
 			foreach ($this->optionPages as $menuSlug => $page) {
 				$page['menu_slug'] = $menuSlug;
 				acf_add_options_sub_page($page);
 			}
 		}
+	}
+
+	/**
+	 * Add WordPress add_submenu_page because this option page does not show acf fields
+	 * instead it shows WP_List_Table markup
+	 */
+	public function addMemberSubmenuPage()
+	{
+		if (!empty($this->menuItem) && function_exists('add_submenu_page')) {
+			foreach ($this->subPages as $menuSlug => $page) {
+				add_submenu_page($page[0], $page[1], $page[2], $page[3], $page[4], $page[5]);
+			}
+		}
+	}
+
+	/**
+	 * Output the WP_List_Table with user data for users with the user role TVP Trello Member
+	 */
+	public function memberRows()
+	{
+		echo '<div class="wrap">';
+		echo '<h1 class="wp-heading-inline">'.__('TVP Trello Members', 'tvp-trello-dashboard').'</h1>';
+
+		include plugin_dir_path(__DIR__) . '/Member/TVPUserList.php';
+		$userList = new \TVPUserList();
+		$userList->prepare_items();
+		$userList->display();
+
+		echo '</div>';
 	}
 }

@@ -2,6 +2,8 @@
 
 Plugin options built with [Advanced Custom Fields](https://www.advancedcustomfields.com/)
 
+`TVP_TD()->Options`
+
 ## Contents
 
 The subclasses:

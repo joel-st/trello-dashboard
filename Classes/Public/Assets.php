@@ -30,8 +30,10 @@ class Assets
 	 */
 	public function registerAssets()
 	{
+		// css
 		wp_enqueue_style($this->prefix . '-public-css', plugin_dir_url(__FILE__) . '../../assets/styles/public.css', [], TVP_TD()->version);
+
+		// javascript
 		wp_enqueue_script($this->prefix . '-public-js', plugin_dir_url(__FILE__) . '../../assets/scripts/public.js', ['jquery'], true, TVP_TD()->version);
-		wp_enqueue_script($this->prefix . '-public-css');
 	}
 }

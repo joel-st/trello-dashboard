@@ -18,6 +18,7 @@ class Assets
 	 */
 	public function __construct()
 	{
+		$this->prefix = TVP_TD()->prefix;
 	}
 
 	/**
@@ -30,12 +31,20 @@ class Assets
 	}
 
 	/**
-	 * Register and enqueue a css style sheet and javascript for the admin area
+	 * Register and enqueue a css style sheet and javascript for the admin area if on plugins option pages
 	 */
 	public function registerAssets()
 	{
-		wp_enqueue_style($this->prefix . '-admin-css', plugin_dir_url(__FILE__) . '../../assets/styles/admin.css', [], TVP_TD()->version);
-		wp_enqueue_script($this->prefix . '-admin-js', plugin_dir_url(__FILE__) . '../../assets/scripts/admin.js', ['jquery'], true, TVP_TD()->version);
-		wp_enqueue_script($this->prefix . '-admin-css');
+		// javascript only on tvp trello dashboard screen
+		if (strpos(get_current_screen()->base, TVP_TD()->prefix) !== false) {
+			$deps = ['jquery'];
+			wp_enqueue_script($this->prefix . '-admin-js', plugin_dir_url(__FILE__) . '../../assets/scripts/admin.js', $deps, true, TVP_TD()->version);
+			wp_localize_script($this->prefix . '-admin-js', 'tvp_td_vars', [
+				'ajax_url' => admin_url('admin-ajax.php'),
+			]);
+		}
+
+		// css
+		wp_enqueue_style($this->prefix . '-admin', plugin_dir_url(__FILE__) . '../../assets/styles/admin.css', [], TVP_TD()->version);
 	}
 }
