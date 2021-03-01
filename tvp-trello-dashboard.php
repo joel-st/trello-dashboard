@@ -12,7 +12,7 @@
  * Plugin Name:       TVP Trello Dashboard
  * Plugin URI:        https://github.com/thevenusproject/trello-dashboard
  * Description:       Customized Trello Dashboard for The Venus Project
- * Version:           1.0.0
+ * Version:           0.0.1
  * Requires at least: 5.6
  * Requires PHP:      8.0
  * Author:            The Venus Project
