@@ -2,6 +2,11 @@
 
 namespace TVP\TrelloDashboard\API;
 
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 class Member
 {
 	/**

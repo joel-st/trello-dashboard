@@ -2,6 +2,11 @@
 
 namespace TVP\TrelloDashboard\Trello;
 
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 class Cron
 {
 	/**

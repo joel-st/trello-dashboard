@@ -5,6 +5,11 @@ namespace TVP\TrelloDashboard\Admin;
  * Add menu item and subpages in the admin area to display option pages for the plugin configuration
  */
 
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 class OptionPages
 {
 	/**
@@ -16,7 +21,7 @@ class OptionPages
 	public $menuItem = [];
 
 	public $slugTrelloIntegration = '';
-	public $slugInformationManager = '';
+	public $slugDashboardManager = '';
 	public $slugMember = '';
 	public $optionPages = [];
 	public $subPages = [];
@@ -39,7 +44,7 @@ class OptionPages
 		];
 
 		$this->slugTrelloIntegration = $this->optionSlug . '-trello-integration';
-		$this->slugInformationManager = $this->optionSlug . '-information-manager';
+		$this->slugDashboardManager = $this->optionSlug . '-information-manager';
 		$this->slugMember = $this->optionSlug . '-member';
 		$this->optionPages = [
 
@@ -54,11 +59,11 @@ class OptionPages
 			],
 
 			/**
-			 * Useful Information Manager
+			 * Dashboard Manager
 			 */
-			$this->slugInformationManager => [
-				'menu_title' => __('Information Manager', 'tvp-trello-dashboard'),
-				'page_title' => __('Information Manager', 'tvp-trello-dashboard'),
+			$this->slugDashboardManager => [
+				'menu_title' => __('Dashboard Manager', 'tvp-trello-dashboard'),
+				'page_title' => __('Dashboard Manager', 'tvp-trello-dashboard'),
 				'parent_slug' => $this->optionSlug,
 				'capability'  => 'edit_theme_options',
 			],

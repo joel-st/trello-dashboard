@@ -6,6 +6,11 @@ namespace TVP\TrelloDashboard\Admin;
  * Register and enqueue a css style sheet and javascript for the admin area
  */
 
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 class Assets
 {
 	/**

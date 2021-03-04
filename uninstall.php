@@ -21,6 +21,11 @@
  */
 
 // If uninstall not called from WordPress, then exit.
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 if (! defined('WP_UNINSTALL_PLUGIN')) {
-    exit;
+	exit;
 }

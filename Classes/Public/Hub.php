@@ -2,6 +2,11 @@
 
 namespace TVP\TrelloDashboard\Public;
 
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 class Hub
 {
 	/**

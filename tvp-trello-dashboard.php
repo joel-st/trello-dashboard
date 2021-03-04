@@ -32,6 +32,11 @@
  * and https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md for usage examples.
  */
 
+ // Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 if (!defined('DISALLOW_FILE_EDIT')) {
 	define('DISALLOW_FILE_EDIT', true);
 }

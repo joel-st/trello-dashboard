@@ -4,6 +4,11 @@
  * The TVPUserList shown under Trello Dashboard > Members based on WP_List_Table
  */
 
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 //Our class extends the WP_List_Table class, so we need to make sure that it's there
 if (!class_exists('WP_List_Table')) {
 	require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');

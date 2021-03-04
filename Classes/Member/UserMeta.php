@@ -2,6 +2,11 @@
 
 namespace TVP\TrelloDashboard\Member;
 
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 class UserMeta
 {
 	/**

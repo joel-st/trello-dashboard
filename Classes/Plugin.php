@@ -2,6 +2,11 @@
 
 namespace TVP\TrelloDashboard;
 
+// Security
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 class Plugin
 {
 	private static $instance;
@@ -60,7 +65,7 @@ class Plugin
 				Admin\OptionPages::class,
 				Admin\Assets::class,
 				Options\TrelloIntegration::class,
-				Options\InformationManager::class,
+				Options\DashboardManager::class,
 				Options\Member::class,
 				Trello\API::class,
 				Trello\Cron::class,
