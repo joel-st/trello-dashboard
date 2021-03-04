@@ -71,6 +71,7 @@ class Plugin
 				Trello\Cron::class,
 				API\Member::class,
 				Public\Hub::class,
+				Public\SignUp::class,
 				Public\Assets::class,
 			]
 		);

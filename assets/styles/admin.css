@@ -33,6 +33,13 @@
     margin: 0;
 }
 
+#tvptd-options-trello-integration-api-test.failed .label h3 {
+    color: #fb3f3f;
+}
+#tvptd-options-trello-integration-api-test.failed .label p {
+    margin: 0;
+}
+
 #tvptd-options-trello-integration-api-test.connected .label:before {
     content: '';
     position: relative;

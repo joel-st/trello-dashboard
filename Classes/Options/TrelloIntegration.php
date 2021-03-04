@@ -165,15 +165,34 @@ class TrelloIntegration
 	 */
 	public function integrationTest()
 	{
+		// check internet connection
+		$connectionCheck = @fsockopen('https://api.trello.com', 80);
+
+		if (!$connectionCheck) {
+			header('HTTP/1.1 420 No Internet Connection');
+			header('Content-Type: application/json; charset=UTF-8');
+			die(json_encode(['message' => 'Not connected to the internet.', 'code' => 420]));
+		}
+
+		// fclose($connectionCheck);
+
+		// check integration
 		$url = 'https://api.trello.com/1/members/me?key=' . $this->getApiKey() . '&token=' . $this->getApiToken();
 
 		$data = file_get_contents($url);
+
 		if (empty($data)) {
-			return false;
+			// TODO: check message of trello response
+			header('HTTP/1.1 500 No Content');
+			header('Content-Type: application/json; charset=UTF-8');
+			die(json_encode(['message' => 'Empty response. Invalid connection.', 'code' => 500]));
 		}
 
 		if (!$parsedData = json_decode($data, true)) {
-			return false;
+			// TODO: check message of trello response
+			header('HTTP/1.1 500 Response parsing error');
+			header('Content-Type: application/json; charset=UTF-8');
+			die(json_encode(['message' => 'Parsing response failed. Invalid connection.', 'code' => 500]));
 		}
 
 		$response = [
@@ -181,7 +200,9 @@ class TrelloIntegration
 			'avatarUrl' => $parsedData['avatarUrl'],
 		];
 
-		echo json_encode($parsedData);
+		header('HTTP/1.1 200 OK');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(['data' => json_encode($parsedData), 'code' => 200]));
 
 		//Don't forget to always exit in the ajax function.
 		wp_die();
