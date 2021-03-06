@@ -43,6 +43,132 @@ class DashboardManager
 					'allow_null' => 1,
 					'instructions' => 'Only logged in users with the TVP Trello Member user role can access this page.'
 				],
+				[
+					'key' => $this->optionPrefix . '-dashboard-pre-content',
+					'name' => $this->optionPrefix . '-dashboard-pre-content',
+					'label' => __('Dashboard Page', 'tvp-trello-dashboard'),
+					'type' => 'wysiwyg',
+				],
+				[
+					'key' => $this->optionPrefix . '-latest-news',
+					'name' => $this->optionPrefix . '-latest-news',
+					'label' => __('Latest News', 'tvp-trello-dashboard'),
+					'type' => 'repeater',
+					'layout' => 'block',
+					'collapsed' => $this->optionPrefix . '-latest-news-label',
+					'sub_fields' => [
+						[
+							'key' => $this->optionPrefix . '-latest-news-label',
+							'name' => $this->optionPrefix . '-latest-news-label',
+							'label' => __('Label', 'tvp-trello-dashboard'),
+							'type' => 'text',
+							'required' => true,
+							'wrapper' => [
+								'width' => 50,
+							]
+						],
+						[
+							'key' => $this->optionPrefix . '-latest-news-link',
+							'name' => $this->optionPrefix . '-latest-news-link',
+							'label' => __('Link', 'tvp-trello-dashboard'),
+							'type' => 'url',
+							'required' => true,
+							'wrapper' => [
+								'width' => 50,
+							]
+						]
+					]
+				],
+				[
+					'key' => $this->optionPrefix . '-useful-information',
+					'name' => $this->optionPrefix . '-useful-information',
+					'label' => __('Useful Information', 'tvp-trello-dashboard'),
+					'type' => 'repeater',
+					'layout' => 'block',
+					'collapsed' => $this->optionPrefix . '-useful-information-label',
+					'sub_fields' => [
+						[
+							'key' => $this->optionPrefix . '-useful-information-label',
+							'name' => $this->optionPrefix . '-useful-information-label',
+							'label' => __('Label', 'tvp-trello-dashboard'),
+							'type' => 'text',
+							'required' => true,
+							'wrapper' => [
+								'width' => 50,
+							]
+						],
+						[
+							'key' => $this->optionPrefix . '-useful-information-link',
+							'name' => $this->optionPrefix . '-useful-information-link',
+							'label' => __('Link', 'tvp-trello-dashboard'),
+							'type' => 'url',
+							'required' => true,
+							'wrapper' => [
+								'width' => 50,
+							]
+						]
+					]
+				],
+				[
+					'key' => $this->optionPrefix . '-volunteer-resources',
+					'name' => $this->optionPrefix . '-volunteer-resources',
+					'label' => __('Volunteer Resources', 'tvp-trello-dashboard'),
+					'type' => 'repeater',
+					'layout' => 'block',
+					'collapsed' => $this->optionPrefix . '-volunteer-resources-label',
+					'sub_fields' => [
+						[
+							'key' => $this->optionPrefix . '-volunteer-resources-label',
+							'name' => $this->optionPrefix . '-volunteer-resources-label',
+							'label' => __('Label', 'tvp-trello-dashboard'),
+							'type' => 'text',
+							'required' => true,
+							'wrapper' => [
+								'width' => 50,
+							]
+						],
+						[
+							'key' => $this->optionPrefix . '-volunteer-resources-link',
+							'name' => $this->optionPrefix . '-volunteer-resources-link',
+							'label' => __('Link', 'tvp-trello-dashboard'),
+							'type' => 'url',
+							'required' => true,
+							'wrapper' => [
+								'width' => 50,
+							]
+						]
+					]
+				],
+				[
+					'key' => $this->optionPrefix . '-help-needed',
+					'name' => $this->optionPrefix . '-help-needed',
+					'label' => __('Help Needed', 'tvp-trello-dashboard'),
+					'type' => 'repeater',
+					'layout' => 'block',
+					'collapsed' => $this->optionPrefix . '-help-needed-label',
+					'sub_fields' => [
+						[
+							'key' => $this->optionPrefix . '-help-needed-label',
+							'name' => $this->optionPrefix . '-help-needed-label',
+							'label' => __('Label', 'tvp-trello-dashboard'),
+							'type' => 'text',
+							'required' => true,
+							'wrapper' => [
+								'width' => 50,
+							]
+						],
+						[
+							'key' => $this->optionPrefix . '-help-needed-link',
+							'name' => $this->optionPrefix . '-help-needed-link',
+							'label' => __('Link', 'tvp-trello-dashboard'),
+							'type' => 'url',
+							'required' => true,
+							'wrapper' => [
+								'width' => 50,
+							]
+						]
+					]
+				],
 			],
 			'location' => [
 				[
@@ -75,6 +201,9 @@ class DashboardManager
 
 		// metabox
 		add_action('acf/input/admin_head', [$this, 'registerDashboardMetabox'], 10);
+
+		//Adds a page-state to the page-list
+		add_action('display_post_states', [$this, 'dashboardPageState'], 10, 2);
 	}
 
 	/**
@@ -137,5 +266,20 @@ class DashboardManager
 				echo '</div>';
 			}, 'acf_options_page', 'side');
 		}
+	}
+
+	public function dashboardPageState($post_states, $post)
+	{
+		$dashboardPage = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-page', 'options');
+
+		if (!$dashboardPage) {
+			return $post_states;
+		}
+
+		if ($dashboardPage->ID === $post->ID) {
+			$post_states[] = __('TVP Trello Dashboard', 'tvp-trello-dashboard');
+		}
+
+		return $post_states;
 	}
 }

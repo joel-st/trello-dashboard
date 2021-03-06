@@ -23,6 +23,7 @@ class API
 	{
 		$this->key = TVP_TD()->Options->TrelloIntegration->getApiKey();
 		$this->token = TVP_TD()->Options->TrelloIntegration->getApiToken();
+		$this->prefix = TVP_TD()->prefix;
 	}
 
 	/**
@@ -31,7 +32,8 @@ class API
 	 */
 	public function run()
 	{
-		// silence is golden
+		add_action('wp_ajax_' . $this->prefix . '-trello-integration-test', [$this, 'integrationTest']);
+		add_action('wp_ajax_nopriv_' . $this->prefix . '-trello-integration-test', [$this, 'integrationTest']);
 	}
 
 	/**
@@ -54,5 +56,30 @@ class API
 		$data = file_get_contents($url);
 
 		return json_decode($data);
+	}
+
+	/**
+	 * The ajax integration test function called by integrationTest(); in javascript `assets/scripts/admin.js`
+	 */
+	public function integrationTest()
+	{
+			// check integration
+		$url = 'https://api.trello.com/1/members/me?key=' . $this->key . '&token=' . $this->token;
+
+		$data = file_get_contents($url);
+
+		if (empty($data) || !$parsedData = json_decode($data, true)) {
+			// TODO: check message of trello response
+			header('HTTP/1.1 500 No Content');
+			header('Content-Type: application/json; charset=UTF-8');
+			die(json_encode(['message' => 'Connection failed.', 'code' => 401]));
+		}
+
+		header('HTTP/1.1 200 OK');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(['data' => json_encode($parsedData), 'code' => 200]));
+
+		//Don't forget to always exit in the ajax function.
+		wp_die();
 	}
 }

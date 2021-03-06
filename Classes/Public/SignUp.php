@@ -37,14 +37,20 @@ class SignUp
 		global $wp_query;
 
 		$dashboardPage = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-page', 'options');
+
+		if (!$dashboardPage) {
+			return;
+		}
+
 		$signUpUrl = esc_url(get_permalink($dashboardPage) . TVP_TD()->Public->SignUp->slugSignUp);
 
 		$baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
 		$currentUrl = $baseUrl . $_SERVER['REQUEST_URI'];
 
 		if ($wp_query->is_404 && $currentUrl === $signUpUrl) {
-			$wp_query->is_404 = true;
+			$wp_query->is_404 = false;
 			$wp_query->is_page = true;
+			$wp_query->post_type = 'page';
 			header('HTTP/1.1 200 OK');
 			$this->signUpTemplate();
 			exit;

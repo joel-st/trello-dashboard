@@ -17,6 +17,7 @@ class TrelloIntegration
 	public $optionPrefix = '';
 
 	public $connectionMetaboxId = '';
+	public $cronMetaboxId = '';
 
 	public $options = [];
 
@@ -30,6 +31,7 @@ class TrelloIntegration
 		$this->optionPrefix = $this->slugTrelloIntegration;
 
 		$this->connectionMetaboxId = $this->optionPrefix . '-connection-metabox';
+		$this->cronMetaboxId = $this->optionPrefix . '-cron-metabox';
 
 		$this->options = [
 			'key' => $this->optionPrefix . '-text-fields',
@@ -98,9 +100,8 @@ class TrelloIntegration
 		add_filter('acf/load_value/name=' . $this->optionPrefix . '-api-token', [TVP_TD(), 'decryptPassword'], 9001, 1);
 
 		// metabox
-		add_action('acf/input/admin_head', [$this, 'registerMetabox'], 10);
-		add_action('wp_ajax_' . $this->optionPrefix . '-integration-test', [$this, 'integrationTest']);
-		add_action('wp_ajax_nopriv_' . $this->optionPrefix . '-integration-test', [$this, 'integrationTest']);
+		add_action('acf/input/admin_head', [$this, 'registerIntegrationTestMetabox'], 10);
+		add_action('acf/input/admin_head', [$this, 'registerRunCronManuallyMetabox'], 10);
 	}
 
 	/**
@@ -132,7 +133,7 @@ class TrelloIntegration
 	/**
 	 * Register a metabox to show status of connection with the provided authentication details
 	 */
-	public function registerMetabox()
+	public function registerIntegrationTestMetabox()
 	{
 		if (strpos(get_current_screen()->base, $this->slugTrelloIntegration) !== false) {
 			// Add meta box
@@ -161,50 +162,18 @@ class TrelloIntegration
 	}
 
 	/**
-	 * The ajax integration test function called by integrationTest(); in javascript `assets/scripts/admin.js`
+	 * Register a metabox with a button to run trello cron manually
 	 */
-	public function integrationTest()
+	public function registerRunCronManuallyMetabox()
 	{
-		// check internet connection
-		$connectionCheck = @fsockopen('https://api.trello.com', 80);
-
-		if (!$connectionCheck) {
-			header('HTTP/1.1 420 No Internet Connection');
-			header('Content-Type: application/json; charset=UTF-8');
-			die(json_encode(['message' => 'Not connected to the internet.', 'code' => 420]));
+		if (strpos(get_current_screen()->base, $this->slugTrelloIntegration) !== false) {
+			// Add meta box
+			add_meta_box($this->cronMetaboxId, __('Trello Cron Job', 'tvp-trello-dashboard'), function () {
+				echo '<div id="'.$this->optionPrefix . '-cron'.'">';
+				echo '<h3 class="title">Next schedule</h3>';
+				echo '<h3 class="title">Actions</h3>';
+				echo '</div>';
+			}, 'acf_options_page', 'side');
 		}
-
-		// fclose($connectionCheck);
-
-		// check integration
-		$url = 'https://api.trello.com/1/members/me?key=' . $this->getApiKey() . '&token=' . $this->getApiToken();
-
-		$data = file_get_contents($url);
-
-		if (empty($data)) {
-			// TODO: check message of trello response
-			header('HTTP/1.1 500 No Content');
-			header('Content-Type: application/json; charset=UTF-8');
-			die(json_encode(['message' => 'Empty response. Invalid connection.', 'code' => 500]));
-		}
-
-		if (!$parsedData = json_decode($data, true)) {
-			// TODO: check message of trello response
-			header('HTTP/1.1 500 Response parsing error');
-			header('Content-Type: application/json; charset=UTF-8');
-			die(json_encode(['message' => 'Parsing response failed. Invalid connection.', 'code' => 500]));
-		}
-
-		$response = [
-			'username' => $parsedData['username'],
-			'avatarUrl' => $parsedData['avatarUrl'],
-		];
-
-		header('HTTP/1.1 200 OK');
-		header('Content-Type: application/json; charset=UTF-8');
-		die(json_encode(['data' => json_encode($parsedData), 'code' => 200]));
-
-		//Don't forget to always exit in the ajax function.
-		wp_die();
 	}
 }
