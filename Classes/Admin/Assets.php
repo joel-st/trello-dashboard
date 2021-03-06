@@ -42,8 +42,7 @@ class Assets
 	{
 		// javascript only on tvp trello dashboard screen
 		if (strpos(get_current_screen()->base, TVP_TD()->prefix) !== false) {
-			$deps = ['jquery'];
-			wp_enqueue_script($this->prefix . '-admin-js', plugin_dir_url(__FILE__) . '../../assets/scripts/admin.js', $deps, true, TVP_TD()->version);
+			wp_enqueue_script($this->prefix . '-admin-js', plugin_dir_url(__FILE__) . '../../assets/scripts/admin.js', ['jquery'], true, TVP_TD()->version);
 			wp_localize_script($this->prefix . '-admin-js', 'tvp_td_vars', [
 				'ajax_url' => admin_url('admin-ajax.php'),
 			]);
