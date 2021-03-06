@@ -1,0 +1,70 @@
+[data-key=tvptd-options-trello-integration-api-test] {
+    text-align: center;
+}
+
+#tvptd-options-trello-integration-api-test {
+    .info {
+        color: #eea94d;
+    }
+
+    > *:last-child {
+        margin-bottom: .2rem;
+    }
+
+    &.missing p.info strong {
+        display: block;
+    }
+
+    &.connected,
+    &.testing {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 1rem;
+        padding-bottom: .5rem;
+
+        figure {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: .5rem;
+
+            border-radius: 1.5rem;
+            background-color: #eee;
+            background-size: cover;
+
+            .spinner {
+                margin: 0;
+            }
+        }
+    }
+
+    &.connected {
+        .label:before {
+            content: '';
+            position: relative;
+            width: 8px;
+            height: 8px;
+            background-color: #55e04d;
+            border-radius: 100%;
+            display: inline-block;
+            margin-right: .5em;
+        }
+    }
+
+    &.failed {
+        .label {
+            h3 {
+                color: #fb3f3f;
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+}

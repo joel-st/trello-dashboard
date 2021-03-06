@@ -1,0 +1,53 @@
+{
+	"name": "tvp-trello-dashboard",
+	"description": "Styles and scripts handler for TVP Trello Dashboard",
+	"main": "gulpfile.babel.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/thevenusproject/trello-dashboard"
+	},
+	"keywords": [
+		"tvp",
+		"plugin"
+	],
+	"bugs": {
+		"url": "https://github.com/thevenusproject/trello-dashboard/issues"
+	},
+	"homepage": "https://github.com/thevenusproject/trello-dashboard#readme",
+	"dependencies": {},
+	"devDependencies": {
+		"@babel/core": "^7.12.16",
+		"@babel/preset-env": "^7.12.16",
+		"@babel/preset-react": "^7.12.13",
+		"@babel/register": "^7.12.13",
+		"babel-loader": "^8.2.2",
+		"classnames": "^2.2.6",
+		"css-loader": "^5.0.2",
+		"css-vars-ponyfill": "^2.4.3",
+		"gulp": "^4.0.2",
+		"gulp-autoprefixer": "^7.0.1",
+		"gulp-clean-css": "^4.3.0",
+		"gulp-filter": "^6.0.0",
+		"gulp-rename": "^2.0.0",
+		"gulp-sass": "^4.1.0",
+		"gulp-sourcemaps": "^3.0.0",
+		"gulp-uglify": "^3.0.2",
+		"style-loader": "^2.0.0",
+		"webpack-stream": "^6.1.2"
+	},
+	"author": "The Venus Project - https://thevenusproject.com",
+	"license": "–",
+	"scripts": {
+		"start": "gulp"
+	},
+	"babel": {
+		"presets": [
+			"@babel/env",
+			"@babel/preset-react"
+		]
+	},
+	"browserslist": [
+		"> 1%",
+		"IE 11"
+	]
+}
