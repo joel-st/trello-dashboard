@@ -15,6 +15,7 @@ class API
 	public $prefix = '';
 	public $key;
 	public $token;
+	public $organization;
 
 	/**
 	 * Set Class Properties
@@ -23,6 +24,7 @@ class API
 	{
 		$this->key = TVP_TD()->Options->TrelloIntegration->getApiKey();
 		$this->token = TVP_TD()->Options->TrelloIntegration->getApiToken();
+		$this->organization = TVP_TD()->Options->TrelloIntegration->getOrganization();
 		$this->prefix = TVP_TD()->prefix;
 	}
 
@@ -34,6 +36,8 @@ class API
 	{
 		add_action('wp_ajax_' . $this->prefix . '-trello-integration-test', [$this, 'integrationTest']);
 		add_action('wp_ajax_nopriv_' . $this->prefix . '-trello-integration-test', [$this, 'integrationTest']);
+		// add_action('wp_ajax_' . $this->prefix . '-trello-get-from-organization', [$this, 'getFromOrganization']);
+		// add_action('wp_ajax_nopriv_' . $this->prefix . '-trello-get-from-organization', [$this, 'getFromOrganization']);
 	}
 
 	/**
@@ -51,6 +55,25 @@ class API
 			$url = 'https://api.trello.com' . $request . '&key=' . $this->key . '&token=' . $this->token;
 		} else {
 			$url = 'https://api.trello.com' . $request . '?key=' . $this->key . '&token=' . $this->token;
+		}
+
+		$data = file_get_contents($url);
+
+		return json_decode($data);
+	}
+
+	public function getFromOrganization($request = false, $args = false)
+	{
+		if (!$args) {
+			$args = [];
+		} elseif (!is_array($args)) {
+			$args = [$args];
+		}
+
+		if (strstr($request, '?')) {
+			$url = 'https://api.trello.com/1/organizations/' . $this->organization . '/' . $request . '&key=' . $this->key . '&token=' . $this->token;
+		} else {
+			$url = 'https://api.trello.com/1/organizations/' . $this->organization . '/' . $request . '?key=' . $this->key . '&token=' . $this->token;
 		}
 
 		$data = file_get_contents($url);

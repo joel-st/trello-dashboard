@@ -69,6 +69,7 @@ class Plugin
 				Options\Member::class,
 				Trello\API::class,
 				Trello\Cron::class,
+				Trello\DataProcessor::class,
 				API\Member::class,
 				Public\Hub::class,
 				Public\SignUp::class,

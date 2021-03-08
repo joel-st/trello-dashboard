@@ -30,6 +30,7 @@ class Role
 	{
 		add_action('init', [$this, 'addRole']);
 		add_action('admin_menu', [$this, 'adminAreaRestrictions']);
+		add_action('user_profile_update_errors', [$this, 'suppressEmptyEmailError'], 10, 3);
 	}
 
 	/**
@@ -66,6 +67,14 @@ class Role
 			if (preg_match('#wp-admin/?(index.php)?$#', $_SERVER['REQUEST_URI']) && ('index.php' != $menu[$page][2])) {
 				wp_redirect(get_option('siteurl'));
 			}
+		}
+	}
+
+	function suppressEmptyEmailError($errors, $update, $user)
+	{
+		$userObject = get_user_by('id', $user->ID);
+		if (in_array($this->role, $userObject->roles)) {
+			$errors->remove('empty_email');
 		}
 	}
 }

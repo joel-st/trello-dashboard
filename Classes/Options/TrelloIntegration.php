@@ -131,6 +131,14 @@ class TrelloIntegration
 	}
 
 	/**
+	 * Getter function to get organization
+	 */
+	public function getOrganization()
+	{
+		return get_field($this->slugTrelloIntegration . '-organization-id', 'options');
+	}
+
+	/**
 	 * Register a metabox to show status of connection with the provided authentication details
 	 */
 	public function registerIntegrationTestMetabox()
@@ -172,6 +180,11 @@ class TrelloIntegration
 				echo '<div id="'.$this->optionPrefix . '-cron'.'">';
 				echo '<h3 class="title">Next schedule</h3>';
 				echo '<h3 class="title">Actions</h3>';
+				echo '<ul>';
+				echo '<li>';
+				echo '<button id="'.$this->optionPrefix . '-fetch-all-trello-data'.'" class="button button-primary button-large">'.__('Run Data Sync').'</button>';
+				echo '</li>';
+				echo '</ul>';
 				echo '</div>';
 			}, 'acf_options_page', 'side');
 		}

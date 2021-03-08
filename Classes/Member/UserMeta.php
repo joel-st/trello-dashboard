@@ -20,18 +20,19 @@ class UserMeta
 	 */
 	public function __construct()
 	{
-		$this->optionsPrefix = TVP_TD()->prefix . '-user';
+		$this->optionsPrefix = TVP_TD()->prefix . '-trello-user';
 		$this->options = [
 			'key' => $this->optionsPrefix,
 			'title' => __('TVP Trello Member Metainformation', 'tvp-trello-dashboard'),
 			'fields' => [
 				[
 					// TODO: add all necessary user meta fields to fill with information from trello
-					'key' => $this->optionsPrefix . '-test',
-					'name' => $this->optionsPrefix . '-test',
-					'label' => __('Test', 'tvp-trello-dashboard'),
-					'type' => 'true_false',
+					'key' => $this->optionsPrefix . '-id',
+					'name' => $this->optionsPrefix . '-id',
+					'label' => __('Trello User ID', 'tvp-trello-dashboard'),
+					'type' => 'text',
 					'required' => 0,
+					'readonly' => 1
 				],
 			],
 			'location' => [

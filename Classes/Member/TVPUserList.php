@@ -53,12 +53,12 @@ class TVPUserList extends \WP_List_Table
 	public function get_columns()
 	{
 		$columns = [
-			'user_login' => 'Username',
-			'id'         => 'ID',
-			'fname'      => 'First Name',
-			'lname'      => 'Last Name',
-			'email'      => 'E-Mail',
-			'test'       => 'Test Custom Field',
+			'user_login'     => 'Username',
+			'id'             => 'ID',
+			'fname'          => 'First Name',
+			'lname'          => 'Last Name',
+			'email'          => 'E-Mail',
+			'trello_user_id' => 'Trello User ID',
 		];
 
 		return $columns;
@@ -99,7 +99,7 @@ class TVPUserList extends \WP_List_Table
 			foreach ($user_query->get_results() as $user) {
 				$fname = get_user_meta($user->ID, 'first_name', true);
 				$lname = get_user_meta($user->ID, 'last_name', true);
-				$testfield = get_field(TVP_TD()->Member->UserMeta->optionsPrefix . '-test', 'user_' . $user->ID);
+				$trelloUserId = get_field(TVP_TD()->Member->UserMeta->optionsPrefix . '-id', 'user_' . $user->ID);
 
 				$data[] = [
 					'user_login' => '<a href="'.get_edit_user_link($user->ID).'" target="_blank" title="'.__('Edit User Profile', 'tvp-trello-dashboard').'">'.$user->user_login.'</a>',
@@ -107,7 +107,7 @@ class TVPUserList extends \WP_List_Table
 					'fname' =>  $fname ? $fname : '–',
 					'lname' =>  $lname ? $lname : '–',
 					'email' => $user->user_email,
-					'test' => $testfield ? 'checked' : 'unchecked',
+					'trello_user_id' => $trelloUserId,
 				];
 			}
 		}
@@ -131,7 +131,7 @@ class TVPUserList extends \WP_List_Table
 			case 'fname':
 			case 'lname':
 			case 'email':
-			case 'test':
+			case 'trello_user_id':
 				return $item[ $column_name ];
 			default:
 				return print_r($item, true) ;
