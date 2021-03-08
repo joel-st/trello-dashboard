@@ -86,7 +86,6 @@ class TrelloIntegration
 	public function run()
 	{
 		add_action('acf/init', [$this, 'addOptions']);
-		// var_dump(TVP_TD()->Trello->API->request('GET', '/1/members/me'));
 
 		/**
 		 * ACF is great, but there can be some security concerns. Primary among them from front-end posting,
@@ -182,7 +181,10 @@ class TrelloIntegration
 				echo '<h3 class="title">Actions</h3>';
 				echo '<ul>';
 				echo '<li>';
-				echo '<button id="'.$this->optionPrefix . '-fetch-all-trello-data'.'" class="button button-primary button-large">'.__('Run Data Sync').'</button>';
+				echo '<button id="'.$this->optionPrefix . '-fetch-all'.'" class="button button-primary button-large">'.__('Fetch everything', 'tvp-trello-dashboard').'</button>';
+				echo '</li>';
+				echo '<li>';
+				echo '<button id="'.$this->optionPrefix . '-fetch-members'.'" class="button button-primary button-large">'.__('Fetch Members', 'tvp-trello-dashboard').'</button>';
 				echo '</li>';
 				echo '</ul>';
 				echo '</div>';
