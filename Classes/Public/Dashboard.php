@@ -7,12 +7,13 @@ if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
 
-class Hub
+class Dashboard
 {
 	/**
 	 * Class Properties
 	 */
 	public $prefix = '';
+	public $slug = 'trello-dashboard';
 
 	/**
 	 * Set Class Properties
@@ -27,66 +28,61 @@ class Hub
 	 */
 	public function run()
 	{
-		add_action('admin_init', [$this, 'disableEditor']);
-		add_action('admin_notices', [$this, 'editPageNotification']);
-		add_action('the_content', [$this, 'printDashboard']);
+		add_action('init', [$this, 'redirect']);
+		add_action('init', [$this, 'loadDashboard']);
 	}
 
-	public function printDashboard($content)
+	public function getPermalink()
 	{
-		$dashboardPage = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-page', 'options');
+		$dashboardSlug = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-slug', 'options');
 
-		if (!$dashboardPage) {
-			return;
+		if (empty($dashboardSlug)) {
+			return false;
 		}
 
-		if ($dashboardPage->ID === get_post()->ID) {
-			$content = $this->getDashboardContent();
-		}
+		$dashboardUrl = trailingslashit(home_url($dashboardSlug));
 
-		return $content;
+		return $dashboardUrl;
 	}
 
-	public function disableEditor()
+	public function redirect()
 	{
-		if (isset($_GET['post']) || isset($_GET['post_ID'])) {
-			$postId = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'] ;
-			$dashboardPage = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-page', 'options');
-
-			if (!isset($postId) || !$dashboardPage) {
-				return;
-			}
-
-			if ($postId == $dashboardPage->ID) {
-				remove_post_type_support('page', 'editor');
-			}
+		if (home_url($_SERVER['REQUEST_URI']) === untrailingslashit($this->getPermalink())) {
+			wp_redirect($this->getPermalink());
+			exit;
 		}
 	}
 
-	public function editPageNotification()
+	public function loadDashboard()
 	{
-		if (isset($_GET['post']) || isset($_GET['post_ID'])) {
-			$postId = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'] ;
-			$dashboardPage = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-page', 'options');
+		global $wp_query;
 
-			if (!isset($postId) || !$dashboardPage) {
-				return;
+		if ($this->isDashboard()) {
+			header('HTTP/1.1 200 OK');
+			echo $this->getHeader();
+
+			// check access permission
+			$currentUser = wp_get_current_user();
+			$roles = [TVP_TD()->Member->Role->role, 'administrator'];
+
+			if (!is_user_logged_in() || empty(array_intersect($roles, $currentUser->roles))) {
+				echo '<body id="tvp-td-signup">';
+				echo TVP_TD()->Public->SignUp->getSignUpContent();
+			} else {
+				echo '<body id="tvp-td">';
+				echo $this->getDashboardContent();
 			}
 
-			if ($postId == $dashboardPage->ID) {
-				$class    = 'notice notice-warning';
-				$infotext = sprintf(
-					__('This is the page for the TVP Trello Dashbaord. Editing is disbaled. Edit the content on %1$s.', 'sha'),
-					'<a href="'. get_admin_url(get_current_blog_id(), 'admin.php?page=' . TVP_TD()->Admin->OptionPages->slugDashboardManager) .'">'.__('its dedicated plugin options page', 'tvp-trello-dashboard').'</a>'
-				);
-				printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $infotext);
-			}
+
+			echo $this->getFooter();
+			echo '</body>';
+			exit;
 		}
 	}
 
 	public function getDashboardContent()
 	{
-		$content = '<div id="tvp-td" class="tvp-td">';
+		$content = '<div class="tvp-td">';
 
 		$content .= '<div class="tvp-td__pre-content">';
 		$content .= get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-pre-content', 'options');
@@ -223,5 +219,42 @@ class Hub
 		$content .= '</div>'; // .tvp-td__widget--help-needed
 
 		return $content;
+	}
+
+	public function getHeader()
+	{
+		$header = '<head>';
+		if ($this->isDashboard()) {
+			$header .= '<title>'.__('TVP Trello Dashboard', 'tvp-trello-dashboard').'</title>';
+			$header .= '<meta name="viewport" content="initial-scale=1">';
+			$header .= '<meta charset="utf-8" />';
+			$header .= '<link rel="stylesheet" type="text/css" href="' . TVP_TD()->assetsDirUrl . 'styles/public.css' . '"/>';
+		}
+		$header .= '</head>';
+
+		return $header;
+	}
+
+	public function getFooter()
+	{
+		$tvpTdVars = [
+			'i18n' => TVP_TD()->getJavaScriptInternationalization(),
+		];
+		$footer = '<script src="' . TVP_TD()->assetsDirUrl . 'scripts/jquery-3.2.1.min.js?ver=' . filemtime(TVP_TD()->assetsDirPath . 'scripts/jquery-3.2.1.min.js') . '"></script>';
+		$footer .= '<script>var tvp_td_vars = '.json_encode($tvpTdVars).'</script>';
+		$footer .= '<script src="https://trello.com/1/client.js?key=' . TVP_TD()->Options->TrelloIntegration->getApiKey() . '"></script>';
+		$footer .= '<script src="' . TVP_TD()->assetsDirUrl . 'scripts/public.js?ver=' . filemtime(TVP_TD()->assetsDirPath . 'scripts/public.js') . '"></script>';
+		return $footer;
+	}
+
+	public function isDashboard()
+	{
+		$currentUrl = home_url($_SERVER['REQUEST_URI']);
+
+		if ($currentUrl === $this->getPermalink()) {
+			return true;
+		}
+
+		return false;
 	}
 }
