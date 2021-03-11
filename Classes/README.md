@@ -21,5 +21,5 @@ The main class has several subclasses:
 * `./API` All stuff to fetch relevant data provided by the plugin.
 * `./Member` All the stuff for the custom member role and its functionality.
 * `./Options` Plugin options built with [Advanced Custom Fields](https://www.advancedcustomfields.com/).
-* `./Public` All stuff to provide public (frontend) interfaces e.g. the Volunteer Hub.
+* `./Public` All stuff to provide public (frontend) interfaces e.g. the Volunteer Dashboard.
 * `./Trello` All stuff to connect to and fetch from a Trello Organization.

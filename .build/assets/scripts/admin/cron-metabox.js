@@ -2,17 +2,17 @@ import nf from './notification';
 
 function fetchAllTrelloData() {
     console.log('fetchAllTrelloData');
-    // if(tvp_td_vars) {
+    // if(tvpTdVars) {
     //     console.log('fetchAllTrelloData');
     // }
 }
 
 function fetchTrelloMembers() {
-    if(tvp_td_vars) {
+    if(tvpTdVars) {
         // nf.loading('Fetching Trello Members');
         jQuery.ajax({
             type: "GET",
-            url: tvp_td_vars['ajax_url'],
+            url: tvpTdVars['ajax_url'],
             data: {
                 action: 'tvptd-data-processor',
                 request: 'addUpdateMembers',

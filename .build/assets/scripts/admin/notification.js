@@ -36,7 +36,7 @@ export function notify() {
 export function loading(title) {
     $notificationContainerTitle.html(title);
     if(!title) {
-        title = 'Loading…';
+        title = tvpTdVars.i18n.notificationLoading;
     }
     $notificationContainerMessage.append('<span class="spinner is-active"></span>');
     $notificationContainer.show();

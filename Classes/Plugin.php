@@ -15,6 +15,8 @@ class Plugin
 	public $version = '';
 	public $textDomain = '';
 	public $prefix = '';
+	public $assetsDirUrl = '';
+	public $assetsDirPath = '';
 
 	// security stuff
 	public $securityCiphering;
@@ -40,6 +42,8 @@ class Plugin
 			self::$instance->textDomain = $data['TextDomain'];
 			self::$instance->pluginName = $data['Name'];
 			self::$instance->prefix = 'tvptd';
+			self::$instance->assetsDirUrl = plugin_dir_url(__DIR__) . 'assets/';
+			self::$instance->assetsDirPath = plugin_dir_path(__DIR__) . 'assets/';
 
 			self::$instance->securityCiphering = 'AES-128-CTR';
 			self::$instance->securityIvLength = openssl_cipher_iv_length(self::$instance->securityCiphering); // Use OpenSSl Encryption method
@@ -70,8 +74,9 @@ class Plugin
 				Trello\API::class,
 				Trello\Cron::class,
 				Trello\DataProcessor::class,
+				Trello\Actions::class,
 				API\Member::class,
-				Public\Hub::class,
+				Public\Dashboard::class,
 				Public\SignUp::class,
 				Public\Assets::class,
 			]
@@ -137,5 +142,15 @@ class Plugin
 		}
 
 		return $password;
+	}
+
+	public function getJavaScriptInternationalization()
+	{
+		return [
+			'notificationLoading' => _x('Loading …', 'Loading message JavaScript notification', 'tvp-trello-dashboard'),
+			'trelloAuthenticationFailure' => _x('Failed authentication', 'Frontend JavaScript login with Trello.authorize() failed', 'tvp-trello-dashboard'),
+			'trelloIntegrationTestFailed' => _x('Connection failed!', 'Admin JavaScript integration test failed metabox message', 'tvp-trello-dashboard'),
+			'trelloIntegrationTestConnectedAs' => _x('Connected as', 'Admin JavaScript integration test "Connected as [username]" metabox message', 'tvp-trello-dashboard'),
+		];
 	}
 }

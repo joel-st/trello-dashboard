@@ -13,14 +13,13 @@ class SignUp
 	 * Class Properties
 	 */
 	public $prefix = '';
-	public $slugSignup = '';
 
 	/**
 	 * Set Class Properties
 	 */
 	public function __construct()
 	{
-		$this->slugSignUp = 'signup';
+		$this->prefix = TVP_TD()->prefix . '-signup';
 	}
 
 	/**
@@ -29,36 +28,14 @@ class SignUp
 	 */
 	public function run()
 	{
-		add_action('wp_head', [$this, 'signUpRedirect']);
 	}
 
-	public function signUpRedirect()
+
+	public function getSignUpContent()
 	{
-		global $wp_query;
-
-		$dashboardPage = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-page', 'options');
-
-		if (!$dashboardPage) {
-			return;
-		}
-
-		$signUpUrl = esc_url(get_permalink($dashboardPage) . TVP_TD()->Public->SignUp->slugSignUp);
-
-		$baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
-		$currentUrl = $baseUrl . $_SERVER['REQUEST_URI'];
-
-		if ($wp_query->is_404 && $currentUrl === $signUpUrl) {
-			$wp_query->is_404 = false;
-			$wp_query->is_page = true;
-			$wp_query->post_type = 'page';
-			header('HTTP/1.1 200 OK');
-			$this->signUpTemplate();
-			exit;
-		}
-	}
-
-	public function signUpTemplate()
-	{
-		echo 'signup';
+		$signup = '<h1 style="text-align: center;">TVP Trello Dashbaord</h1>';
+		$signup .= '<h3 style="text-align: center;">Login with Trello.</h3>';
+		$signup .= '<button id="'.$this->prefix.'-with-trello">Login</button>';
+		return $signup;
 	}
 }
