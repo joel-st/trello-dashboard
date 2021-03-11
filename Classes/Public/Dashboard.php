@@ -14,12 +14,14 @@ class Dashboard
 	 */
 	public $prefix = '';
 	public $slug = 'trello-dashboard';
+	public $authCookie = '';
 
 	/**
 	 * Set Class Properties
 	 */
 	public function __construct()
 	{
+		$this->authCookie = TVP_TD()->prefix . '-auth';
 	}
 
 	/**
@@ -45,6 +47,17 @@ class Dashboard
 		return $dashboardUrl;
 	}
 
+	public function isDashboard()
+	{
+		$currentUrl = home_url($_SERVER['REQUEST_URI']);
+
+		if ($currentUrl === $this->getPermalink()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public function redirect()
 	{
 		if (home_url($_SERVER['REQUEST_URI']) === untrailingslashit($this->getPermalink())) {
@@ -59,23 +72,41 @@ class Dashboard
 
 		if ($this->isDashboard()) {
 			header('HTTP/1.1 200 OK');
+			header('Content-Type: text/html; charset=utf-8');
 			echo $this->getHeader();
 
 			// check access permission
 			$currentUser = wp_get_current_user();
 			$roles = [TVP_TD()->Member->Role->role, 'administrator'];
 
-			if (!is_user_logged_in() || empty(array_intersect($roles, $currentUser->roles))) {
-				echo '<body id="tvp-td-signup">';
-				echo TVP_TD()->Public->SignUp->getSignUpContent();
-			} else {
+			// setcookie($this->authCookie, json_encode(['i' => 1, 'k' => '0a667e1edf3ed59d388495d8e0b15cb1ea9b87347c8f3d1b754ae3f85fe41c22', 'l' => 'joel']));
+
+			if (isset($_COOKIE[$this->authCookie]) && $_COOKIE[$this->authCookie] !== 'false') {
+				$cookie = json_decode(stripslashes($_COOKIE[$this->authCookie]), true);
+
+				if (isset($cookie['i']) && isset($cookie['l'])) {
+					if (!is_user_logged_in()) {
+						wp_set_current_user($cookie['i']);
+						wp_set_auth_cookie($cookie['i']);
+						do_action('wp_login', $cookie['l']);
+					}
+				}
+
 				echo '<body id="tvp-td">';
+
 				echo $this->getDashboardContent();
+
+				echo $this->getFooter();
+				echo '</body>';
+
+				exit;
 			}
 
-
+			echo '<body id="tvp-td-signup">';
+			echo TVP_TD()->Public->SignUp->getSignUpContent();
 			echo $this->getFooter();
 			echo '</body>';
+
 			exit;
 		}
 	}
@@ -83,6 +114,11 @@ class Dashboard
 	public function getDashboardContent()
 	{
 		$content = '<div class="tvp-td">';
+
+		$content .= '<header class="tvp-td__header">';
+		$content .= $this->getBrand();
+		$content .= $this->getUserProfile();
+		$content .= '</header>'; // .tvp-td__header
 
 		$content .= '<div class="tvp-td__pre-content">';
 		$content .= get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-pre-content', 'options');
@@ -247,14 +283,36 @@ class Dashboard
 		return $footer;
 	}
 
-	public function isDashboard()
+	public function getUserProfile()
 	{
-		$currentUrl = home_url($_SERVER['REQUEST_URI']);
+		$currentUser = wp_get_current_user();
 
-		if ($currentUrl === $this->getPermalink()) {
-			return true;
-		}
+		$profile = '<div class="tvp-td__user-profile">';
 
-		return false;
+		$profile .= '<div class="tvp-td__user-avatar">';
+		$profile .= get_avatar($currentUser->get('ID'));
+		$profile .= '</div>'; // .tvp-td__user-avatar
+
+		$profile .= '<h4 class="tvp-td__user-name">' . $currentUser->get('user_nicename') . '</h4>';
+		$profile .= '<ul class="tvp-td__user-actions">';
+		$profile .= '<li class="tvp-td__user-action">';
+		$profile .= '<a href="' . get_edit_user_link($currentUser->get('ID')) . '">' . _x('Edit Profile', 'Dashboard profile edit action', 'tvp-trello-dashboard') . '</a>';
+		$profile .= '</li>';
+		$profile .= '<li class="tvp-td__user-action">';
+		$profile .= '<button class="button button--link" id="' . TVP_TD()->prefix . '-logout' . '">' . _x('Logout', 'Dashboard logout action', 'tvp-trello-dashboard') . '</button>';
+		$profile .= '</li>';
+		$profile .= '</ul>'; // .tvp-td__user-actions
+
+
+		$profile .= '</div>'; // .tvp-td__user-profile
+
+		return $profile;
+	}
+
+	public function getBrand()
+	{
+		$profile = 'logo';
+
+		return $profile;
 	}
 }

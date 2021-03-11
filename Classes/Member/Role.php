@@ -31,6 +31,7 @@ class Role
 		add_action('init', [$this, 'addRole']);
 		add_action('admin_menu', [$this, 'adminAreaRestrictions']);
 		add_action('user_profile_update_errors', [$this, 'suppressEmptyEmailError'], 10, 3);
+		add_action('admin_bar_menu', [$this, 'addToolBarItem'], 100);
 	}
 
 	/**
@@ -75,6 +76,21 @@ class Role
 		$userObject = get_user_by('id', $user->ID);
 		if (in_array($this->role, $userObject->roles)) {
 			$errors->remove('empty_email');
+		}
+	}
+
+	public function addToolBarItem($adminBar)
+	{
+		$userObject = wp_get_current_user();
+		if (in_array($this->role, $userObject->roles)) {
+			$adminBar->add_menu([
+				'id'    => TVP_TD()->prefix . '-go-to-dashboard',
+				'title' => _x('Trello Dashboard', 'Admin bar go to dashboard link', 'tvp-trello-dashboard'),
+				'href'  => TVP_TD()->Public->Dashboard->getPermalink(),
+				'meta'  => [
+					'title' => _x('Go to Dashboard', 'Admin bar go to dashboard link meta title', 'tvp-trello-dashboard'),
+				],
+			]);
 		}
 	}
 }
