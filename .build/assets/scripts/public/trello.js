@@ -1,17 +1,9 @@
-(function ($) {
+export function initSignup() {
     const $signUpWithTrello = $('#tvptd-signup-with-trello');
 
-    console.log(window.Trello, localStorage);
-
     var authenticationSuccess = function () {
-        console.log('Successful authentication');
-        console.log(window.Trello);
-        console.log(window.Trello.token());
-        console.log(window.Trello.key());
-        localStorage.setItem('token', token);
-        window.Trello.members.get('me', function (sss) {
-            console.log(sss);
-        })
+        console.log(tvpTdVars.i18n.trelloAuthenticationSuccess);
+        location.reload();
     };
 
     var authenticationFailure = function () {
@@ -33,4 +25,6 @@
             error: authenticationFailure
         });
     });
-})(jQuery);
+}
+
+export default { initSignup }

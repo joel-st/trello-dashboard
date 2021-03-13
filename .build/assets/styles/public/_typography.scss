@@ -13,3 +13,24 @@ body {
     line-height: var(--line-height);
     font-size: 1rem;
 }
+
+.button,
+button {
+    padding: .4rem .75rem;
+    cursor: pointer;
+    border: 2px solid var(--c-blue-light-darken);
+    border-radius: var(--border-radius);
+    background-color: var(--c-blue);
+    color: var(--c-white);
+    outline: none;
+
+    &:hover {
+        border: 2px solid var(--c-blue-light-darken);
+        background-color: var(--c-blue-light-darken);
+    }
+
+    &:active {
+        border: 2px solid var(--c-blue-darken);
+        background-color: var(--c-blue-darken);
+    }
+}

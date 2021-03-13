@@ -5,17 +5,19 @@
             if($apiTestMetabox.length && tvpTdVars) {
                 jQuery.ajax({
                     type: "GET",
-                    url: tvpTdVars['ajax_url'],
+                    url: tvpTdVars['ajaxUrl'],
                     data: {
                         action: 'tvptd-trello-integration-test'
                     },
                 }).success(function (response) {
-                    const parsed = JSON.parse(response.data);
+                    const parsedMember = JSON.parse(response.member);
+                    const parsedOrganization = JSON.parse(response.organization);
+                    $('input#acf-tvptd-options-trello-integration-organization-id').val(parsedOrganization.id);
                     $apiTestMetabox.removeClass('testing');
                     $apiTestMetabox.addClass('connected');
                     $apiTestMetabox.find('.spinner').remove();
-                    $apiTestMetabox.find('.label').html(tvpTdVars.i18n.trelloIntegrationTestConnectedAs + ' <strong>' + parsed.username + '</strong>');
-                    $apiTestMetabox.find('figure').css('backgroundImage', 'url(' + parsed.avatarUrl + '/170.png)');
+                    $apiTestMetabox.find('.label').html(tvpTdVars.i18n.trelloIntegrationTestConnectedAs + ' <strong>' + parsedMember.username + '</strong>');
+                    $apiTestMetabox.find('figure').css('backgroundImage', 'url(' + parsedMember.avatarUrl + '/170.png)');
                 }).error(function (response) {
                     $apiTestMetabox.removeClass('testing');
                     $apiTestMetabox.addClass('failed');

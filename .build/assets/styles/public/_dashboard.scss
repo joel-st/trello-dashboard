@@ -1,0 +1,42 @@
+.tvp-td {
+    position: relative;
+    padding: 1rem;
+
+    &__dashboard {
+        display: flex;
+        max-width: 1280px;
+        margin: 0 auto;
+        flex-direction: column;
+        height: 100%;
+
+        &--loading {
+            justify-content: center;
+            align-items: center;
+        }
+
+        &--signup {
+            justify-content: center;
+
+            .tvp-td__header {
+                > * {
+                    max-width: 768px;
+                    margin: 0 auto;
+
+                    + * {
+                        margin-top: 1rem;
+                    }
+                }
+            }
+
+            .tvp-td__content {
+                margin-top: 2rem;
+                text-align: center;
+            }
+        }
+    }
+}
+
+#tvp-td-signup {
+    background: black;
+    color: var(--c-white);
+}

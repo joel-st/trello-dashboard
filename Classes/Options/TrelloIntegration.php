@@ -52,11 +52,18 @@ class TrelloIntegration
 					'instructions' => sprintf(__('Visit %1$s to create a Server Token. Click the <strong>Token</strong> hyperlink not the authorize one.', 'tvp-trello-dashboard'), '<a href="https://trello.com/app-key" target="_blank">https://trello.com/app-key</a>'),
 				],
 				[
-					'key' => $this->optionPrefix . '-organization-id',
-					'name' => $this->optionPrefix . '-organization-id',
-					'label' => __('Trello Organization ID or slug', 'tvp-trello-dashboard'),
+					'key' => $this->optionPrefix . '-organization-name',
+					'name' => $this->optionPrefix . '-organization-name',
+					'label' => __('Trello Organization Name', 'tvp-trello-dashboard'),
 					'type' => 'text',
 					'instructions' => __('If you visit your organization on trello, you can simply use the slug from the url. E.g.: https://trello.com/[organization_slug]', 'tvp-trello-dashboard'),
+				],
+				[
+					'key' => $this->optionPrefix . '-organization-id',
+					'name' => $this->optionPrefix . '-organization-id',
+					'label' => __('Trello Organization ID', 'tvp-trello-dashboard'),
+					'type' => 'text',
+					'readonly' => 1
 				],
 			],
 			'location' => [
@@ -132,7 +139,12 @@ class TrelloIntegration
 	/**
 	 * Getter function to get organization
 	 */
-	public function getOrganization()
+	public function getOrganizationName()
+	{
+		return get_field($this->slugTrelloIntegration . '-organization-name', 'options');
+	}
+
+	public function getOrganizationId()
 	{
 		return get_field($this->slugTrelloIntegration . '-organization-id', 'options');
 	}

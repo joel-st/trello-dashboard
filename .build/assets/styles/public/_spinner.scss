@@ -1,0 +1,24 @@
+.spinner {
+    display: block;
+
+    &:after {
+        content: ' ';
+        display: block;
+        width: 3rem;
+        height: 3rem;
+        margin: .25rem;
+        border-radius: 50%;
+        border: .25rem solid #fff;
+        border-color: var(--c-blue) transparent var(--c-blue) transparent;
+        animation: spinner 1.2s linear infinite;
+    }
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

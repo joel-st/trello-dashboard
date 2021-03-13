@@ -12,14 +12,14 @@ function fetchTrelloMembers() {
         // nf.loading('Fetching Trello Members');
         jQuery.ajax({
             type: "GET",
-            url: tvpTdVars['ajax_url'],
+            url: tvpTdVars['ajaxUrl'],
             data: {
                 action: 'tvptd-data-processor',
                 request: 'addUpdateMembers',
             },
         }).success(function (response) {
             const parsed = JSON.parse(response.data);
-            console.log(response, parsed);
+            console.log(parsed);
         }).error(function (response) {
             console.log(response);
         });

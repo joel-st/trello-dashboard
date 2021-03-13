@@ -24,7 +24,7 @@ class API
 	{
 		$this->key = TVP_TD()->Options->TrelloIntegration->getApiKey();
 		$this->token = TVP_TD()->Options->TrelloIntegration->getApiToken();
-		$this->organization = TVP_TD()->Options->TrelloIntegration->getOrganization();
+		$this->organization = TVP_TD()->Options->TrelloIntegration->getOrganizationName();
 		$this->prefix = TVP_TD()->prefix;
 	}
 
@@ -84,20 +84,31 @@ class API
 	 */
 	public function integrationTest()
 	{
-		// check integration
-		$url = 'https://api.trello.com/1/members/me?key=' . $this->key . '&token=' . $this->token;
+		$memberUrl = 'https://api.trello.com/1/members/me?key=' . $this->key . '&token=' . $this->token;
+		$memberData = file_get_contents($memberUrl);
 
-		$data = file_get_contents($url);
-
-		if (empty($data) || !$parsedData = json_decode($data, true)) {
+		if (empty($memberData) || !$parsedMemberData = json_decode($memberData, true)) {
 			header('HTTP/1.1 500 No Content');
 			header('Content-Type: application/json; charset=UTF-8');
-			die(json_encode(['message' => 'Connection failed.', 'code' => 401]));
+			die(json_encode(['message' => 'Invalid authentication details.', 'code' => 401]));
+		}
+
+		$organizationUrl = 'https://api.trello.com/1/organization/' . $this->organization . '?key=' . $this->key . '&token=' . $this->token;
+		$organizationData = file_get_contents($organizationUrl);
+
+		if (empty($organizationData) || !$parsedOrganizationData = json_decode($organizationData, true)) {
+			header('HTTP/1.1 500 No Content');
+			header('Content-Type: application/json; charset=UTF-8');
+			die(json_encode(['message' => 'Organization not found.', 'code' => 401]));
+		}
+
+		if (isset($parsedOrganizationData["id"])) {
+			update_field(TVP_TD()->Options->TrelloIntegration->optionPrefix . '-organization-id', $parsedOrganizationData["id"], 'options');
 		}
 
 		header('HTTP/1.1 200 OK');
 		header('Content-Type: application/json; charset=UTF-8');
-		die(json_encode(['data' => json_encode($parsedData), 'code' => 200]));
+		die(json_encode(['member' => $memberData, 'organization' => $organizationData, 'code' => 200]));
 
 		// Don't forget to always exit in the ajax function.
 		wp_die();

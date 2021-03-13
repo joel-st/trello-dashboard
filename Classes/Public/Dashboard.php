@@ -21,7 +21,7 @@ class Dashboard
 	 */
 	public function __construct()
 	{
-		$this->authCookie = TVP_TD()->prefix . '-auth';
+		$this->authCookie = TVP_TD()->authCookie;
 	}
 
 	/**
@@ -73,37 +73,13 @@ class Dashboard
 		if ($this->isDashboard()) {
 			header('HTTP/1.1 200 OK');
 			header('Content-Type: text/html; charset=utf-8');
+
 			echo $this->getHeader();
 
-			// check access permission
-			$currentUser = wp_get_current_user();
-			$roles = [TVP_TD()->Member->Role->role, 'administrator'];
-
-			// setcookie($this->authCookie, json_encode(['i' => 1, 'k' => '0a667e1edf3ed59d388495d8e0b15cb1ea9b87347c8f3d1b754ae3f85fe41c22', 'l' => 'joel']));
-
-			if (isset($_COOKIE[$this->authCookie]) && $_COOKIE[$this->authCookie] !== 'false') {
-				$cookie = json_decode(stripslashes($_COOKIE[$this->authCookie]), true);
-
-				if (isset($cookie['i']) && isset($cookie['l'])) {
-					if (!is_user_logged_in()) {
-						wp_set_current_user($cookie['i']);
-						wp_set_auth_cookie($cookie['i']);
-						do_action('wp_login', $cookie['l']);
-					}
-				}
-
-				echo '<body id="tvp-td">';
-
-				echo $this->getDashboardContent();
-
-				echo $this->getFooter();
-				echo '</body>';
-
-				exit;
-			}
-
-			echo '<body id="tvp-td-signup">';
-			echo TVP_TD()->Public->SignUp->getSignUpContent();
+			echo '<body class="tvp-td" id="tvp-td-loading">';
+			echo '<div class="tvp-td__dashboard tvp-td__dashboard--loading">';
+			echo '<div class="tvp-td__spinner spinner"></div>';
+			echo '</div>'; // .tvp-td__dashboard
 			echo $this->getFooter();
 			echo '</body>';
 
@@ -113,7 +89,7 @@ class Dashboard
 
 	public function getDashboardContent()
 	{
-		$content = '<div class="tvp-td">';
+		$content = '<div class="tvp-td__dashboard">';
 
 		$content .= '<header class="tvp-td__header">';
 		$content .= $this->getBrand();
@@ -152,7 +128,7 @@ class Dashboard
 
 		$content .= '</div>'; // .tvp-td__content
 
-		$content .= '</div>'; // .tvp-td
+		$content .= '</div>'; // .tvp-td__dashboard
 
 		return $content;
 	}
@@ -273,11 +249,9 @@ class Dashboard
 
 	public function getFooter()
 	{
-		$tvpTdVars = [
-			'i18n' => TVP_TD()->getJavaScriptInternationalization(),
-		];
+		$tvpTdVars = TVP_TD()->getTdVars();
 		$footer = '<script src="' . TVP_TD()->assetsDirUrl . 'scripts/jquery-3.2.1.min.js?ver=' . filemtime(TVP_TD()->assetsDirPath . 'scripts/jquery-3.2.1.min.js') . '"></script>';
-		$footer .= '<script>var tvp_td_vars = '.json_encode($tvpTdVars).'</script>';
+		$footer .= '<script>var tvpTdVars = '.json_encode($tvpTdVars).'</script>';
 		$footer .= '<script src="https://trello.com/1/client.js?key=' . TVP_TD()->Options->TrelloIntegration->getApiKey() . '"></script>';
 		$footer .= '<script src="' . TVP_TD()->assetsDirUrl . 'scripts/public.js?ver=' . filemtime(TVP_TD()->assetsDirPath . 'scripts/public.js') . '"></script>';
 		return $footer;

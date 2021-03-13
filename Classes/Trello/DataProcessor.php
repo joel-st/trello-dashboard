@@ -39,88 +39,103 @@ class DataProcessor
 
 		if ($members) {
 			foreach ($members as $key => $member) {
-				$processInfo = [
-					'trelloId' => $member->id,
-					'added' => false,
-					'updated' => false,
-					'errors' => [],
-					'deleted' => false,
-				];
-				// check if user exists
-				$userExists = false;
-
-				$args = [
-					'meta_key'   => TVP_TD()->Member->UserMeta->optionsPrefix . '-id',
-					'meta_value' => $member->id,
-				];
-
-				$userExists = get_users($args);
-				$userId = false;
-				$user = false;
-
-				if (empty($userExists)) {
-					// if user does not exist, check if username already taken
-					// if already taken, append number
-					$username = $member->username;
-					$originalName = $username;
-					$suffix = 1;
-
-					while (username_exists($username)) {
-						$username = (string)$originalName . '_' . $suffix;
-					}
-
-					$userId = wp_create_user($username, bin2hex(random_bytes(16)), '');
-
-					if ($userId) {
-						$processInfo['added'] = true;
-						$user = get_user_by('id', $userId);
-						$user->remove_role('subscriber');
-					}
-				} else {
-					$userId = (int)$userExists[0]->data->ID;
-
-					if ($userId) {
-						$processInfo['updated'] = true;
-						$user = get_user_by('id', $userId);
-					}
-				}
-
-				$processInfo['userId'] = $userId;
-				$processInfo['userName'] = $user->user_login;
-				$processInfo['editLink'] = get_edit_user_link($userId);
-
-				if ($userId && $user) {
-					$updatedFields = [];
-					$nameArray = explode(' ', $member->fullName);
-
-					// update first name
-					if (isset($nameArray[0]) && empty(get_user_meta($userId, 'first_name', true))) {
-						update_user_meta($userId, 'first_name', $nameArray[0]);
-						$updatedFields['first_name'] = $nameArray[0];
-					}
-
-					// update last name
-					if (isset($nameArray[1]) && empty(get_user_meta($userId, 'last_name', true))) {
-						update_user_meta($userId, 'last_name', $nameArray[1]);
-						$updatedFields['last_name'] = $nameArray[0];
-					}
-
-					// add the role
-					$user->add_role(TVP_TD()->Member->Role->role);
-
-					// add meta fields
-					update_field(TVP_TD()->Member->UserMeta->optionsPrefix . '-id', $member->id, 'user_' . $userId);
-
-					$processInfo['updatedFields'] = $updatedFields;
-				}
-
-				$processed[] = $processInfo;
+				$member = (array)$member;
+				$processed[] = $this->addUpdateMember($member);
 			}
 		} else {
 			return false;
 		}
 
 		return $processed;
+	}
+
+	public function addUpdateMember($member)
+	{
+		if (!empty($member)) {
+			$processInfo = [
+				'trelloId' => $member['id'],
+				'added' => false,
+				'updated' => false,
+				'errors' => [],
+				'deleted' => false,
+			];
+			// check if user exists
+			$userExists = false;
+
+			$args = [
+				'meta_key'   => TVP_TD()->Member->UserMeta->optionsPrefix . '-id',
+				'meta_value' => $member['id'],
+			];
+
+			$userExists = get_users($args);
+			$userId = false;
+			$user = false;
+
+			if (empty($userExists)) {
+				// if user does not exist, check if username already taken
+				// if already taken, append number
+				$username = $member['username'];
+				$originalName = $username;
+				$suffix = 1;
+
+				while (username_exists($username)) {
+					$username = (string)$originalName . '_' . $suffix;
+				}
+
+				$userId = wp_create_user($username, bin2hex(random_bytes(16)), '');
+
+				if ($userId) {
+					$processInfo['added'] = true;
+					$user = get_user_by('id', $userId);
+					$user->remove_role('subscriber');
+				}
+			} else {
+				$userId = (int)$userExists[0]->data->ID;
+
+				if ($userId) {
+					$processInfo['updated'] = true;
+					$user = get_user_by('id', $userId);
+				}
+			}
+
+			$processInfo['userId'] = $userId;
+			$processInfo['userName'] = $user->user_login;
+			$processInfo['editLink'] = get_edit_user_link($userId);
+
+			if ($userId && $user) {
+				$processInfo['userObject'] = $user;
+				$updatedFields = [];
+				$nameArray = explode(' ', $member['fullName']);
+
+				// update first name
+				if (isset($nameArray[0]) && empty(get_user_meta($userId, 'first_name', true))) {
+					update_user_meta($userId, 'first_name', $nameArray[0]);
+					$updatedFields['first_name'] = $nameArray[0];
+				}
+
+				// update last name
+				if (isset($nameArray[1]) && empty(get_user_meta($userId, 'last_name', true))) {
+					update_user_meta($userId, 'last_name', $nameArray[1]);
+					$updatedFields['last_name'] = $nameArray[0];
+				}
+
+				// update email
+				if (isset($member['email']) && empty(get_user_meta($userId, 'user_email', true))) {
+					update_user_meta($userId, 'user_email', $member['email']);
+					$updatedFields['user_email'] = $nameArray[0];
+				}
+
+				// add the role
+				$user->add_role(TVP_TD()->Member->Role->role);
+
+				// add meta fields
+				update_field(TVP_TD()->Member->UserMeta->optionsPrefix . '-id', $member['id'], 'user_' . $userId);
+
+				$processInfo['updatedFields'] = $updatedFields;
+			}
+
+			return $processInfo;
+		}
 	}
 
 	public function ajaxDataProcessor()

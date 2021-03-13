@@ -1,2 +1,13 @@
+:root {
+    --c-white: #ffffff;
+    --c-blue: #0888f0;
+    --c-blue-light-darken: #0580e4;
+    --c-blue-darken: #0077d7;
+
+    --border-radius: .25rem;
+}
+
 @import 'public/normalize';
 @import 'public/typography';
+@import 'public/dashboard';
+@import 'public/spinner';

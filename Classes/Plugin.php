@@ -24,6 +24,8 @@ class Plugin
 	public $securityOptions;
 	public $securityIv;
 	public $securityKey;
+	public $ajaxNonceKey;
+	public $authCookie;
 
 	/**
 	 * Creates an instance if one isn't already available,
@@ -50,6 +52,8 @@ class Plugin
 			self::$instance->securityOptions = 0;
 			self::$instance->securityIv = '4204204204204204'; // Non-NULL Initialization Vector for encryption
 			self::$instance->securityKey = 'tvptd'; // Store the encryption key
+			self::$instance->ajaxNonceKey = 'tvptdajaxnonce'; // Store the encryption key
+			self::$instance->authCookie = self::$instance->prefix . '-dashboard-auth-cookie';
 		}
 
 		return self::$instance;
@@ -78,7 +82,7 @@ class Plugin
 				API\Member::class,
 				Public\Dashboard::class,
 				Public\SignUp::class,
-				Public\Assets::class,
+				Public\Ajax::class,
 			]
 		);
 
@@ -149,8 +153,20 @@ class Plugin
 		return [
 			'notificationLoading' => _x('Loading …', 'Loading message JavaScript notification', 'tvp-trello-dashboard'),
 			'trelloAuthenticationFailure' => _x('Failed authentication', 'Frontend JavaScript login with Trello.authorize() failed', 'tvp-trello-dashboard'),
+			'trelloAuthenticationSuccess' => _x('Successful authentication', 'Frontend JavaScript login with Trello.authorize() success', 'tvp-trello-dashboard'),
 			'trelloIntegrationTestFailed' => _x('Connection failed!', 'Admin JavaScript integration test failed metabox message', 'tvp-trello-dashboard'),
 			'trelloIntegrationTestConnectedAs' => _x('Connected as', 'Admin JavaScript integration test "Connected as [username]" metabox message', 'tvp-trello-dashboard'),
+		];
+	}
+
+	public function getTdVars()
+	{
+		return [
+			'ajaxUrl' => admin_url('admin-ajax.php'),
+			'ajaxNonce' => wp_create_nonce($this->ajaxNonceKey),
+			'i18n' => TVP_TD()->getJavaScriptInternationalization(),
+			'authCookie' => $this->authCookie,
+			'trelloOrganization' => TVP_TD()->Options->TrelloIntegration->getOrganizationId(),
 		];
 	}
 }

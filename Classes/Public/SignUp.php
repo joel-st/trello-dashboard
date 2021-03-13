@@ -30,12 +30,22 @@ class SignUp
 	{
 	}
 
-
 	public function getSignUpContent()
 	{
-		$signup = '<h1 style="text-align: center;">TVP Trello Dashbaord</h1>';
-		$signup .= '<h3 style="text-align: center;">Login with Trello.</h3>';
-		$signup .= '<button id="'.$this->prefix.'-with-trello">Login</button>';
+		$signup = '<div class="tvp-td__dashboard tvp-td__dashboard--signup">';
+
+		$signup .= '<header class="tvp-td__header">';
+		$signup .= get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-signup-pre-content', 'options');
+		$signup .= '</header>'; // .tvp-td__header
+
+		$signup .= '<div class="tvp-td__content">';
+		$signup .= '<div class="tvp-td__main">';
+		$signup .= '<button id="'.$this->prefix.'-with-trello">'._x('Login with Trello', 'Trello Dashboard login action', 'tvp-trello-dashboard').'</button>';
+		$signup .= '</div>'; // .tvp-td__main
+		$signup .= '</div>'; // .tvp-td__content
+
+		$signup .= '</div>'; // .tvp-tvp-td__dashboard
+
 		return $signup;
 	}
 }

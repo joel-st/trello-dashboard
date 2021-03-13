@@ -16,7 +16,8 @@ class DashboardManager
 	public $slugDashboardManager = '';
 	public $optionPrefix = '';
 
-	public $options = [];
+	public $dashboardOptions = [];
+	public $signupOptions = [];
 
 	public $dashboardMetaboxId = '';
 
@@ -31,9 +32,9 @@ class DashboardManager
 
 		$this->dashboardMetaboxId = $this->optionPrefix . '-dashboard-metabox';
 
-		$this->options = [
-			'key' => $this->optionPrefix . '-text-fields',
-			'title' => __('Text', 'tvp-trello-dashboard'),
+		$this->dashboardOptions = [
+			'key' => $this->optionPrefix . '-dashboard-options',
+			'title' => __('Dashboard Options', 'tvp-trello-dashboard'),
 			'fields' => [
 				[
 					'key' => $this->optionPrefix . '-dashboard-slug',
@@ -189,6 +190,36 @@ class DashboardManager
 			'active' => true,
 			'description' => '',
 		];
+
+		$this->signupOptions = [
+			'key' => $this->optionPrefix . '-signup-options',
+			'title' => __('Signup Options', 'tvp-trello-dashboard'),
+			'fields' => [
+				[
+					'key' => $this->optionPrefix . '-signup-pre-content',
+					'name' => $this->optionPrefix . '-signup-pre-content',
+					'label' => __('Signup Page', 'tvp-trello-dashboard'),
+					'type' => 'wysiwyg',
+				],
+			],
+			'location' => [
+				[
+					[
+						'param' => 'options_page',
+						'operator' => '==',
+						'value' => $this->slugDashboardManager,
+					],
+				],
+			],
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => true,
+			'description' => '',
+		];
 	}
 
 	/**
@@ -209,7 +240,8 @@ class DashboardManager
 	public function addOptions()
 	{
 		if (isset($this->optionPages[$this->slugDashboardManager]) && function_exists('acf_add_local_field_group')) {
-			acf_add_local_field_group($this->options);
+			acf_add_local_field_group($this->dashboardOptions);
+			acf_add_local_field_group($this->signupOptions);
 		}
 	}
 
@@ -235,11 +267,6 @@ class DashboardManager
 					echo '<li>';
 					echo '<a href="' . TVP_TD()->Public->Dashboard->getPermalink() . '" target="_blank">';
 					echo __('Dashbaord Page', 'tvp-trello-dashboard');
-					echo '</a>';
-					echo '</li>';
-					echo '<li>';
-					echo '<a href="' . TVP_TD()->Public->SignUp->getPermalink() . '" target="_blank">';
-					echo __('Dashbaord Signup Page', 'tvp-trello-dashboard');
 					echo '</a>';
 					echo '</li>';
 					echo '</ul>';
