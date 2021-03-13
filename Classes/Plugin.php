@@ -53,7 +53,7 @@ class Plugin
 			self::$instance->securityIv = '4204204204204204'; // Non-NULL Initialization Vector for encryption
 			self::$instance->securityKey = 'tvptd'; // Store the encryption key
 			self::$instance->ajaxNonceKey = 'tvptdajaxnonce'; // Store the encryption key
-			self::$instance->authCookie = self::$instance->prefix . '-dashboard-auth-cookie';
+			self::$instance->authCookie = self::$instance->prefix . '-dashboard-auth';
 		}
 
 		return self::$instance;

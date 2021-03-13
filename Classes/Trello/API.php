@@ -84,6 +84,14 @@ class API
 	 */
 	public function integrationTest()
 	{
+		if (!connection_status()) {
+			if (empty($memberData) || !$parsedMemberData = json_decode($memberData, true)) {
+				header('HTTP/1.1 500 No Connection');
+				header('Content-Type: application/json; charset=UTF-8');
+				die(json_encode(['message' => 'No Internet connection.', 'code' => 401]));
+			}
+		}
+
 		$memberUrl = 'https://api.trello.com/1/members/me?key=' . $this->key . '&token=' . $this->token;
 		$memberData = file_get_contents($memberUrl);
 

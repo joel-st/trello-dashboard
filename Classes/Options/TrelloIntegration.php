@@ -189,8 +189,13 @@ class TrelloIntegration
 			// Add meta box
 			add_meta_box($this->cronMetaboxId, __('Trello Cron Job', 'tvp-trello-dashboard'), function () {
 				echo '<div id="'.$this->optionPrefix . '-cron'.'">';
-				echo '<h3 class="title">Next schedule</h3>';
-				echo '<h3 class="title">Actions</h3>';
+				echo '<h3 class="title">'.__('Next schedule', 'tvp-trello-dashboard').'</h3>';
+				echo '<ul>';
+				echo '<li>';
+				echo '<p>'.__('Enable Cron Jobs', 'tvp-trello-dashboard').'</p>';
+				echo '<li>';
+				echo '</ul>';
+				echo '<h3 class="title">'.__('Actions', 'tvp-trello-dashboard').'</h3>';
 				echo '<ul>';
 				echo '<li>';
 				echo '<button id="'.$this->optionPrefix . '-fetch-all'.'" class="button button-primary button-large">'.__('Fetch everything', 'tvp-trello-dashboard').'</button>';

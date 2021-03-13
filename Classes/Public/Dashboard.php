@@ -69,17 +69,23 @@ class Dashboard
 	public function loadDashboard()
 	{
 		global $wp_query;
+		$currentUser = wp_get_current_user();
 
 		if ($this->isDashboard()) {
 			header('HTTP/1.1 200 OK');
 			header('Content-Type: text/html; charset=utf-8');
 
 			echo $this->getHeader();
-
 			echo '<body class="tvp-td" id="tvp-td-loading">';
-			echo '<div class="tvp-td__dashboard tvp-td__dashboard--loading">';
-			echo '<div class="tvp-td__spinner spinner"></div>';
-			echo '</div>'; // .tvp-td__dashboard
+
+			if (in_array('administrator', $currentUser->roles)) {
+				echo $this->getDashboardContent();
+			} else {
+				echo '<div class="tvp-td__dashboard tvp-td__dashboard--loading">';
+				echo '<div class="tvp-td__spinner spinner"></div>';
+				echo '</div>'; // .tvp-td__dashboard
+			}
+
 			echo $this->getFooter();
 			echo '</body>';
 

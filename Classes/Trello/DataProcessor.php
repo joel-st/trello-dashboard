@@ -56,6 +56,7 @@ class DataProcessor
 				'trelloId' => $member['id'],
 				'added' => false,
 				'updated' => false,
+				'exist' => false,
 				'errors' => [],
 				'deleted' => false,
 			];
@@ -93,7 +94,7 @@ class DataProcessor
 				$userId = (int)$userExists[0]->data->ID;
 
 				if ($userId) {
-					$processInfo['updated'] = true;
+					$processInfo['exist'] = true;
 					$user = get_user_by('id', $userId);
 				}
 			}
@@ -111,18 +112,21 @@ class DataProcessor
 				if (isset($nameArray[0]) && empty(get_user_meta($userId, 'first_name', true))) {
 					update_user_meta($userId, 'first_name', $nameArray[0]);
 					$updatedFields['first_name'] = $nameArray[0];
+					$processInfo['updated'] = true;
 				}
 
 				// update last name
 				if (isset($nameArray[1]) && empty(get_user_meta($userId, 'last_name', true))) {
 					update_user_meta($userId, 'last_name', $nameArray[1]);
 					$updatedFields['last_name'] = $nameArray[0];
+					$processInfo['updated'] = true;
 				}
 
 				// update email
 				if (isset($member['email']) && empty(get_user_meta($userId, 'user_email', true))) {
 					update_user_meta($userId, 'user_email', $member['email']);
 					$updatedFields['user_email'] = $nameArray[0];
+					$processInfo['updated'] = true;
 				}
 
 				// add the role
