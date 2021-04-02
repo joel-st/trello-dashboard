@@ -1,4 +1,9 @@
-.tvp-td {
+:root {
+    --aside-width: 350px;
+    --gutter: 1.5rem;
+}
+
+.tvptd {
     position: relative;
     padding: 1rem;
 
@@ -7,17 +12,95 @@
         max-width: 1280px;
         margin: 0 auto;
         flex-direction: column;
-        height: 100%;
+        z-index: 2;
+        position: relative;
+        padding: var(--gutter);
+
+        &--overview {
+
+            > * + * {
+                margin-top: calc(var(--gutter) * 2);
+            }
+
+            .tvptd__header {
+                padding-top: var(--gutter);
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            .tvptd__user-profile {}
+
+            .tvptd__brand {
+                padding: var(--user-profile-padding) 0;
+                height: 100%;
+
+                .custom-logo-link {
+                    display: block;
+                    vertical-align: top;
+
+                    img {
+                        display: block;
+                        width: auto;
+                        height: 100%;
+                    }
+                }
+            }
+
+            .tvptd__aside,
+            .tvptd__main {
+                > * + * {
+                    margin-top: var(--gutter);
+                }
+            }
+
+            .tvptd__content {
+                padding-bottom: var(--gutter);
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            .tvptd__aside {
+                flex: 0 0 100%;
+                margin-top: var(--gutter);
+
+                @media (min-width: 768px) {
+                    margin-top: 0;
+                    flex: 0 0 var(--aside-width);
+                    // order: 2;
+                }
+            }
+
+            .tvptd__main {
+                flex: 0 0 100%;
+
+                @media (min-width: 768px) {
+                    flex: 0 0 calc(100% - var(--gutter) - var(--aside-width));
+                    // order: 1;
+                }
+            }
+        }
+
+        &--loading,
+        &--not-in-organization,
+        &--signup {
+            height: calc(100% - 2 * var(--gutter));
+        }
 
         &--loading {
             justify-content: center;
             align-items: center;
         }
 
+        &--not-in-organization,
         &--signup {
             justify-content: center;
+            color: var(--c-white);
+            background-size: cover;
+            background-position: 50%;
 
-            .tvp-td__header {
+            .tvptd__header {
                 > * {
                     max-width: 768px;
                     margin: 0 auto;
@@ -26,17 +109,39 @@
                         margin-top: 1rem;
                     }
                 }
+
+                h2,
+                h3,
+                h4,
+                h5,
+                h6 {
+                    font-weight: 400;
+                }
             }
 
-            .tvp-td__content {
+            .tvptd__content {
                 margin-top: 2rem;
                 text-align: center;
             }
+
         }
     }
-}
 
-#tvp-td-signup {
-    background: black;
-    color: var(--c-white);
+    &__pre-content {
+        > * + * {
+            margin-top: 1rem;
+        }
+    }
+
+    &__background {
+        background-size: cover;
+        background-position: 50%;
+        filter: brightness(20%);
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+    }
 }

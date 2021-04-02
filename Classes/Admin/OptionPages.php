@@ -23,6 +23,10 @@ class OptionPages
 	public $slugTrelloIntegration = '';
 	public $slugDashboardManager = '';
 	public $slugMember = '';
+	public $slugTrelloActions = '';
+	public $slugTrelloLists = '';
+	public $slugTrelloBoards = '';
+	public $slugTrelloCards = '';
 	public $optionPages = [];
 	public $subPages = [];
 
@@ -41,11 +45,16 @@ class OptionPages
 			'capability' => 'edit_posts',
 			'icon_url' => 'dashicons-admin-settings',
 			'redirect' => true,
+			'position' => TVP_TD()->menuPositionBase,
 		];
 
 		$this->slugTrelloIntegration = $this->optionSlug . '-trello-integration';
 		$this->slugDashboardManager = $this->optionSlug . '-information-manager';
 		$this->slugMember = $this->optionSlug . '-member';
+		$this->slugTrelloActions = $this->optionSlug . '-trello-actions';
+		$this->slugTrelloLists = $this->optionSlug . '-trello-lists';
+		$this->slugTrelloBoards = $this->optionSlug . '-trello-boards';
+		$this->slugTrelloCards = $this->optionSlug . '-trello-cards';
 		$this->optionPages = [
 
 		/**
@@ -81,6 +90,38 @@ class OptionPages
 				$this->slugMember,
 				[$this, 'memberRows']
 			],
+			$this->slugTrelloActions => [
+				$this->slugTrelloIntegration,
+				__('Trello Actions', 'tvp-trello-dashboard'),
+				__('Trello Actions', 'tvp-trello-dashboard'),
+				'edit_theme_options',
+				'edit.php?post_type=tvptd-trello-action',
+				null
+			],
+			$this->slugTrelloLists => [
+				$this->slugTrelloIntegration,
+				__('Trello Lists', 'tvp-trello-dashboard'),
+				__('Trello Lists', 'tvp-trello-dashboard'),
+				'edit_theme_options',
+				'edit-tags.php?taxonomy=' . TVP_TD()->Trello->Action->listTaxonomy . '&post_type=' . TVP_TD()->Trello->Action->postType,
+				null
+			],
+			$this->slugTrelloBoards => [
+				$this->slugTrelloIntegration,
+				__('Trello Boards', 'tvp-trello-dashboard'),
+				__('Trello Boards', 'tvp-trello-dashboard'),
+				'edit_theme_options',
+				'edit-tags.php?taxonomy=' . TVP_TD()->Trello->Action->boardTaxonomy . '&post_type=' . TVP_TD()->Trello->Action->postType,
+				null
+			],
+			$this->slugTrelloCards => [
+				$this->slugTrelloIntegration,
+				__('Trello Cards', 'tvp-trello-dashboard'),
+				__('Trello Cards', 'tvp-trello-dashboard'),
+				'edit_theme_options',
+				'edit-tags.php?taxonomy=' . TVP_TD()->Trello->Action->cardTaxonomy . '&post_type=' . TVP_TD()->Trello->Action->postType,
+				null
+			],
 		];
 	}
 
@@ -93,7 +134,6 @@ class OptionPages
 		add_action('acf/init', [$this, 'addMenuItem']);
 		add_action('acf/init', [$this, 'addOptionPages']);
 		add_action('admin_menu', [$this, 'addMemberSubmenuPage'], 101); // prio 101 is higher than acf’s prio 99
-		// add_action('acf/init', [$this, 'addTrelloOptions']);
 	}
 
 	/**

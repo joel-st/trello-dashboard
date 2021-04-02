@@ -41,7 +41,8 @@ class Assets
 	public function registerAssets()
 	{
 		// javascript only on tvp trello dashboard screen
-		if (strpos(get_current_screen()->base, TVP_TD()->prefix) !== false) {
+		if (strpos(get_current_screen()->base, TVP_TD()->prefix) !== false
+			|| strpos(get_current_screen()->post_type, TVP_TD()->prefix) !== false) {
 			wp_enqueue_script($this->prefix . '-admin-js', plugin_dir_url(__FILE__) . '../../assets/scripts/admin.js', ['jquery'], true, TVP_TD()->version);
 			wp_localize_script($this->prefix . '-admin-js', 'tvpTdVars', TVP_TD()->getTdVars());
 		}

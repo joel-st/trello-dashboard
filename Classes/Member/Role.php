@@ -81,18 +81,20 @@ class Role
 
 	public function addToolBarItem($adminBar)
 	{
-		if (strpos(get_current_screen()->base, TVP_TD()->Admin->OptionPages->optionSlug) !== false || get_current_screen()->base === 'profile') {
-			$userObject = wp_get_current_user();
+		if (is_admin()) {
+			if (strpos(get_current_screen()->base, TVP_TD()->Admin->OptionPages->optionSlug) !== false || get_current_screen()->base === 'profile') {
+				$userObject = wp_get_current_user();
 
-			if (in_array($this->role, $userObject->roles)) {
-				$adminBar->add_menu([
-					'id'    => TVP_TD()->prefix . '-go-to-dashboard',
-					'title' => _x('Trello Dashboard', 'Admin bar go to dashboard link', 'tvp-trello-dashboard'),
-					'href'  => TVP_TD()->Public->Dashboard->getPermalink(),
-					'meta'  => [
-						'title' => _x('Go to Dashboard', 'Admin bar go to dashboard link meta title', 'tvp-trello-dashboard'),
-					],
-				]);
+				if (in_array($this->role, $userObject->roles)) {
+					$adminBar->add_menu([
+						'id'    => TVP_TD()->prefix . '-go-to-dashboard',
+						'title' => _x('Trello Dashboard', 'Admin bar go to dashboard link', 'tvp-trello-dashboard'),
+						'href'  => TVP_TD()->View->Dashboard->getPermalink(),
+						'meta'  => [
+							'title' => _x('Go to Dashboard', 'Admin bar go to dashboard link meta title', 'tvp-trello-dashboard'),
+						],
+					]);
+				}
 			}
 		}
 	}

@@ -20,7 +20,7 @@ export function update() {
 }
 
 export function remove(name) {
-    setCookie(name, '', -1);
+    set(name, '', -1);
 }
 
 export default { get, set, update, remove }

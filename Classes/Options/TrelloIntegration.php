@@ -198,10 +198,13 @@ class TrelloIntegration
 				echo '<h3 class="title">'.__('Actions', 'tvp-trello-dashboard').'</h3>';
 				echo '<ul>';
 				echo '<li>';
-				echo '<button id="'.$this->optionPrefix . '-fetch-all'.'" class="button button-primary button-large">'.__('Fetch everything', 'tvp-trello-dashboard').'</button>';
+				echo '<button id="'.$this->optionPrefix . '-fetch-all'.'" class="button button-primary button-large" disabled>'.__('Fetch everything', 'tvp-trello-dashboard').'</button>';
 				echo '</li>';
 				echo '<li>';
-				echo '<button id="'.$this->optionPrefix . '-fetch-members'.'" class="button button-primary button-large">'.__('Fetch Members', 'tvp-trello-dashboard').'</button>';
+				echo '<button id="'.$this->optionPrefix . '-fetch-members'.'" class="button button-primary button-large" disabled>'.__('Fetch Members', 'tvp-trello-dashboard').'</button>';
+				echo '</li>';
+				echo '<li>';
+				echo '<button id="'.$this->optionPrefix . '-fetch-boards'.'" class="button button-primary button-large" disabled>'.__('Fetch Boards', 'tvp-trello-dashboard').'</button>';
 				echo '</li>';
 				echo '</ul>';
 				echo '</div>';

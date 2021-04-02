@@ -1,0 +1,22 @@
+.edit-tags-php {
+    &.taxonomy-tvptd-trello-board,
+    &.taxonomy-tvptd-trello-card,
+    &.taxonomy-tvptd-trello-list {
+        #col-left {
+            display: none;
+        }
+
+        #col-right {
+            float: none;
+            width: 100%;
+        }
+    }
+}
+
+.edit-php {
+    &.post-type-tvptd-trello-action {
+        .page-title-action {
+            display: none;
+        }
+    }
+}

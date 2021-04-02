@@ -1,0 +1,79 @@
+:root {
+    --widget-border: 2px solid var(--c-black);
+    --widget-section-border: 1px solid var(--c-black);
+    --widget-border-radius: var(--border-radius);
+    --widget-padding: .5rem .75rem;
+}
+
+.tvptd__widget {
+    display: block;
+    border: var(--widget-border);
+    border-radius: var(--widget-border-radius);
+
+    &-head {
+        background-color: var(--c-black);
+        padding: var(--widget-padding);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    &-title {
+        color: var(--c-white);
+        padding-right: .3rem;
+    }
+
+    &-content {
+        &--loading {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    &-section {
+        padding: var(--widget-padding);
+
+        + .tvptd__widget-section {
+            border-top: var(--widget-section-border);
+        }
+    }
+
+    &-action {
+        &--select {
+            cursor: pointer;
+            position: relative;
+
+            select {
+                cursor: pointer;
+                max-width: 175px;
+                appearance: none;
+                padding: .26rem 2rem .26rem .5rem;
+                border: none;
+                background-color: var(--c-black);
+                color: var(--c-blue);
+            }
+        }
+
+        &-arrow {
+            pointer-events: none;
+            background: url('../media/arrow-blue.svg');
+            font-size: 2rem;
+            width: 1rem;
+            height: 1rem;
+            display: block;
+            position: absolute;
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            right: .5rem;
+            top: .3rem;
+        }
+    }
+
+    &-list {
+        list-style: disc;
+        padding-left: 1.1rem;
+    }
+}

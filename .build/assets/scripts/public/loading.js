@@ -4,7 +4,7 @@ import auth from './authentication';
 
 (function ($) {
     $(function () {
-        const $tvpTd = $('#tvp-td-loading');
+        const $tvpTd = $('#tvptd-loading');
         const isLoading = $tvpTd.length;
 
         function loadSignUp() {
@@ -13,13 +13,28 @@ import auth from './authentication';
                 url: tvpTdVars.ajaxUrl,
                 data: {
                     action: 'tvptd-public-ajax-get-signup-content',
-                    nonce: tvpTdVars.ajaxNonce,
+                    nonce: tvpTdVars.nonces.signup,
                 },
                 success: function (response) {
                     const parsedResponse = JSON.parse(response);
-                    $tvpTd.html(parsedResponse.html);
-                    $tvpTd.attr('id', 'tvp-td-signup');
+                    $tvpTd.replaceWith(parsedResponse.html);
                     trello.initSignup();
+                }
+            });
+        }
+
+        function loadNotInOrganization() {
+            $.ajax({
+                type: "GET",
+                url: tvpTdVars.ajaxUrl,
+                data: {
+                    action: 'tvptd-public-ajax-get-not-in-organization-content',
+                    nonce: tvpTdVars.nonces.signup,
+                },
+                success: function (response) {
+                    const parsedResponse = JSON.parse(response);
+                    $tvpTd.replaceWith(parsedResponse.html);
+                    Trello.deauthorize();
                 }
             });
         }
@@ -31,17 +46,24 @@ import auth from './authentication';
             if(tokenInLocalStorage) {
                 Trello.setToken(tokenInLocalStorage);
                 if(Trello.authorized()) {
-                    if(authCookie) {
-                        auth.login({ 'id': authCookie, idOrganizations: [tvpTdVars.trelloOrganization] });
-                    } else {
-                        Trello.members.get('me', function (member) {
-                            auth.login(member);
-                        });
-                    }
+                    Trello.members.get('me', function (member) {
+                        if(member.idOrganizations.includes(tvpTdVars.trelloOrganization)) {
+                            Trello.get('organizations/' + tvpTdVars.trelloOrganization + '/memberships', function (memberships) {
+                                const match = memberships.filter(function (o) { return o.idMember == member.id; });
+                                const membership = match ? match[0] : false;
+                                if(membership) {
+                                    auth.login(member, membership);
+                                } else {
+                                    loadNotInOrganization();
+                                }
+                            });
+                        } else {
+                            loadNotInOrganization();
+                        }
+                    });
                 } else {
                     auth.logout();
                 }
-                // loadSignUp();
             } else {
                 loadSignUp();
             }

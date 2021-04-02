@@ -18,6 +18,7 @@ class DashboardManager
 
 	public $dashboardOptions = [];
 	public $signupOptions = [];
+	public $notInOrganizationOptions = [];
 
 	public $dashboardMetaboxId = '';
 
@@ -201,6 +202,12 @@ class DashboardManager
 					'label' => __('Signup Page', 'tvp-trello-dashboard'),
 					'type' => 'wysiwyg',
 				],
+				[
+					'key' => $this->optionPrefix . '-signup-background',
+					'name' => $this->optionPrefix . '-signup-background',
+					'label' => __('Signup Background', 'tvp-trello-dashboard'),
+					'type' => 'image',
+				],
 			],
 			'location' => [
 				[
@@ -211,7 +218,43 @@ class DashboardManager
 					],
 				],
 			],
-			'menu_order' => 0,
+			'menu_order' => 5,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => true,
+			'description' => '',
+		];
+
+		$this->notInOrganizationOptions = [
+			'key' => $this->optionPrefix . '-not-in-organization-options',
+			'title' => __('Not In Organization Options', 'tvp-trello-dashboard'),
+			'fields' => [
+				[
+					'key' => $this->optionPrefix . '-not-in-organization-pre-content',
+					'name' => $this->optionPrefix . '-not-in-organization-pre-content',
+					'label' => __('Not In Organization Page', 'tvp-trello-dashboard'),
+					'type' => 'wysiwyg',
+				],
+				[
+					'key' => $this->optionPrefix . '-not-in-organization-background',
+					'name' => $this->optionPrefix . '-not-in-organization-background',
+					'label' => __('Not In Organization Background', 'tvp-trello-dashboard'),
+					'type' => 'image',
+				],
+			],
+			'location' => [
+				[
+					[
+						'param' => 'options_page',
+						'operator' => '==',
+						'value' => $this->slugDashboardManager,
+					],
+				],
+			],
+			'menu_order' => 10,
 			'position' => 'normal',
 			'style' => 'default',
 			'label_placement' => 'top',
@@ -242,6 +285,7 @@ class DashboardManager
 		if (isset($this->optionPages[$this->slugDashboardManager]) && function_exists('acf_add_local_field_group')) {
 			acf_add_local_field_group($this->dashboardOptions);
 			acf_add_local_field_group($this->signupOptions);
+			acf_add_local_field_group($this->notInOrganizationOptions);
 		}
 	}
 
@@ -265,7 +309,7 @@ class DashboardManager
 				} else {
 					echo '<ul>';
 					echo '<li>';
-					echo '<a href="' . TVP_TD()->Public->Dashboard->getPermalink() . '" target="_blank">';
+					echo '<a href="' . TVP_TD()->View->Dashboard->getPermalink() . '" target="_blank">';
 					echo __('Dashbaord Page', 'tvp-trello-dashboard');
 					echo '</a>';
 					echo '</li>';

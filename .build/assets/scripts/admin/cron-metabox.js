@@ -2,20 +2,18 @@ import nf from './notification';
 
 function fetchAllTrelloData() {
     console.log('fetchAllTrelloData');
-    // if(tvpTdVars) {
-    //     console.log('fetchAllTrelloData');
-    // }
 }
 
-function fetchTrelloMembers() {
+function fetch(request) {
     if(tvpTdVars) {
         // nf.loading('Fetching Trello Members');
+
         jQuery.ajax({
             type: "GET",
             url: tvpTdVars['ajaxUrl'],
             data: {
                 action: 'tvptd-data-processor',
-                request: 'addUpdateMembers',
+                request: request,
             },
         }).success(function (response) {
             const parsed = JSON.parse(response.data);
@@ -37,7 +35,13 @@ function fetchTrelloMembers() {
         const $fetchTrelloMembersButton = $('#tvptd-options-trello-integration-fetch-members');
         $fetchTrelloMembersButton.on('click', function (event) {
             event.preventDefault();
-            fetchTrelloMembers();
+            fetch('addUpdateMembers');
+        });
+
+        const $fetchTrelloBoardsButton = $('#tvptd-options-trello-integration-fetch-boards');
+        $fetchTrelloBoardsButton.on('click', function (event) {
+            event.preventDefault();
+            fetch('addUpdateBoards');
         });
     });
 })(jQuery);

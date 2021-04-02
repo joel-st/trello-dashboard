@@ -42,6 +42,9 @@ export const task = config => {
                             },
                         ],
                     },
+                    optimization: {
+                        minimize: false
+                    },
                     output: {
                         filename: '[name].js',
                     },

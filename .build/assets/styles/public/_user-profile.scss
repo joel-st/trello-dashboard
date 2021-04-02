@@ -1,0 +1,77 @@
+:root {
+    --user-avatar-size: 3rem;
+    --user-profile-padding: .5rem;
+}
+
+.tvptd__user-profile {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--user-profile-padding);
+    border-radius: var(--border-radius);
+    transition: box-shadow var(--transition-duration) ease;
+
+    &:focus,
+    &:hover {
+        box-shadow: 0 0 .5rem var(--c-gray-light);
+    }
+
+    .tvptd__user-avatar {
+        flex: 0 0 var(--user-avatar-size);
+        width: var(--user-avatar-size);
+        height: var(--user-avatar-size);
+        border-radius: 100%;
+        background-color: var(--c-gray-light);
+        overflow: hidden;
+
+        .avatar {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .tvptd__user-name {
+        padding-right: 2.5rem;
+    }
+
+    .tvptd__user-wrap {
+        position: relative;
+        flex: 0 0 calc(100% - var(--gutter) - var(--user-avatar-size));
+        margin-left: 1rem;
+
+        &:after {
+            content: '';
+            background: url('../media/arrow-black.svg');
+            font-size: 2rem;
+            width: 1rem;
+            height: 1rem;
+            display: block;
+            position: absolute;
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            right: .5rem;
+            top: .25rem;
+        }
+    }
+
+    .tvptd__user-actions {
+        position: absolute;
+        display: none;
+        padding: .5rem 1rem;
+        background-color: var(--c-white);
+        right: calc(var(--user-profile-padding) * -1);
+        top: 3rem;
+        min-width: 100px;
+        box-shadow: 0 0 .5rem var(--c-gray-light);
+        border-radius: var(--border-radius);
+    }
+
+    &.active {
+        .tvptd__user-actions {
+            display: block;
+        }
+    }
+}

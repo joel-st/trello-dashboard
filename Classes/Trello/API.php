@@ -39,6 +39,32 @@ class API
 	}
 
 	/**
+	 * Function to curl url
+	 * We use curl 'cause file_get_contents returned
+	 * failed to open stream: HTTP request failed! HTTP/1.1 426 Upgrade Required
+	 * in PHP < 8.0
+	 */
+	public function curl($url)
+	{
+		// create curl resource
+		$ch = curl_init();
+
+		// set url
+		curl_setopt($ch, CURLOPT_URL, $url);
+
+		// return the transfer as a string
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+		// $output contains the output string
+		$response = curl_exec($ch);
+
+		// close curl resource to free up system resources
+		curl_close($ch);
+
+		return $response;
+	}
+
+	/**
 	 * Getter function to run trello api requests
 	 */
 	public function get($request, $args = false)
@@ -50,12 +76,12 @@ class API
 		}
 
 		if (strstr($request, '?')) {
-			$url = 'https://api.trello.com' . $request . '&key=' . $this->key . '&token=' . $this->token;
+			$url = 'https://api.trello.com/1/' . $request . '&key=' . $this->key . '&token=' . $this->token;
 		} else {
-			$url = 'https://api.trello.com' . $request . '?key=' . $this->key . '&token=' . $this->token;
+			$url = 'https://api.trello.com/1/' . $request . '?key=' . $this->key . '&token=' . $this->token;
 		}
 
-		$data = file_get_contents($url);
+		$data = $this->curl($url);
 
 		return json_decode($data);
 	}
@@ -74,7 +100,7 @@ class API
 			$url = 'https://api.trello.com/1/organizations/' . $this->organization . '/' . $request . '?key=' . $this->key . '&token=' . $this->token;
 		}
 
-		$data = file_get_contents($url);
+		$data = $this->curl($url);
 
 		return json_decode($data);
 	}
@@ -84,8 +110,11 @@ class API
 	 */
 	public function integrationTest()
 	{
-		if (!connection_status()) {
-			if (empty($memberData) || !$parsedMemberData = json_decode($memberData, true)) {
+		$connected = @fsockopen("www.google.com", 80);
+		if ($connected) {
+			fclose($connected);
+		} else {
+			if (!connection_status()) {
 				header('HTTP/1.1 500 No Connection');
 				header('Content-Type: application/json; charset=UTF-8');
 				die(json_encode(['message' => 'No Internet connection.', 'code' => 401]));
@@ -93,7 +122,7 @@ class API
 		}
 
 		$memberUrl = 'https://api.trello.com/1/members/me?key=' . $this->key . '&token=' . $this->token;
-		$memberData = file_get_contents($memberUrl);
+		$memberData = $this->curl($memberUrl);
 
 		if (empty($memberData) || !$parsedMemberData = json_decode($memberData, true)) {
 			header('HTTP/1.1 500 No Content');

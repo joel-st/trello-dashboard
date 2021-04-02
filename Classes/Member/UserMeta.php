@@ -26,13 +26,54 @@ class UserMeta
 			'title' => __('TVP Trello Member Metainformation', 'tvp-trello-dashboard'),
 			'fields' => [
 				[
-					// TODO: add all necessary user meta fields to fill with information from trello
 					'key' => $this->optionsPrefix . '-id',
 					'name' => $this->optionsPrefix . '-id',
 					'label' => __('Trello User ID', 'tvp-trello-dashboard'),
 					'type' => 'text',
 					'required' => 0,
 					'readonly' => 1
+				],
+				[
+					'key' => $this->optionsPrefix . '-type',
+					'name' => $this->optionsPrefix . '-type',
+					'label' => __('Trello Member Type', 'tvp-trello-dashboard'),
+					'type' => 'text',
+					'required' => 0,
+					'readonly' => 1
+				],
+				[
+					'key' => $this->optionsPrefix . '-unconfirmed',
+					'name' => $this->optionsPrefix . '-unconfirmed',
+					'label' => __('Trello Member Unconfirmed', 'tvp-trello-dashboard'),
+					'type' => 'true_false',
+					'required' => 0,
+					'readonly' => 1
+				],
+				[
+					'key' => $this->optionsPrefix . '-deactivated',
+					'name' => $this->optionsPrefix . '-deactivated',
+					'label' => __('Trello Member Deactivated', 'tvp-trello-dashboard'),
+					'type' => 'true_false',
+					'required' => 0,
+					'readonly' => 1
+				],
+				[
+					'key' => $this->optionsPrefix . '-avatar-url',
+					'name' => $this->optionsPrefix . '-avatar-url',
+					'label' => __('Trello Member Avatar', 'tvp-trello-dashboard'),
+					'type' => 'url',
+					'required' => 0,
+					'readonly' => 1
+				],
+				[
+					'key' => $this->optionsPrefix . '-date',
+					'name' => $this->optionsPrefix . '-date',
+					'label' => __('Trello Member Date', 'tvp-trello-dashboard'),
+					'type' => 'date_picker',
+					'required' => 0,
+					'readonly' => 1,
+					'display_format' => 'Y-m-d',
+					'return_format' => 'Y-m-d',
 				],
 			],
 			'location' => [

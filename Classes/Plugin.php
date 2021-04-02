@@ -15,8 +15,11 @@ class Plugin
 	public $version = '';
 	public $textDomain = '';
 	public $prefix = '';
+	public $pluginDirUrl = '';
+	public $pluginDirPath = '';
 	public $assetsDirUrl = '';
 	public $assetsDirPath = '';
+	public $menuPositionBase = 80;
 
 	// security stuff
 	public $securityCiphering;
@@ -44,6 +47,8 @@ class Plugin
 			self::$instance->textDomain = $data['TextDomain'];
 			self::$instance->pluginName = $data['Name'];
 			self::$instance->prefix = 'tvptd';
+			self::$instance->pluginDirUrl = plugin_dir_url(__DIR__);
+			self::$instance->pluginDirPath = plugin_dir_path(__DIR__);
 			self::$instance->assetsDirUrl = plugin_dir_url(__DIR__) . 'assets/';
 			self::$instance->assetsDirPath = plugin_dir_path(__DIR__) . 'assets/';
 
@@ -52,7 +57,7 @@ class Plugin
 			self::$instance->securityOptions = 0;
 			self::$instance->securityIv = '4204204204204204'; // Non-NULL Initialization Vector for encryption
 			self::$instance->securityKey = 'tvptd'; // Store the encryption key
-			self::$instance->ajaxNonceKey = 'tvptdajaxnonce'; // Store the encryption key
+			self::$instance->ajaxNonceKey = 'tvptdajaxnonce';
 			self::$instance->authCookie = self::$instance->prefix . '-dashboard-auth';
 		}
 
@@ -70,19 +75,21 @@ class Plugin
 			[
 				Member\Role::class,
 				Member\UserMeta::class,
+				Trello\Action::class,
 				Admin\OptionPages::class,
 				Admin\Assets::class,
 				Options\TrelloIntegration::class,
 				Options\DashboardManager::class,
-				Options\Member::class,
+				// Options\Member::class,
 				Trello\API::class,
 				Trello\Cron::class,
 				Trello\DataProcessor::class,
-				Trello\Actions::class,
 				API\Member::class,
-				Public\Dashboard::class,
-				Public\SignUp::class,
-				Public\Ajax::class,
+				API\Action::class,
+				View\Dashboard::class,
+				View\SignUp::class,
+				View\NotInOrganization::class,
+				View\Ajax::class,
 			]
 		);
 
@@ -163,10 +170,20 @@ class Plugin
 	{
 		return [
 			'ajaxUrl' => admin_url('admin-ajax.php'),
-			'ajaxNonce' => wp_create_nonce($this->ajaxNonceKey),
 			'i18n' => TVP_TD()->getJavaScriptInternationalization(),
 			'authCookie' => $this->authCookie,
 			'trelloOrganization' => TVP_TD()->Options->TrelloIntegration->getOrganizationId(),
+			'nonces' => [
+				'signup' => wp_create_nonce($this->ajaxNonceKey . '-signup'),
+				'content' => wp_create_nonce($this->ajaxNonceKey . '-content'),
+				'login' => wp_create_nonce($this->ajaxNonceKey . '-login'),
+				'logout' => wp_create_nonce($this->ajaxNonceKey . '-logout'),
+			],
+			'adminOptionsSlug' => TVP_TD()->Admin->OptionPages->slugTrelloIntegration,
+			'postTypeAction' => TVP_TD()->Trello->Action->postType,
+			'taxonomyBoard' => TVP_TD()->Trello->Action->boardTaxonomy,
+			'taxonomyCard' => TVP_TD()->Trello->Action->cardTaxonomy,
+			'taxonomyList' => TVP_TD()->Trello->Action->listTaxonomy
 		];
 	}
 }

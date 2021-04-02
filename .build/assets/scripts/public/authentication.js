@@ -1,15 +1,18 @@
 import cookie from './cookie';
+import dashboard from './dashboard';
+import profile from './profile';
 
-export function login(member) {
-    const $tvpTd = $('#tvp-td-loading');
+export function login(member, membership) {
+    const $tvpTd = $('#tvptd-loading');
 
     $.ajax({
         type: "GET",
         url: tvpTdVars.ajaxUrl,
         data: {
             action: 'tvptd-public-ajax-login',
-            nonce: tvpTdVars.ajaxNonce,
-            member: member
+            nonce: tvpTdVars.nonces.login,
+            member: member,
+            membership: membership
         },
         success: function (response) {
             $.ajax({
@@ -17,25 +20,37 @@ export function login(member) {
                 url: tvpTdVars.ajaxUrl,
                 data: {
                     action: 'tvptd-public-ajax-get-dashboard-content',
-                    nonce: tvpTdVars.ajaxNonce
+                    nonce: tvpTdVars.nonces.content
                 },
                 success: function (response) {
                     const parsedResponse = JSON.parse(response);
-                    $tvpTd.html(parsedResponse.html);
-                    $tvpTd.attr('id', 'tvp-td');
+                    $tvpTd.replaceWith(parsedResponse.html);
+                    $tvpTd.attr('id', 'tvptd');
+                    profile.init();
+                    dashboard.loadOverview();
+                    dashboard.loadStatistics();
                 }
             });
         },
         error: function (error) {
-            // location.reload();
+            alert('Oups, sorry, something went wrong. Try it again later.');
         }
     });
 }
 
 export function logout() {
-    localStorage.removeItem('trello_token');
-    cookie.remove(tvpTdVars.authCookie);
-    // location.reload();
+    Trello.deauthorize();
+    $.ajax({
+        type: "GET",
+        url: tvpTdVars.ajaxUrl,
+        data: {
+            action: 'tvptd-public-ajax-logout',
+            nonce: tvpTdVars.nonces.logout
+        },
+        success: function (response) {
+            location.reload();
+        }
+    });
 }
 
 export default { login, logout }
