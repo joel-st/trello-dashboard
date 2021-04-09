@@ -35,7 +35,28 @@ class DataProcessor
 		add_action('wp_ajax_nopriv_' . $this->prefix, [$this, 'ajaxDataProcessor']);
 
 		// add_action('init', [$this, 'addUpdateCards']);
-		add_action('admin_action_tvptd-test', [ $this, 'tests' ]);
+		add_action('admin_action_tvptd', [ $this, 'doAction' ]);
+	}
+
+	public function doAction()
+	{
+		echo '<div style="margin-left:180px;margin-top:10px;">';
+
+		if (isset($_GET['do']) && $_GET['do'] === 'members') {
+			var_dump($this->addUpdateMembers());
+		} elseif (isset($_GET['do']) && $_GET['do'] === 'boards') {
+			var_dump($this->addUpdateBoards());
+		} elseif (isset($_GET['do']) && $_GET['do'] === 'lists') {
+			var_dump($this->addUpdateLists());
+		} elseif (isset($_GET['do']) && $_GET['do'] === 'cards') {
+			var_dump($this->addUpdateCards());
+		} elseif (isset($_GET['do']) && $_GET['do'] === 'actions') {
+			var_dump($this->addUpdateActions());
+		} else {
+			var_dump('nothing specified');
+		}
+
+		echo '</div>';
 	}
 
 	public function parseMongoDate($id)
@@ -581,14 +602,6 @@ class DataProcessor
 		}
 
 		return $processInfo;
-	}
-
-	public function tests()
-	{
-		echo '<div style="margin-left:180px;margin-top:10px;">';
-		var_dump($this->addUpdateActions(false));
-		// var_dump($this->checkForActionDuplicates());
-		echo '</div>';
 	}
 
 	public function addUpdateActions($processAll = false, $boardFilter = [], $actionFilter = [])
