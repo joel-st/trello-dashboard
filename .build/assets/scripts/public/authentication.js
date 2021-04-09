@@ -11,7 +11,10 @@ export function login(member, membership) {
         data: {
             action: 'tvptd-public-ajax-login',
             nonce: tvpTdVars.nonces.login,
-            member: member,
+            member: {
+                id: member.id,
+                email: member.email,
+            },
             membership: membership
         },
         success: function (response) {
