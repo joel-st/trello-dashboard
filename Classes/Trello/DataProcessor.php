@@ -51,7 +51,13 @@ class DataProcessor
 		} elseif (isset($_GET['do']) && $_GET['do'] === 'cards') {
 			var_dump($this->addUpdateCards());
 		} elseif (isset($_GET['do']) && $_GET['do'] === 'actions') {
-			var_dump($this->addUpdateActions());
+			if (isset($_GET['filter'])) {
+				var_dump($this->addUpdateActions(false, [$_GET['filter']]));
+			} else {
+				var_dump($this->addUpdateActions());
+			}
+		} elseif (isset($_GET['do']) && $_GET['do'] === 'delete') {
+			var_dump($this->deleteAllActions());
 		} else {
 			var_dump('nothing specified');
 		}
