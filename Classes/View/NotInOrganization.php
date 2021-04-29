@@ -30,6 +30,9 @@ class NotInOrganization
 	{
 	}
 
+	/**
+	 * Get the not in organization content, if a trello member tries to login and is not a member of the specified trello organization
+	 */
 	public function getNotInOrganizationContent()
 	{
 		$notInOrganization = '<div class="tvptd__dashboard tvptd__dashboard--not-in-organization">';

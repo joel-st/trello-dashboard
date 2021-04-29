@@ -25,6 +25,7 @@ class Ajax
 	/**
 	 * Initalization
 	 * Checkout the hooks and actions to understand how this class initializes itself.
+	 * TODO: propper setup of ajax nonces and returns
 	 */
 	public function run()
 	{
@@ -44,6 +45,10 @@ class Ajax
 		add_action('wp_ajax_nopriv_' . $this->prefix . '-get-organization-statistics', [$this, 'getOrganizationStatistics']);
 	}
 
+	/**
+	 * Load the signup content if visitor is not logged in
+	 * TODO: propper setup of ajax nonces and returns
+	 */
 	public function getSignUpContent()
 	{
 		// if (!isset($_GET['nonce']) || ! wp_verify_nonce($_GET['nonce'], TVP_TD()->ajaxNonceKey . '-signup')) {
@@ -61,6 +66,10 @@ class Ajax
 		wp_die();
 	}
 
+	/**
+	 * Load the not in organization content, if a trello member tries to login and is not a member of the specified trello organization
+	 * TODO: propper setup of ajax nonces and returns
+	 */
 	public function getNotInOrganizationContent()
 	{
 		// if (!isset($_GET['nonce']) || ! wp_verify_nonce($_GET['nonce'], TVP_TD()->ajaxNonceKey . '-signup')) {
@@ -78,6 +87,10 @@ class Ajax
 		wp_die();
 	}
 
+	/**
+	 * Load the dashboard
+	 * TODO: propper setup of ajax nonces and returns
+	 */
 	public function getDashboardContent()
 	{
 		// if (!isset($_GET['nonce']) || ! wp_verify_nonce($_GET['nonce'], TVP_TD()->ajaxNonceKey  . '-content')) {
@@ -95,6 +108,14 @@ class Ajax
 		wp_die();
 	}
 
+	/**
+	 * Validate the login
+	 * 1. Try to find existing user based on the data provided by the ajax call
+	 * 2. Create/update user and save email address since the data provided by the ajax call contains the members email
+	 * 3. Login user to WordPress and set authentication cookie
+	 * TODO: propper setup of ajax nonces and returns
+	 * TODO: check if the email is saved if a new member login for the first time
+	 */
 	public function validateLogin()
 	{
 		// if (!isset($_GET['nonce']) || ! wp_verify_nonce($_GET['nonce'], TVP_TD()->ajaxNonceKey  . '-login')) {
@@ -165,6 +186,12 @@ class Ajax
 		wp_die();
 	}
 
+	/**
+	 * Logout
+	 * 1. Delete the authentication cookie
+	 * 2. Logout the user
+	 * TODO: propper setup of ajax nonces and returns
+	 */
 	public function logout()
 	{
 		// if (!isset($_GET['nonce']) || ! wp_verify_nonce($_GET['nonce'], TVP_TD()->ajaxNonceKey  . '-logout')) {
@@ -184,6 +211,11 @@ class Ajax
 		wp_die();
 	}
 
+	/**
+	 * Load the overview
+	 * TODO: propper setup of ajax nonces and returns
+	 * TODO: connect the timerange from the dashboard markup for the overview
+	 */
 	public function getOrganizationOverview()
 	{
 		$organizationOverview = '<section class="tvptd__widget-section">';
@@ -203,6 +235,11 @@ class Ajax
 		die(json_encode(['html' => $organizationOverview, 'code' => 200]));
 	}
 
+	/**
+	 * Load the statistics
+	 * TODO: propper setup of ajax nonces and returns
+	 * TODO: connect the timerange from the dashboard markup for the statistics
+	 */
 	public function getOrganizationStatistics()
 	{
 		$metaQueryDate = [

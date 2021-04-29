@@ -45,7 +45,7 @@ class Role
 
 	/**
 	 * Restrictions for the TVP Trello Member user rolse
-	 * Hides the Dashboard, so a logged in user with the TVP Trello Member user role only has access to his edit profile page
+	 * Hides the Dashboard, so a logged in user with only the TVP Trello Member user role only has access to his edit profile page
 	 */
 	public function adminAreaRestrictions()
 	{
@@ -71,6 +71,10 @@ class Role
 		}
 	}
 
+	/**
+	 * Since we have no access to the member email via the trello memberships when we create a new WordPress user,
+	 * we have to suppress the empty email error on profile pages for the trello users.
+	 */
 	function suppressEmptyEmailError($errors, $update, $user)
 	{
 		$userObject = get_user_by('id', $user->ID);
@@ -79,6 +83,9 @@ class Role
 		}
 	}
 
+	/**
+	 * Add toolbar item to go to the trello dashboard on trello user profiles and trello plugin optionpages
+	 */
 	public function addToolBarItem($adminBar)
 	{
 		if (is_admin()) {

@@ -38,6 +38,19 @@ class DataProcessor
 		add_action('admin_action_tvptd', [ $this, 'doAction' ]);
 	}
 
+	/**
+	 * Development function to initially fetch trello data for test purposes
+	 * If you have a fresh setup without any data, you can fetch trello data by call those action urls manually
+	 * It is best to follow this order: members, boards, lists, cards, actions so all the data can be correctly connected
+	 * https://yoursite.com/wp-admin/?action=tvptd&do=members
+	 * https://yoursite.com/wp-admin/?action=tvptd&do=boards
+	 * https://yoursite.com/wp-admin/?action=tvptd&do=lists
+	 * https://yoursite.com/wp-admin/?action=tvptd&do=cards
+	 * https://yoursite.com/wp-admin/?action=tvptd&do=actions
+	 * The "actions" call will mostly fail because it takes to much time to process the data, or the process runs out of memory.
+	 * There are several function parameter to fetch the data per e.g. board etc.
+	 * TODO: Find a way to run the initial actions fetch without failure.
+	 */
 	public function doAction()
 	{
 		echo '<div style="margin-left:180px;margin-top:10px;">';
@@ -65,6 +78,10 @@ class DataProcessor
 		echo '</div>';
 	}
 
+	/**
+	 * Each item in a trello response has an id. This id represents a mongo date which can be converted into a timestamp.
+	 * This function converts a mongo date into an array with human readable date and unix timestamp
+	 */
 	public function parseMongoDate($id)
 	{
 		$mongoDateparse = [];
@@ -75,6 +92,9 @@ class DataProcessor
 		return $mongoDateparse;
 	}
 
+	/**
+	 * Batch process all memberships of the specified trello organization, pass each membership to the WordPress user creation function.
+	 */
 	public function addUpdateMembers($filter = [])
 	{
 		if (!empty($filter) && gettype($filter) === 'string') {
@@ -107,6 +127,9 @@ class DataProcessor
 		return $processed;
 	}
 
+	/**
+	 * Turn a trello membership into a WordPress user.
+	 */
 	public function addUpdateMember($membership)
 	{
 		if (!empty($membership) && isset($membership['member'])) {
@@ -200,6 +223,10 @@ class DataProcessor
 		}
 	}
 
+	/**
+	 * Turn a trello board into an action taxonomy.
+	 * TVP_TD()->Trello->Action->boardTaxonomy;
+	 */
 	public function addUpdateBoard($board)
 	{
 		$taxonomy = TVP_TD()->Trello->Action->boardTaxonomy;
@@ -286,6 +313,10 @@ class DataProcessor
 		}
 	}
 
+	/**
+	 * Batch process all trello boards from the specified organization into an action taxonomy.
+	 * TVP_TD()->Trello->Action->boardTaxonomy;
+	 */
 	public function addUpdateBoards($filter = [])
 	{
 		if (!empty($filter) && gettype($filter) === 'string') {
@@ -309,6 +340,10 @@ class DataProcessor
 		return $processed;
 	}
 
+	/**
+	 * Turn a trello card into an action taxonomy.
+	 * TVP_TD()->Trello->Action->cardTaxonomy;
+	 */
 	public function addUpdateCard($card)
 	{
 		$taxonomy = TVP_TD()->Trello->Action->cardTaxonomy;
@@ -380,6 +415,10 @@ class DataProcessor
 		}
 	}
 
+	/**
+	 * Batch process all trello cards from the specified organization into an action taxonomy.
+	 * TVP_TD()->Trello->Action->cardTaxonomy;
+	 */
 	public function addUpdateCards($boardFilter = [], $cardFilter = [])
 	{
 		if (!empty($boardFilter) && gettype($boardFilter) === 'string') {
@@ -419,6 +458,10 @@ class DataProcessor
 		return $processed;
 	}
 
+	/**
+	 * Turn a trello list into an action taxonomy.
+	 * TVP_TD()->Trello->Action->listTaxonomy;
+	 */
 	public function addUpdateList($list)
 	{
 		$taxonomy = TVP_TD()->Trello->Action->listTaxonomy;
@@ -487,6 +530,10 @@ class DataProcessor
 		}
 	}
 
+	/**
+	 * Batch process all trello lists from the specified organization into an action taxonomy.
+	 * TVP_TD()->Trello->Action->listTaxonomy;
+	 */
 	public function addUpdateLists($boardFilter = [], $listFilter = [])
 	{
 		if (!empty($boardFilter) && gettype($boardFilter) === 'string') {
@@ -515,6 +562,10 @@ class DataProcessor
 		return $processed;
 	}
 
+	/**
+	 * Turn a trello action into an action post.
+	 * TVP_TD()->Trello->Action->postType;
+	 */
 	public function addUpdateAction($action, $exists = false)
 	{
 		$postType = TVP_TD()->Trello->Action->postType;
@@ -593,7 +644,7 @@ class DataProcessor
 					}
 				}
 
-				// set the metavalues in one query
+				// set the metavalues in one query for better performance
 				global $wpdb;
 				$customFields = [];
 				$placeHodlers = [];
@@ -610,6 +661,10 @@ class DataProcessor
 		return $processInfo;
 	}
 
+	/**
+	 * Batch process all trello actions from the specified organization into an action post.
+	 * TVP_TD()->Trello->Action->postType;
+	 */
 	public function addUpdateActions($processAll = false, $boardFilter = [], $actionFilter = [])
 	{
 		// global $wpdb;
@@ -739,6 +794,10 @@ class DataProcessor
 		return $processed;
 	}
 
+	/**
+	 * Function to delete all action posts programatically
+	 * TVP_TD()->Trello->Action->postType;
+	 */
 	public function deleteAllActions()
 	{
 		global $wpdb;
@@ -786,6 +845,9 @@ class DataProcessor
 		];
 	}
 
+	/**
+	 * Check for user duplicates
+	 */
 	public function checkForUserDuplicates()
 	{
 		$users = get_users([ 'role__in' => [ TVP_TD()->Member->Role->role ], 'fields' => 'ids' ]);
@@ -807,6 +869,9 @@ class DataProcessor
 		return $duplicates;
 	}
 
+	/**
+	 * Check for card duplicates
+	 */
 	public function checkForCardDuplicates()
 	{
 		$terms = get_terms([
@@ -855,6 +920,9 @@ class DataProcessor
 		return $duplicates;
 	}
 
+	/**
+	 * Check for action duplicates
+	 */
 	public function checkForActionDuplicates()
 	{
 		$posts = get_posts([
@@ -878,35 +946,4 @@ class DataProcessor
 
 		return $duplicates;
 	}
-	// public function ajaxDataProcessor()
-	// {
-	// 	if (isset($_GET['request'])) {
-	// 		$response = false;
-	//
-	// 		switch ($_GET['request']) {
-	// 			case 'addUpdateMembers':
-	// 				$response = $this->addUpdateMembers();
-	// 				break;
-	// 			case 'addUpdateBoards':
-	// 				$response = $this->addUpdateBoards();
-	// 				break;
-	// 			default:
-	// 				header('HTTP/1.1 500 Request not specified');
-	// 				header('Content-Type: application/json; charset=UTF-8');
-	// 				die(json_encode(['message' => 'Request not specified.', 'code' => 401]));
-	// 				break;
-	// 		}
-	//
-	// 		header('HTTP/1.1 200 OK');
-	// 		header('Content-Type: application/json; charset=UTF-8');
-	// 		die(json_encode(['data' => json_encode($response), 'code' => 200]));
-	// 	} else {
-	// 		header('HTTP/1.1 500 Request not specified');
-	// 		header('Content-Type: application/json; charset=UTF-8');
-	// 		die(json_encode(['message' => 'Request not specified.', 'code' => 401]));
-	// 	}
-	//
-	// 	// Don't forget to always exit in the ajax function.
-	// 	wp_die();
-	// }
 }

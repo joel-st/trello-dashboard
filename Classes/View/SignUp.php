@@ -30,12 +30,11 @@ class SignUp
 	{
 	}
 
+	/**
+	 * Get the signup content if the visitor is not logged in
+	 */
 	public function getSignUpContent()
 	{
-		// if ($background = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-signup-background', 'options')) {
-		// 	$backgroundUrl = $background['url'];
-		// 	$backgroundStyle = 'style="background-image: url('.$backgroundUrl.')"';
-		// }
 		$signup = '<div class="tvptd__dashboard tvptd__dashboard--signup">';
 
 		$signup .= '<header class="tvptd__header">';

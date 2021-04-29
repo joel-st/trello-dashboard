@@ -24,6 +24,13 @@ class Cron
 	/**
 	 * Initalization
 	 * Checkout the hooks and actions to understand how this class initializes itself.
+	 * TODO: setup cron scripts to fetch data on intervals
+	 * Cron jobs for all those functions:
+	 * TVP_TD()->Trello->DataProcessor->addUpdateMembers()
+	 * TVP_TD()->Trello->DataProcessor->addUpdateBoards()
+	 * TVP_TD()->Trello->DataProcessor->addUpdateLists()
+	 * TVP_TD()->Trello->DataProcessor->addUpdateCards()
+	 * TVP_TD()->Trello->DataProcessor->addUpdateActions()
 	 */
 	public function run()
 	{

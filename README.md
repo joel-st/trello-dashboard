@@ -12,7 +12,8 @@ The plugin needs the following dependencies in order to run properly:
 TVP Trello Dashboard base structure:
 * `./tvp-trello-dashboard.php` Initializes the main plugin class and specifies spl_autoload_register class loader for this project. If plugin is loaded, plugin data is available via `TVP_TD()`;
 * `./Classes` Plugin classes.
-* `./assets` Plugin scripts, styles and media
+* `./.build` Plugin scripts, styles and media
+* `./assets` Compiled plugin scripts, styles and media
 * `./languages` Plugin internationalization data
 
 ## Features
@@ -23,4 +24,12 @@ TVP Trello Dashboard base structure:
 
 ## Installation
 
-Clone the repository in your WordPress instance in `wp-content/plugins/`. Activate the plugin trough the WordPress admin dashboard
+* Clone the repository in your WordPress instance in `wp-content/plugins/`.
+* Activate the plugin trough the WordPress admin dashboard
+
+### Development
+Runs with `Node v14.16.1`, `NPM 6.14.12`, `Gulp ^4.0`
+* Clone the repository
+* Navigate into the repository within terminal
+* Run command `npm install` from terminal
+* Run `gulp` from terminal.

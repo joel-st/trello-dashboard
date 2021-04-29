@@ -34,6 +34,9 @@ class Dashboard
 		add_action('init', [$this, 'loadDashboard']);
 	}
 
+	/**
+	 * Getter function to get the dashboard permalink.
+	 */
 	public function getPermalink()
 	{
 		$dashboardSlug = get_field(TVP_TD()->Options->DashboardManager->optionPrefix . '-dashboard-slug', 'options');
@@ -47,6 +50,9 @@ class Dashboard
 		return $dashboardUrl;
 	}
 
+	/**
+	 * Check if current page is dashboard page.
+	 */
 	public function isDashboard()
 	{
 		$currentUrl = home_url($_SERVER['REQUEST_URI']);
@@ -58,6 +64,10 @@ class Dashboard
 		return false;
 	}
 
+	/**
+	 * Redirect allways to dashboard permalink with slash at the end.
+	 * E.g. https://tvp.local/trello-dashboard => https://tvp.local/trello-dashboard/
+	 */
 	public function redirect()
 	{
 		if (home_url($_SERVER['REQUEST_URI']) === untrailingslashit($this->getPermalink())) {
@@ -66,6 +76,10 @@ class Dashboard
 		}
 	}
 
+	/**
+	 * Initial loading screen for dashboard since we have to load the dashboard via ajax to use trello authentication.
+	 * This function builds the dashboard as an own template and does not respect any other stuff from active themes and/or plugins.
+	 */
 	public function loadDashboard()
 	{
 		global $wp_query;
@@ -89,6 +103,9 @@ class Dashboard
 		}
 	}
 
+	/**
+	 * Get the dashboard contents. The Overview and Statistics will be loaded via ajax since it will need time to collect all data.
+	 */
 	public function getDashboardContent()
 	{
 		$content = '<div class="tvptd__dashboard tvptd__dashboard--overview">';
@@ -138,6 +155,9 @@ class Dashboard
 		return $content;
 	}
 
+	/**
+	 * Get latest news.
+	 */
 	public function getLatestNews()
 	{
 		$content = '<div class="tvptd__widget tvptd__widget--latest-news" id="tvptd-latest-news">';
@@ -171,6 +191,9 @@ class Dashboard
 		return $content;
 	}
 
+	/**
+	 * Get useful information.
+	 */
 	public function getUsefulInformation()
 	{
 		$content = '<div class="tvptd__widget tvptd__widget--useful-information" id="tvptd-useful-information">';
@@ -205,6 +228,9 @@ class Dashboard
 		return $content;
 	}
 
+	/**
+	 * Get volunteer resources.
+	 */
 	public function getVolunteerResources()
 	{
 		$content = '<div class="tvptd__widget tvptd__widget--volunteer-resources" id="tvptd-volunteer-resources">';
@@ -239,6 +265,9 @@ class Dashboard
 		return $content;
 	}
 
+	/**
+	 * Get help needed.
+	 */
 	public function getHelpNeeded()
 	{
 		$content = '<div class="tvptd__widget tvptd__widget--help-needed" id="tvptd-help-needed">';
@@ -273,6 +302,10 @@ class Dashboard
 		return $content;
 	}
 
+	/**
+	 * Get dashboard template header.
+	 * Enqueue styles.
+	 */
 	public function getHeader()
 	{
 		$header = '<head>';
@@ -287,6 +320,10 @@ class Dashboard
 		return $header;
 	}
 
+	/**
+	 * Get dashboard template footer.
+	 * Enqueue jQuery, dashbaord scripts, trello client.js and output plugin vars as javascript vars.
+	 */
 	public function getFooter()
 	{
 		$tvpTdVars = TVP_TD()->getTdVars();
@@ -297,6 +334,9 @@ class Dashboard
 		return $footer;
 	}
 
+	/**
+	 * Get the user profile component
+	 */
 	public function getUserProfile()
 	{
 		$currentUser = wp_get_current_user();
@@ -325,6 +365,10 @@ class Dashboard
 		return $profile;
 	}
 
+	/**
+	 * Get the logo set in the WordPress customizer.
+	 * TODO: output page title if no custom log is set.
+	 */
 	public function getBrand()
 	{
 		$brand = '<div class="tvptd__brand">';
@@ -334,6 +378,10 @@ class Dashboard
 		return $brand;
 	}
 
+	/**
+	 * Get the overview. Only the markup, content will be loaded trough ajax to optimize performance.
+	 * TODO: define time ranges and respect it within the ajax call
+	 */
 	public function getOrganizationOverview()
 	{
 		$organizationOverview = '<div class="tvptd__widget tvptd__widget--organization-overview" id="tvptd-organization-overview">';
@@ -360,6 +408,10 @@ class Dashboard
 		return $organizationOverview;
 	}
 
+	/**
+	 * Get the statistics. Only the markup, content will be loaded trough ajax to optimize performance.
+	 * TODO: define time ranges and respect it within the ajax call
+	 */
 	public function getOrganizationStatistics()
 	{
 		$organizationStatistics = '<div class="tvptd__widget tvptd__widget--organization-overview" id="tvptd-organization-statistics">';
@@ -385,6 +437,9 @@ class Dashboard
 		return $organizationStatistics;
 	}
 
+	/**
+	 * Get the board list
+	 */
 	public function getBoardList()
 	{
 		$content = '<div class="tvptd__widget tvptd__widget--help-needed" id="tvptd-board-list">';

@@ -8,12 +8,11 @@ If you need to add a new subclass, add the file to the best matching directory. 
 * Set namespace `namespace TVP\TrelloDashboard\Admin;`
 * Define a `public function run() {…}` in your new class.
 * Add `Admin\New::class,` to `$this->loadClasses()` in the `run` function in `./Classes/Plugin.php`.
-* The new class will be loaded automatically and the `run`
- function will be executed automatically.
+* The new class will be loaded automatically and the `run` function will be executed automatically.
+
 Your new class will be autoloaded and available trough `TVP_TD()->Admin->New`;
 
 ## Contents
-
 Main Class: `TVP_TD()`
 
 The main class has several subclasses:

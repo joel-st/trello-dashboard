@@ -7,4 +7,5 @@ All stuff to fetch relevant data provided by the plugin.
 ## Contents
 
 The subclasses:
-* `./Member.php` => `TVP_TD()->API->Member` Registration of the endpoint if external apps need to access member data provided by the plugin.
+* `./Action.php` => `TVP_TD()->API->Action` Stuff to serve data if plugin classes or external apps need to access action data provided by the plugin.
+* `./Member.php` => `TVP_TD()->API->Member` Stuff to serve data if plugin classes or external apps need to access member data provided by the plugin.

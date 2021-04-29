@@ -1,3 +1,4 @@
+// trello authentication setup with trello client.js class
 export function initSignup() {
     const $signUpWithTrello = $('#tvptd-signup-with-trello');
 

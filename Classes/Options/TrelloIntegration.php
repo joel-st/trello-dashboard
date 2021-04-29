@@ -107,7 +107,9 @@ class TrelloIntegration
 
 		// metabox
 		add_action('acf/input/admin_head', [$this, 'registerIntegrationTestMetabox'], 10);
+		// TODO: add actions to fetch the trello data initialy by the wordpress admin dashboard
 		add_action('acf/input/admin_head', [$this, 'registerRunCronManuallyMetabox'], 10);
+		// TODO: add options to set cron job intervals
 	}
 
 	/**
@@ -144,6 +146,9 @@ class TrelloIntegration
 		return get_field($this->slugTrelloIntegration . '-organization-name', 'options');
 	}
 
+	/**
+	 * Getter function to get organization id
+	 */
 	public function getOrganizationId()
 	{
 		return get_field($this->slugTrelloIntegration . '-organization-id', 'options');

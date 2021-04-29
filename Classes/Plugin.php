@@ -155,6 +155,9 @@ class Plugin
 		return $password;
 	}
 
+	/**
+	 * Pass internationalized strings to use within javascript
+	 */
 	public function getJavaScriptInternationalization()
 	{
 		return [
@@ -166,6 +169,10 @@ class Plugin
 		];
 	}
 
+	/**
+	 * Plugin variables, mainly to use within javascript
+	 * TODO: propper setup of nonces for ajax calls
+	 */
 	public function getTdVars()
 	{
 		return [
