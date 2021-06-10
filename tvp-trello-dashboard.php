@@ -14,7 +14,7 @@
  * Description:       Customized Trello Dashboard for The Venus Project
  * Version:           0.0.1
  * Requires at least: 5.6
- * Requires PHP:      8.0
+ * Requires PHP:      7.4
  * Author:            The Venus Project
  * Author URI:        https://github.com/thevenusproject
  * License:           –--

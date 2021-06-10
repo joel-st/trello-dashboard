@@ -162,8 +162,12 @@ class Ajax
 			$response['trelloId'] = $member['id'];
 
 			// update email since we only can get the e-mail from the trello authentication
-			if (isset($member['email']) && empty(get_user_meta($userId, 'user_email', true))) {
-				update_user_meta($userId, 'user_email', $member['email']);
+			if (isset($member['email']) && empty(get_userdata($userId)->user_email)) {
+				$args = [
+					'ID'         => $userId,
+					'user_email' => esc_attr($member['email'])
+				];
+				wp_update_user($args);
 			}
 		} else {
 			header('HTTP/1.1 401 Bad request');

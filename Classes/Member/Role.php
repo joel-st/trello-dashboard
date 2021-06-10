@@ -77,9 +77,11 @@ class Role
 	 */
 	function suppressEmptyEmailError($errors, $update, $user)
 	{
-		$userObject = get_user_by('id', $user->ID);
-		if (in_array($this->role, $userObject->roles)) {
-			$errors->remove('empty_email');
+		if (isset($user->ID)) {
+			$userObject = get_user_by('id', $user->ID);
+			if (in_array($this->role, $userObject->roles)) {
+				$errors->remove('empty_email');
+			}
 		}
 	}
 
