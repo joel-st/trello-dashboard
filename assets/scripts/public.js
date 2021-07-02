@@ -184,6 +184,7 @@ function loadStatistics() {
   var $statisticsContent = $('#tvptd-organization-statistics .tvptd__widget-content');
   var $timeRange = $('#tvptd-organization-statistics-timerange');
   $timeRange.on('change', function (event) {
+    $timeRange.attr('disabled', true);
     loadStatistics(event.target.value);
   });
 
@@ -205,10 +206,12 @@ function loadStatistics() {
         var parsedResponse = JSON.parse(response);
         $statisticsContent.html(parsedResponse.html);
         $statisticsContent.removeClass('tvptd__widget-content--loading');
+        $timeRange.attr('disabled', false);
       },
       error: function error(_error2) {
         $statisticsContent.html('<section class="tvptd__widget-section">Oups, something went wrong wile loading the statistics.</section>');
         $statisticsContent.removeClass('tvptd__widget-content--loading');
+        $timeRange.attr('disabled', false);
       }
     });
   }

@@ -381,17 +381,18 @@ class Ajax
 		die(json_encode(['html' => $organizationStatistics, 'code' => 200]));
 	}
 
-	public function setTransient($key, $fetch, $timeRange, $value)
+	public function setTransient($key, $fetch, $subkey, $value)
 	{
 		if ($this->useTransients) {
-			$transiten = get_transient($key);
+			$transient = get_transient($key);
 
 			// reset transient if there is a more recent fetch
 			if (!isset($transient[$fetch])) {
-				$transient = [$fetch => []];
+				$transient = [];
+				$transient[$fetch] = [];
 			}
 
-			$transient[$fetch][$timeRange] = $value;
+			$transient[$fetch][$subkey] = $value;
 
 			set_transient($key, $transient, 60*60*24);
 		}

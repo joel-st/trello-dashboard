@@ -24,12 +24,23 @@
 
             .tvptd__header {
                 padding-top: var(--gutter);
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
+                text-align: center;
+
+                @media (min-width: 768px) {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    // order: 2;
+                }
             }
 
-            .tvptd__user-profile {}
+            .tvptd__user-profile {
+                margin-top: var(--gutter);
+
+                @media (min-width: 768px) {
+                    margin-top: 0;
+                }
+            }
 
             .tvptd__brand {
                 padding: var(--user-profile-padding) 0;
@@ -38,11 +49,13 @@
                 .custom-logo-link {
                     display: block;
                     vertical-align: top;
+                    text-align: center;
 
                     img {
-                        display: block;
+                        display: inline-block;
                         width: auto;
                         height: 100%;
+                        max-width: 100%;
                     }
                 }
             }

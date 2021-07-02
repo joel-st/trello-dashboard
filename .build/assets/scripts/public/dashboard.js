@@ -29,6 +29,7 @@ export function loadStatistics(timeRange = false) {
     const $timeRange = $('#tvptd-organization-statistics-timerange');
 
     $timeRange.on('change', (event) => {
+        $timeRange.attr('disabled', true);
         loadStatistics(event.target.value);
     });
 
@@ -51,10 +52,12 @@ export function loadStatistics(timeRange = false) {
                 const parsedResponse = JSON.parse(response);
                 $statisticsContent.html(parsedResponse.html);
                 $statisticsContent.removeClass('tvptd__widget-content--loading');
+                $timeRange.attr('disabled', false);
             },
             error: function (error) {
                 $statisticsContent.html('<section class="tvptd__widget-section">Oups, something went wrong wile loading the statistics.</section>');
                 $statisticsContent.removeClass('tvptd__widget-content--loading');
+                $timeRange.attr('disabled', false);
             }
         });
     }

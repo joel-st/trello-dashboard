@@ -423,7 +423,7 @@ class Dashboard
 		$lastYearEnd = new \DateTime("last day of last year");
 		$organizationStatistics .= '<option value="'. implode([$lastYearIni->format('Y-m-d'), $lastYearEnd->format('Y-m-d')], ',') .'">'.__('Last Year', 'tvp-trello-dashbaord').'</option>';
 
-		$organizationStatistics .= '<option value="">'.__('All Time', 'tvp-trello-dashbaord').'</option>';
+		// $organizationStatistics .= '<option value="">'.__('All Time', 'tvp-trello-dashbaord').'</option>';
 		$organizationStatistics .= '</select>';
 		$organizationStatistics .= '<span class="tvptd__widget-action-arrow"></span>';
 		$organizationStatistics .= '</div>';
