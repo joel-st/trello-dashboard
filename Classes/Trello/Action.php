@@ -415,12 +415,12 @@ class Action
 				'menu_name'         => __('Trello Boards', 'tvp-trello-dashboard'),
 			],
 			'hierarchical'      => true,
-			'public'            => true,
+			'public'            => false,
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => false,
-			'show_in_rest'      => true,
+			'show_in_rest'      => false,
 		]);
 
 		register_taxonomy($this->cardTaxonomy, $this->postType, [
@@ -441,12 +441,12 @@ class Action
 				'menu_name'         => __('Trello Cards', 'tvp-trello-dashboard'),
 			],
 			'hierarchical'      => true,
-			'public'            => true,
+			'public'            => false,
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => false,
-			'show_in_rest'      => true,
+			'show_in_rest'      => false,
 		]);
 
 		register_taxonomy($this->listTaxonomy, $this->postType, [
@@ -467,12 +467,12 @@ class Action
 				'menu_name'         => __('Trello Lists', 'tvp-trello-dashboard'),
 			],
 			'hierarchical'      => true,
-			'public'            => true,
+			'public'            => false,
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => false,
-			'show_in_rest'      => true,
+			'show_in_rest'      => false,
 		]);
 	}
 
@@ -506,8 +506,8 @@ class Action
 				'items_list'            => _x('Trello Actions list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'tvp-trello-dashboard'),
 			],
 			'description'        => __('Trello Action custom post type.'),
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public'             => false,
+			'publicly_queryable' => false,
 			'show_ui'            => true,
 			'show_in_menu'       => false,
 			'query_var'          => true,
