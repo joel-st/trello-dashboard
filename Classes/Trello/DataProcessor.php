@@ -55,8 +55,6 @@ class DataProcessor
 	 */
 	public function doAction()
 	{
-		delete_transient(TVP_TD()->prefix . '-transient');
-
 		echo '<div style="margin-left:180px;margin-top:10px;">';
 
 		if (isset($_GET['do']) && $_GET['do'] === 'members') {
