@@ -411,17 +411,17 @@ class Dashboard
 		$organizationStatistics .= '<div class="tvptd__widget-actions">';
 		$organizationStatistics .= '<div class="tvptd__widget-action tvptd__widget-action--select tvptd__widget-action--timerange">';
 		$organizationStatistics .= '<select id="tvptd-organization-statistics-timerange">';
-		$organizationStatistics .= '<option value="'. implode([date("Y-m-01"), date("Y-m-d")], ',') .'" selected="selected">'.__('This Month', 'tvp-trello-dashbaord').'</option>';
+		$organizationStatistics .= '<option value="'. implode(',', [date("Y-m-01"), date("Y-m-d")]) .'" selected="selected">'.__('This Month', 'tvp-trello-dashbaord').'</option>';
 
 		$lastMonthIni = new \DateTime("first day of last month");
 		$lastMonthEnd = new \DateTime("last day of last month");
-		$organizationStatistics .= '<option value="'. implode([$lastMonthIni->format('Y-m-d'), $lastMonthEnd->format('Y-m-d')], ',') .'">'.__('Last Month', 'tvp-trello-dashbaord').'</option>';
+		$organizationStatistics .= '<option value="'. implode(',', [$lastMonthIni->format('Y-m-d'), $lastMonthEnd->format('Y-m-d')]) .'">'.__('Last Month', 'tvp-trello-dashbaord').'</option>';
 
-		$organizationStatistics .= '<option value="'. implode([date("Y-01-01"), date("Y-m-d")], ',') .'">'.__('This Year', 'tvp-trello-dashbaord').'</option>';
+		$organizationStatistics .= '<option value="'. implode(',', [date("Y-01-01"), date("Y-m-d")]) .'">'.__('This Year', 'tvp-trello-dashbaord').'</option>';
 
 		$lastYearIni = new \DateTime("first day of last year");
 		$lastYearEnd = new \DateTime("last day of last year");
-		$organizationStatistics .= '<option value="'. implode([$lastYearIni->format('Y-m-d'), $lastYearEnd->format('Y-m-d')], ',') .'">'.__('Last Year', 'tvp-trello-dashbaord').'</option>';
+		$organizationStatistics .= '<option value="'. implode(',', [$lastYearIni->format('Y-m-d'), $lastYearEnd->format('Y-m-d')]) .'">'.__('Last Year', 'tvp-trello-dashbaord').'</option>';
 
 		// $organizationStatistics .= '<option value="">'.__('All Time', 'tvp-trello-dashbaord').'</option>';
 		$organizationStatistics .= '</select>';
