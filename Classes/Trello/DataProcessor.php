@@ -15,6 +15,7 @@ class DataProcessor
 	public $prefix = '';
 	public $optionPrefix = '';
 	public $options = '';
+	public $optionLastFetch = '';
 
 	/**
 	 * Set Class Properties
@@ -23,6 +24,7 @@ class DataProcessor
 	{
 		$this->prefix = TVP_TD()->prefix . '-data-processor';
 		$this->optionPrefix = $this->prefix;
+		$this->optionLastFetch = TVP_TD()->prefix . '-last-fetch';
 	}
 
 	/**
@@ -53,6 +55,8 @@ class DataProcessor
 	 */
 	public function doAction()
 	{
+		delete_transient(TVP_TD()->prefix . '-transient');
+
 		echo '<div style="margin-left:180px;margin-top:10px;">';
 
 		if (isset($_GET['do']) && $_GET['do'] === 'members') {
@@ -123,6 +127,8 @@ class DataProcessor
 		} else {
 			return false;
 		}
+
+		$this->updateOptionLastFetch();
 
 		return $processed;
 	}
@@ -324,18 +330,31 @@ class DataProcessor
 		}
 
 		$boards = TVP_TD()->Trello->API->getFromOrganization('boards?fields=name,desc,closed,dateClosed,id,url,memberships');
-		$processed = [];
+		$processed = [
+			'added' => [],
+			'exist' => [],
+		];
 
 		if ($boards) {
 			foreach ($boards as $key => $board) {
 				$board = (array)$board;
 				if (empty($filter) || (gettype($filter) === 'array' && in_array($board['id'], $filter))) {
 					if ($board['name'] !== 'z[Unused board]') {
-						$processed[] = $this->addUpdateBoard($board);
+						$nfo = $this->addUpdateBoard($board);
+
+						if ($nfo['added']) {
+							$processed['added'][] = $board['name'];
+						}
+
+						if ($nfo['exist']) {
+							$processed['exist'][] = $board['name'];
+						}
 					}
 				}
 			}
 		}
+
+		$this->updateOptionLastFetch();
 
 		return $processed;
 	}
@@ -455,6 +474,8 @@ class DataProcessor
 			}
 		}
 
+		$this->updateOptionLastFetch();
+
 		return $processed;
 	}
 
@@ -544,7 +565,10 @@ class DataProcessor
 		}
 
 		$boards = TVP_TD()->API->Action->getBoards();
-		$processed = [];
+		$processed = [
+			'added' => 0,
+			'exist' => 0,
+		];
 
 		foreach ($boards as $key => $board) {
 			if (empty($boardFilter) || (gettype($boardFilter) === 'array' && in_array($board['id'], $boardFilter))) {
@@ -553,11 +577,21 @@ class DataProcessor
 				foreach ($lists as $key => $list) {
 					$list = (array)$list;
 					if (empty($listFilter) || (gettype($listFilter) === 'array' && in_array($list['id'], $listFilter))) {
-						$processed[] = $this->addUpdateList($list);
+						$nfo = $this->addUpdateList($list);
+
+						if ($nfo['added']) {
+							$processed['added']++;
+						}
+
+						if ($nfo['exist']) {
+							$processed['exist']++;
+						}
 					}
 				}
 			}
 		}
+
+		$this->updateOptionLastFetch();
 
 		return $processed;
 	}
@@ -791,6 +825,8 @@ class DataProcessor
 		update_field($this->optionPrefix . '-processing', 'false', 'options');
 		$processed['time'] = round((microtime(true) - $startTime), 2) . 's';
 
+		$this->updateOptionLastFetch();
+
 		return $processed;
 	}
 
@@ -945,5 +981,13 @@ class DataProcessor
 		}
 
 		return $duplicates;
+	}
+
+	/**
+	 * Update tvpdt-last-fetch option
+	 */
+	public function updateOptionLastFetch()
+	{
+		update_option($this->optionLastFetch, time());
 	}
 }

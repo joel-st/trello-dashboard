@@ -131,7 +131,7 @@ class API
 		}
 
 		$organizationUrl = 'https://api.trello.com/1/organization/' . $this->organization . '?key=' . $this->key . '&token=' . $this->token;
-		$organizationData = file_get_contents($organizationUrl);
+		$organizationData = $this->curl($organizationUrl);
 
 		if (empty($organizationData) || !$parsedOrganizationData = json_decode($organizationData, true)) {
 			header('HTTP/1.1 500 No Content');

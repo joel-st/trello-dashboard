@@ -13,6 +13,7 @@ class Ajax
 	 * Class Properties
 	 */
 	public $prefix = '';
+	public $useTransients = true;
 
 	/**
 	 * Set Class Properties
@@ -29,6 +30,11 @@ class Ajax
 	 */
 	public function run()
 	{
+		if (!$this->useTransients) {
+			delete_transient(TVP_TD()->prefix . '-organization-overview');
+			delete_transient(TVP_TD()->prefix . '-organization-statistics');
+		}
+
 		add_action('wp_ajax_' . $this->prefix . '-get-signup-content', [$this, 'getSignUpContent']);
 		add_action('wp_ajax_nopriv_' . $this->prefix . '-get-signup-content', [$this, 'getSignUpContent']);
 		add_action('wp_ajax_' . $this->prefix . '-get-not-in-organization-content', [$this, 'getNotInOrganizationContent']);
@@ -218,6 +224,15 @@ class Ajax
 	 */
 	public function getOrganizationOverview()
 	{
+		$lastFetch = get_option(TVP_TD()->Trello->DataProcessor->optionLastFetch);
+		$transient = get_transient(TVP_TD()->prefix . '-organization-overview');
+
+		if (!empty($transient) && isset($transient[$lastFetch]) && isset($transient[$lastFetch]['all'])) {
+			header('HTTP/1.1 200 OK');
+			header('Content-Type: text/html; charset=utf-8');
+			die(json_encode(['html' => base64_decode($transient[$lastFetch]['all']), 'code' => 200]));
+		}
+
 		$organizationOverview = '<section class="tvptd__widget-section">';
 		$memberTotal = TVP_TD()->API->Member->getMemberTotal();
 		$memberTotalAtLeastOneBoard = TVP_TD()->API->Action->getMemberTotalAtLeastOneBoard();
@@ -230,6 +245,8 @@ class Ajax
 		$organizationOverview .= '<p>'.sprintf(__('Total members performed at least 1 action: %s', 'tvp-trello-dashbaord'), '<b>'. $memberTotalAtLeastOneAction .'</b> ('. round(100 * $memberTotalAtLeastOneAction / $memberTotal) .'%)').'</p>';
 		$organizationOverview .= '</section>'; // .tvptd__widget-section
 
+		$this->setTransient(TVP_TD()->prefix . '-organization-overview', $lastFetch, 'all', base64_encode($organizationOverview));
+
 		header('HTTP/1.1 200 OK');
 		header('Content-Type: text/html; charset=utf-8');
 		die(json_encode(['html' => $organizationOverview, 'code' => 200]));
@@ -240,14 +257,29 @@ class Ajax
 	 * TODO: propper setup of ajax nonces and returns
 	 * TODO: connect the timerange from the dashboard markup for the statistics
 	 */
-	public function getOrganizationStatistics()
+	public function getOrganizationStatistics($timeRange = false)
 	{
+
+		if (isset($_GET['timeRange']) && !empty($_GET['timeRange'])) {
+			$timeRange = explode(',', $_GET['timeRange']);
+		}
+
 		$metaQueryDate = [
 			[
-				'value' => [date('Y-m-d', strtotime('-28 days')), date("Y-m-d", strtotime(date("d.m.Y")))],
+				'value' => $timeRange,
 				'compare' => 'BETWEEN',
 			]
 		];
+
+		$lastFetch = get_option(TVP_TD()->Trello->DataProcessor->optionLastFetch);
+		$transient = get_transient(TVP_TD()->prefix . '-organization-statistics');
+		$timeRangeKey = !empty($timeRange) ? implode('-', $timeRange) : 'all';
+
+		if (!empty($transient) && isset($transient[$lastFetch]) && isset($transient[$lastFetch][$timeRangeKey])) {
+			header('HTTP/1.1 200 OK');
+			header('Content-Type: text/html; charset=utf-8');
+			die(json_encode(['html' => base64_decode($transient[$lastFetch][$timeRangeKey]), 'code' => 200]));
+		}
 
 		$organizationStatistics = '<section class="tvptd__widget-section">';
 		$organizationStatistics .= '<p>'.sprintf(
@@ -265,6 +297,7 @@ class Ajax
 		$organizationStatistics .= '</section>'; // .tvptd__widget-section
 
 		$organizationStatistics .= '<section class="tvptd__widget-section">';
+		$numberOfPeopleAdded = TVP_TD()->API->Member->getMemberAddedTotal($metaQueryDate);
 		$organizationStatistics .= '<p><b>'.sprintf(__('Number of people added to the organization: %s', 'tvp-trello-dashbaord'), TVP_TD()->API->Member->getMemberAddedTotal($metaQueryDate)).'</b></p>';
 
 		$members = TVP_TD()->API->Member->getMember($metaQueryDate);
@@ -281,40 +314,47 @@ class Ajax
 
 		$organizationStatistics .= '</section>'; // .tvptd__widget-section
 
-		$organizationStatistics .= '<section class="tvptd__widget-section">';
-		$organizationStatistics .= '<p><b>'.sprintf(__('Out of the %s added, how many joined boards', 'tvp-trello-dashbaord'), sprintf(__('%s people', 'tvp-trello-dashbaord'), TVP_TD()->API->Member->getMemberAddedTotal($metaQueryDate))).'</b></p>';
-		$memberAddedJoinedBoard = TVP_TD()->API->Action->getMemberAddedJoinedBoard($metaQueryDate);
-		if (!empty($memberAddedJoinedBoard)) {
-			$organizationStatistics .= '<ul class="tvptd__widget-list tvptd__widget-list--added-members-joined-board">';
-			foreach ($memberAddedJoinedBoard as $boardName => $data) {
-				$organizationStatistics .= '<li class="tvptd__widget-list-item">';
-				$organizationStatistics .= $boardName . ': ' . $data['number'] . ' (' . $data['percentual'] . '%)';
-				$organizationStatistics .= '</li>';
-			}
-			$organizationStatistics .= '</ul>';
-		}
-		// $organizationStatistics .= $memberAddedJoinedBoard['number'] . ' (' . $memberAddedJoinedBoard['percentual'] . '%)';
-		$organizationStatistics .= '</section>'; // .tvptd__widget-section
+		if ($numberOfPeopleAdded) {
+			$memberAddedJoinedBoard = TVP_TD()->API->Action->getMemberAddedJoinedBoard($metaQueryDate);
 
-		$organizationStatistics .= '<section class="tvptd__widget-section">';
-		$organizationStatistics .= '<p><b>'.sprintf(__('Out of the %s added, how many performed actions', 'tvp-trello-dashbaord'), sprintf(__('%s people', 'tvp-trello-dashbaord'), TVP_TD()->API->Member->getMemberAddedTotal($metaQueryDate))).'</b></p>';
-		$memberAddedPerformedActions = TVP_TD()->API->Action->getMemberAddedPerformedActions($metaQueryDate);
-		if (!empty($memberAddedPerformedActions)) {
-			$organizationStatistics .= '<ul class="tvptd__widget-list tvptd__widget-list--added-members-performed-actions">';
-			foreach ($memberAddedPerformedActions as $key => $data) {
-				$organizationStatistics .= '<li class="tvptd__widget-list-item">';
-				if ($key == '0') {
-					$organizationStatistics .= __('0 actions', 'tvp-trello-dashboard');
-				} else {
-					$organizationStatistics .= sprintf(_n('At least %s action', 'At least %s actions', (int)$key, 'tvp-trello-dashboard'), $key);
+			if ($memberAddedJoinedBoard) {
+				$organizationStatistics .= '<section class="tvptd__widget-section">';
+				$organizationStatistics .= '<p><b>'.sprintf(__('Out of the %s added, how many joined boards', 'tvp-trello-dashbaord'), sprintf(__('%s people', 'tvp-trello-dashbaord'), TVP_TD()->API->Member->getMemberAddedTotal($metaQueryDate))).'</b></p>';
+				if (!empty($memberAddedJoinedBoard)) {
+					$organizationStatistics .= '<ul class="tvptd__widget-list tvptd__widget-list--added-members-joined-board">';
+					foreach ($memberAddedJoinedBoard as $boardName => $data) {
+						$organizationStatistics .= '<li class="tvptd__widget-list-item">';
+						$organizationStatistics .= $boardName . ': ' . $data['number'] . ' (' . $data['percentual'] . '%)';
+						$organizationStatistics .= '</li>';
+					}
+					$organizationStatistics .= '</ul>';
 				}
-
-				$organizationStatistics .= ': ' . $data['number'] . ' (' . $data['percentual'] . '%)';
-				$organizationStatistics .= '</li>';
+				// $organizationStatistics .= $memberAddedJoinedBoard['number'] . ' (' . $memberAddedJoinedBoard['percentual'] . '%)';
+				$organizationStatistics .= '</section>'; // .tvptd__widget-section
 			}
-			$organizationStatistics .= '</ul>';
+
+			$memberAddedPerformedActions = TVP_TD()->API->Action->getMemberAddedPerformedActions($metaQueryDate);
+			if ($memberAddedPerformedActions) {
+				$organizationStatistics .= '<section class="tvptd__widget-section">';
+				$organizationStatistics .= '<p><b>'.sprintf(__('Out of the %s added, how many performed actions', 'tvp-trello-dashbaord'), sprintf(__('%s people', 'tvp-trello-dashbaord'), TVP_TD()->API->Member->getMemberAddedTotal($metaQueryDate))).'</b></p>';
+				if (!empty($memberAddedPerformedActions)) {
+					$organizationStatistics .= '<ul class="tvptd__widget-list tvptd__widget-list--added-members-performed-actions">';
+					foreach ($memberAddedPerformedActions as $key => $data) {
+						$organizationStatistics .= '<li class="tvptd__widget-list-item">';
+						if ($key == '0') {
+							$organizationStatistics .= __('0 actions', 'tvp-trello-dashboard');
+						} else {
+							$organizationStatistics .= sprintf(_n('At least %s action', 'At least %s actions', (int)$key, 'tvp-trello-dashboard'), $key);
+						}
+
+						$organizationStatistics .= ': ' . $data['number'] . ' (' . $data['percentual'] . '%)';
+						$organizationStatistics .= '</li>';
+					}
+					$organizationStatistics .= '</ul>';
+				}
+				$organizationStatistics .= '</section>'; // .tvptd__widget-section
+			}
 		}
-		$organizationStatistics .= '</section>'; // .tvptd__widget-section
 
 		$organizationStatistics .= '<section class="tvptd__widget-section">';
 		$organizationStatistics .= '<p><b>'.__('Number of actions within each board', 'tvp-trello-dashbaord').'</b></p>';
@@ -330,8 +370,26 @@ class Ajax
 		}
 		$organizationStatistics .= '</section>'; // .tvptd__widget-section
 
+		$this->setTransient(TVP_TD()->prefix . '-organization-statistics', $lastFetch, $timeRangeKey, base64_encode($organizationStatistics));
+
 		header('HTTP/1.1 200 OK');
 		header('Content-Type: text/html; charset=utf-8');
 		die(json_encode(['html' => $organizationStatistics, 'code' => 200]));
+	}
+
+	public function setTransient($key, $fetch, $timeRange, $value)
+	{
+		if ($this->useTransients) {
+			$transiten = get_transient($key);
+
+			// reset transient if there is a more recent fetch
+			if (!isset($transient[$fetch])) {
+				$transient = [$fetch => []];
+			}
+
+			$transient[$fetch][$timeRange] = $value;
+
+			set_transient($key, $transient, 60*60*24);
+		}
 	}
 }

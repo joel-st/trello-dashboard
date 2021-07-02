@@ -28,6 +28,9 @@ class Action
 	public function run()
 	{
 		// var_dump('API Member');
+		add_action('init', function () {
+			// var_dump($this->getBoardTotal(''));
+		});
 	}
 
 	public function getActions($metaQuery = [])
@@ -88,12 +91,38 @@ class Action
 		return get_term_by('name', $id, TVP_TD()->Trello->Action->listTaxonomy);
 	}
 
-	public function getBoardTotal()
+	public function getBoardTotal($timeRange = false)
 	{
-		$numTerms = wp_count_terms(TVP_TD()->Trello->Action->boardTaxonomy, [
+		$args = [
 			'hide_empty'=> false,
-		]);
+		];
+
+		if (!empty($timeRange)) {
+			$args['meta_query'] = [
+				[
+					'key' => TVP_TD()->Trello->Action->optionPrefixBoard . '-date',
+					'value' => $timeRange,
+					'type' => 'date',
+					'compare' => 'between',
+				]
+			];
+		}
+
+		$numTerms = wp_count_terms(TVP_TD()->Trello->Action->boardTaxonomy, $args);
 		return $numTerms;
+	}
+
+	public function getBoardsInBetweenDates($timeRange = false)
+	{
+		$boards = $this->getBoards([
+			[
+				'key' => TVP_TD()->Trello->Action->optionPrefixBoard . '-date',
+				'value' => $timeRange,
+				'type' => 'date',
+				'compare' => 'between',
+			]
+		]);
+		return $boards;
 	}
 
 
@@ -117,18 +146,33 @@ class Action
 		return $numPosts;
 	}
 
-	public function getMemberTotalAtLeastOneBoard()
+	public function getMemberTotalAtLeastOneBoard($timeRange = false)
 	{
 		$memberTotalAtLeastOneBoard = [];
 		$boards = $this->getBoards();
+
+		if (!empty($timeRange)) {
+			$rangeMembers = TVP_TD()->API->Member->getMembersInBetweenDates($timeRange);
+			$rangeMemberIds = [];
+			foreach ($rangeMembers as $key => $userId) {
+				$rangeMemberIds[] = get_field(TVP_TD()->Member->UserMeta->optionsPrefix . '-id', 'user_' . $userId);
+			}
+		}
 
 		$taxonomy = TVP_TD()->Trello->Action->boardTaxonomy;
 		foreach ($boards as $key => $board) {
 			$boardMembers = explode(',', get_field(TVP_TD()->Trello->Action->optionPrefixBoard . '-members', $taxonomy . '_' . $board['termId']));
 			foreach ($boardMembers as $key => $id) {
-				$memberTotalAtLeastOneBoard[$id] = isset($memberTotalAtLeastOneBoard[$id]) ? $memberTotalAtLeastOneBoard[$id]++ : 0;
+				if (!empty($timeRange)) {
+					if (in_array($id, $rangeMemberIds)) {
+						$memberTotalAtLeastOneBoard[$id] = isset($memberTotalAtLeastOneBoard[$id]) ? $memberTotalAtLeastOneBoard[$id]++ : 0;
+					}
+				} else {
+					$memberTotalAtLeastOneBoard[$id] = isset($memberTotalAtLeastOneBoard[$id]) ? $memberTotalAtLeastOneBoard[$id]++ : 0;
+				}
 			}
 		}
+
 		return count($memberTotalAtLeastOneBoard);
 	}
 

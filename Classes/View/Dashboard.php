@@ -388,15 +388,6 @@ class Dashboard
 
 		$organizationOverview .= '<header class="tvptd__widget-head">';
 		$organizationOverview .= '<h3 class="tvptd__widget-title">'.__('Organization Overview', 'tvp-trello-dashbaord').'</h3>';
-		$organizationOverview .= '<div class="tvptd__widget-actions">';
-		$organizationOverview .= '<div class="tvptd__widget-action tvptd__widget-action--select">';
-		$organizationOverview .= '<select>';
-		$organizationOverview .= '<option>'.__('All Time', 'tvp-trello-dashbaord').'</option>';
-		$organizationOverview .= '<option>'.__('This Month', 'tvp-trello-dashbaord').'</option>';
-		$organizationOverview .= '</select>';
-		$organizationOverview .= '<span class="tvptd__widget-action-arrow"></span>';
-		$organizationOverview .= '</div>';
-		$organizationOverview .= '</div>';
 		$organizationOverview .= '</header>'; // .widget__head
 
 		$organizationOverview .= '<main class="tvptd__widget-content tvptd__widget-content--loading">';
@@ -418,10 +409,21 @@ class Dashboard
 		$organizationStatistics .= '<header class="tvptd__widget-head">';
 		$organizationStatistics .= '<h3 class="tvptd__widget-title">'.__('Organization Statistics', 'tvp-trello-dashbaord').'</h3>';
 		$organizationStatistics .= '<div class="tvptd__widget-actions">';
-		$organizationStatistics .= '<div class="tvptd__widget-action tvptd__widget-action--select">';
-		$organizationStatistics .= '<select>';
-		$organizationStatistics .= '<option>'.__('Last 7 Days', 'tvp-trello-dashbaord').'</option>';
-		$organizationStatistics .= '<option>'.__('This Month', 'tvp-trello-dashbaord').'</option>';
+		$organizationStatistics .= '<div class="tvptd__widget-action tvptd__widget-action--select tvptd__widget-action--timerange">';
+		$organizationStatistics .= '<select id="tvptd-organization-statistics-timerange">';
+		$organizationStatistics .= '<option value="'. implode([date("Y-m-01"), date("Y-m-d")], ',') .'" selected="selected">'.__('This Month', 'tvp-trello-dashbaord').'</option>';
+
+		$lastMonthIni = new \DateTime("first day of last month");
+		$lastMonthEnd = new \DateTime("last day of last month");
+		$organizationStatistics .= '<option value="'. implode([$lastMonthIni->format('Y-m-d'), $lastMonthEnd->format('Y-m-d')], ',') .'">'.__('Last Month', 'tvp-trello-dashbaord').'</option>';
+
+		$organizationStatistics .= '<option value="'. implode([date("Y-01-01"), date("Y-m-d")], ',') .'">'.__('This Year', 'tvp-trello-dashbaord').'</option>';
+
+		$lastYearIni = new \DateTime("first day of last year");
+		$lastYearEnd = new \DateTime("last day of last year");
+		$organizationStatistics .= '<option value="'. implode([$lastYearIni->format('Y-m-d'), $lastYearEnd->format('Y-m-d')], ',') .'">'.__('Last Year', 'tvp-trello-dashbaord').'</option>';
+
+		$organizationStatistics .= '<option value="">'.__('All Time', 'tvp-trello-dashbaord').'</option>';
 		$organizationStatistics .= '</select>';
 		$organizationStatistics .= '<span class="tvptd__widget-action-arrow"></span>';
 		$organizationStatistics .= '</div>';

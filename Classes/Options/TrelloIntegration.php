@@ -63,7 +63,7 @@ class TrelloIntegration
 					'name' => $this->optionPrefix . '-organization-id',
 					'label' => __('Trello Organization ID', 'tvp-trello-dashboard'),
 					'type' => 'text',
-					'readonly' => 1
+					// 'readonly' => 1
 				],
 			],
 			'location' => [
@@ -108,7 +108,7 @@ class TrelloIntegration
 		// metabox
 		add_action('acf/input/admin_head', [$this, 'registerIntegrationTestMetabox'], 10);
 		// TODO: add actions to fetch the trello data initialy by the wordpress admin dashboard
-		add_action('acf/input/admin_head', [$this, 'registerRunCronManuallyMetabox'], 10);
+		// add_action('acf/input/admin_head', [$this, 'registerRunCronManuallyMetabox'], 10);
 		// TODO: add options to set cron job intervals
 	}
 

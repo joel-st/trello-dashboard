@@ -45,15 +45,31 @@ class Member
 		return $members;
 	}
 
-	public function getMemberTotal()
+	public function getMemberTotal($timeRange = false)
 	{
-		$memberTotal = count_users();
-		return $memberTotal['avail_roles'][TVP_TD()->Member->Role->role];
+		if (empty($timeRange)) {
+			$memberTotal = count_users();
+			return $memberTotal['avail_roles'][TVP_TD()->Member->Role->role];
+		} else {
+			$members = $this->getMembersInBetweenDates($timeRange);
+			return count($members);
+		}
 	}
 
 	public function getMemberAddedTotal($metaQuery = [])
 	{
 		$members = $this->getMember($metaQuery);
 		return count($members);
+	}
+
+	public function getMembersInBetweenDates($timeRange = false)
+	{
+		return get_users([
+			'fields' => 'ID',
+			'role' => TVP_TD()->Member->Role->role,
+			'meta_key' => TVP_TD()->Member->UserMeta->optionsPrefix . '-date',
+			'meta_value' => $timeRange,
+			'meta_compare' => 'between'
+		]);
 	}
 }

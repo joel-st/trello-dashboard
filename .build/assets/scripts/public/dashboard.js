@@ -3,6 +3,7 @@ export function loadOverview() {
     const $overviewContent = $('#tvptd-organization-overview .tvptd__widget-content');
 
     if($overview) {
+
         $.ajax({
             type: "GET",
             url: tvpTdVars.ajaxUrl,
@@ -22,16 +23,29 @@ export function loadOverview() {
     }
 }
 
-export function loadStatistics() {
+export function loadStatistics(timeRange = false) {
     const $statistics = $('#tvptd-organization-statistics');
     const $statisticsContent = $('#tvptd-organization-statistics .tvptd__widget-content');
+    const $timeRange = $('#tvptd-organization-statistics-timerange');
+
+    $timeRange.on('change', (event) => {
+        loadStatistics(event.target.value);
+    });
+
+    if(!timeRange) {
+        timeRange = $timeRange.val();
+    }
 
     if($statistics) {
+        $statisticsContent.addClass('tvptd__widget-content--loading');
+        $statisticsContent.html('<div class="tvptd__spinner spinner"></div>');
+
         $.ajax({
             type: "GET",
             url: tvpTdVars.ajaxUrl,
             data: {
                 action: 'tvptd-public-ajax-get-organization-statistics',
+                timeRange: timeRange,
             },
             success: function (response) {
                 const parsedResponse = JSON.parse(response);

@@ -122,6 +122,7 @@ function remove(name) {
   remove: remove
 });
 // CONCATENATED MODULE: ./.build/assets/scripts/public/trello.js
+// trello authentication setup with trello client.js class
 function initSignup() {
   var $signUpWithTrello = $('#tvptd-signup-with-trello');
 
@@ -178,15 +179,27 @@ function loadOverview() {
   }
 }
 function loadStatistics() {
+  var timeRange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
   var $statistics = $('#tvptd-organization-statistics');
   var $statisticsContent = $('#tvptd-organization-statistics .tvptd__widget-content');
+  var $timeRange = $('#tvptd-organization-statistics-timerange');
+  $timeRange.on('change', function (event) {
+    loadStatistics(event.target.value);
+  });
+
+  if (!timeRange) {
+    timeRange = $timeRange.val();
+  }
 
   if ($statistics) {
+    $statisticsContent.addClass('tvptd__widget-content--loading');
+    $statisticsContent.html('<div class="tvptd__spinner spinner"></div>');
     $.ajax({
       type: "GET",
       url: tvpTdVars.ajaxUrl,
       data: {
-        action: 'tvptd-public-ajax-get-organization-statistics'
+        action: 'tvptd-public-ajax-get-organization-statistics',
+        timeRange: timeRange
       },
       success: function success(response) {
         var parsedResponse = JSON.parse(response);
@@ -286,7 +299,7 @@ function logout() {
 (function ($) {
   $(function () {
     var $tvpTd = $('#tvptd-loading');
-    var isLoading = $tvpTd.length;
+    var isLoading = $tvpTd.length; // ajax call to load the signup markup
 
     function loadSignUp() {
       $.ajax({
@@ -302,7 +315,8 @@ function logout() {
           trello.initSignup();
         }
       });
-    }
+    } // ajax call to load the not in organization markup
+
 
     function loadNotInOrganization() {
       $.ajax({
@@ -321,20 +335,27 @@ function logout() {
     }
 
     if (isLoading) {
+      // check for exisiting authentication
       var tokenInLocalStorage = localStorage.trello_token ? localStorage.trello_token : false;
-      var authCookie = cookie.get(tvpTdVars.authCookie);
+      var authCookie = cookie.get(tvpTdVars.authCookie); // if token is in local storage set it for the trello client.js Trello class
+      // else load the signup page
 
       if (tokenInLocalStorage) {
-        Trello.setToken(tokenInLocalStorage);
+        Trello.setToken(tokenInLocalStorage); // get info about the current member if authorized
+        // if not logout to remove the token in the local storage
 
         if (Trello.authorized()) {
           Trello.members.get('me', function (member) {
+            // check if the member is in the specified trello organization
+            // if not load the not in organization markup
             if (member.idOrganizations.includes(tvpTdVars.trelloOrganization)) {
+              // get all the memberships from the organization and find the membership for the current member
+              // if found pass both, member and membership to the login function
               Trello.get('organizations/' + tvpTdVars.trelloOrganization + '/memberships', function (memberships) {
                 var match = memberships.filter(function (o) {
                   return o.idMember == member.id;
                 });
-                var membership = match ? match[0] : false;
+                var membership = match ? match[0] : false; // if membership was not found load the not in organization markup
 
                 if (membership) {
                   authentication.login(member, membership);

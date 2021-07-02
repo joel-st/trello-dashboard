@@ -617,6 +617,7 @@ class Action
 			if ($key === 'description') {
 				$customColumns[$key] = $title;
 				$customColumns['members'] = __('Members', 'tvp-trello-dashboard');
+				$customColumns['date'] = __('Date');
 			}
 			if ($key === 'cb' || $key === 'posts') {
 				$customColumns[$key] = $title;
@@ -630,6 +631,9 @@ class Action
 	{
 		if ($column == 'title') {
 			return '<a href="'.get_field($this->optionPrefixBoard . '-url', $this->boardTaxonomy . '_' . $termId).'" target="_blank">'.get_field($this->optionPrefixBoard . '-name', $this->boardTaxonomy . '_' . $termId).'</a>';
+		}
+		if ($column == 'date') {
+			return get_field($this->optionPrefixBoard . '-date', $this->boardTaxonomy . '_' . $termId);
 		}
 		if ($column == 'members') {
 			return count(explode(',', get_field(TVP_TD()->Trello->Action->optionPrefixBoard . '-members', $this->boardTaxonomy . '_' . $termId)));
