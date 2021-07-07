@@ -419,9 +419,8 @@ class Dashboard
 
 		$organizationStatistics .= '<option value="'. implode(',', [date("Y-01-01"), date("Y-m-d")]) .'">'.__('This Year', 'tvp-trello-dashbaord').'</option>';
 
-		$lastYearIni = new \DateTime("first day of last year");
-		$lastYearEnd = new \DateTime("last day of last year");
-		$organizationStatistics .= '<option value="'. implode(',', [$lastYearIni->format('Y-m-d'), $lastYearEnd->format('Y-m-d')]) .'">'.__('Last Year', 'tvp-trello-dashbaord').'</option>';
+		$lastYear = date("Y") - 1;
+		$organizationStatistics .= '<option value="'. implode(',', [$lastYear . '-01-01', $lastYear . '-12-31']) .'">'.__('Last Year', 'tvp-trello-dashbaord').'</option>';
 
 		// $organizationStatistics .= '<option value="">'.__('All Time', 'tvp-trello-dashbaord').'</option>';
 		$organizationStatistics .= '</select>';
