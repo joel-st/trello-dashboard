@@ -30,7 +30,7 @@ class Dashboard
 	 */
 	public function run()
 	{
-		add_action('init', [$this, 'redirect']);
+		// add_action('init', [$this, 'redirect']);
 		add_action('init', [$this, 'loadDashboard']);
 	}
 
