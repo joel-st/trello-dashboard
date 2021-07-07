@@ -394,7 +394,7 @@ class Ajax
 
 			$transient[$fetch][$subkey] = $value;
 
-			set_transient($key, $transient, 60*60*24);
+			set_transient($key, $transient);
 		}
 	}
 }
