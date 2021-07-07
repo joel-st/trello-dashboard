@@ -38,6 +38,10 @@ class DataProcessor
 
 		// add_action('init', [$this, 'addUpdateCards']);
 		add_action('admin_action_tvptd', [ $this, 'doAction' ]);
+
+		// cron
+		add_action('init', [$this, 'scheduleImport']);
+		add_action(TVP_TD()->prefix . '-cron-import', [ $this, 'cronImport']);
 	}
 
 	/**
@@ -987,5 +991,21 @@ class DataProcessor
 	public function updateOptionLastFetch()
 	{
 		update_option($this->optionLastFetch, time());
+	}
+
+	public function scheduleImport()
+	{
+		if (! wp_next_scheduled(TVP_TD()->prefix . '-cron-import')) {
+			wp_schedule_event(strtotime('02:00:00'), 'daily', TVP_TD()->prefix . '-cron-import');
+		}
+	}
+
+	public function cronImport()
+	{
+		$this->addUpdateMembers();
+		$this->addUpdateBoards();
+		$this->addUpdateLists();
+		$this->addUpdateCards();
+		$this->addUpdateActions();
 	}
 }

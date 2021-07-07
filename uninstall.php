@@ -29,3 +29,5 @@ if (!defined('ABSPATH')) {
 if (! defined('WP_UNINSTALL_PLUGIN')) {
 	exit;
 }
+
+wp_clear_scheduled_hook(TVP_TD()->prefix . '-cron-import');
