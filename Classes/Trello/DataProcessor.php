@@ -130,7 +130,9 @@ class DataProcessor
 			return false;
 		}
 
-		$this->updateOptionLastFetch();
+		if ($processed['added']) {
+			$this->updateOptionLastFetch();
+		}
 
 		return $processed;
 	}
@@ -337,6 +339,8 @@ class DataProcessor
 			'exist' => [],
 		];
 
+		$totalAdded = 0;
+
 		if ($boards) {
 			foreach ($boards as $key => $board) {
 				$board = (array)$board;
@@ -345,6 +349,7 @@ class DataProcessor
 						$nfo = $this->addUpdateBoard($board);
 
 						if ($nfo['added']) {
+							$totalAdded++;
 							$processed['added'][] = $board['name'];
 						}
 
@@ -356,7 +361,9 @@ class DataProcessor
 			}
 		}
 
-		$this->updateOptionLastFetch();
+		if ($totalAdded) {
+			$this->updateOptionLastFetch();
+		}
 
 		return $processed;
 	}
@@ -476,7 +483,9 @@ class DataProcessor
 			}
 		}
 
-		$this->updateOptionLastFetch();
+		if ($processed['added']) {
+			$this->updateOptionLastFetch();
+		}
 
 		return $processed;
 	}
@@ -593,7 +602,9 @@ class DataProcessor
 			}
 		}
 
-		$this->updateOptionLastFetch();
+		if ($processed['added']) {
+			$this->updateOptionLastFetch();
+		}
 
 		return $processed;
 	}
@@ -744,6 +755,8 @@ class DataProcessor
 		$boards = TVP_TD()->API->Action->getBoards();
 		$processed = [];
 
+		$totalAdded = 0;
+
 		if ($boards) {
 			foreach ($boards as $key => $board) {
 				$board = (array)$board;
@@ -789,6 +802,7 @@ class DataProcessor
 										$nfo = $this->addUpdateAction($action, $exists);
 
 										if ($nfo['added']) {
+											$totalAdded++;
 											$processed[$board['name']]['added']++;
 										}
 										if ($nfo['exist']) {
@@ -797,6 +811,7 @@ class DataProcessor
 									} elseif (!$exists) {
 										$nfo = $this->addUpdateAction($action, $exists);
 										if ($nfo['added']) {
+											$totalAdded++;
 											$processed[$board['name']]['added']++;
 										}
 									} else {
@@ -827,7 +842,9 @@ class DataProcessor
 		update_field($this->optionPrefix . '-processing', 'false', 'options');
 		$processed['time'] = round((microtime(true) - $startTime), 2) . 's';
 
-		$this->updateOptionLastFetch();
+		if ($totalAdded) {
+			$this->updateOptionLastFetch();
+		}
 
 		return $processed;
 	}
@@ -876,6 +893,8 @@ class DataProcessor
 
 		wp_defer_term_counting(false);
 		wp_defer_comment_counting(false);
+
+		$this->updateOptionLastFetch();
 
 		return [
 			'removed' => $removed,
