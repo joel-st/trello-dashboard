@@ -66,4 +66,6 @@ Runs with `Node v14.16.1`, `NPM 6.14.12`, `Gulp ^4.0`
 ---
 
 # Authors
-- [The Venus Project](https://trello.com/thevenusproject1/) – [Software Team](https://trello.com/b/I7DFoCYx/software-team) – [Dedicated Trello Card](https://trello.com/c/If7ALFK6/40-skills-database)
+* [The Venus Project](https://trello.com/thevenusproject1/)
+* [Software Team](https://trello.com/b/I7DFoCYx/software-team)
+* [Dedicated Trello Card](https://trello.com/c/If7ALFK6/40-skills-database)
