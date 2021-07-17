@@ -229,7 +229,8 @@ class Ajax
 	public function getOrganizationOverview()
 	{
 		$lastFetch = get_option(TVP_TD()->Trello->DataProcessor->optionLastFetch);
-		$transient = get_transient(TVP_TD()->prefix . '-organization-overview');
+		$transientKey = TVP_TD()->prefix . '-organization-overview';
+		$transient = get_transient($transientKey);
 
 		if (!empty($transient) && isset($transient[$lastFetch]) && isset($transient[$lastFetch]['all'])) {
 			header('HTTP/1.1 200 OK');
@@ -237,6 +238,15 @@ class Ajax
 			die(json_encode(['html' => base64_decode($transient[$lastFetch]['all']), 'code' => 200]));
 		}
 
+		$organizationOverview = $this->organizationOverview($lastFetch, $transientKey);
+
+		header('HTTP/1.1 200 OK');
+		header('Content-Type: text/html; charset=utf-8');
+		die(json_encode(['html' => $organizationOverview, 'code' => 200]));
+	}
+
+	public function organizationOverview($lastFetch, $transientKey)
+	{
 		$organizationOverview = '<section class="tvptd__widget-section">';
 		$memberTotal = TVP_TD()->API->Member->getMemberTotal();
 		$memberTotalAtLeastOneBoard = TVP_TD()->API->Action->getMemberTotalAtLeastOneBoard();
@@ -249,11 +259,9 @@ class Ajax
 		$organizationOverview .= '<p>'.sprintf(__('Total members performed at least 1 action: %s', 'tvp-trello-dashbaord'), '<b>'. $memberTotalAtLeastOneAction .'</b> ('. round(100 * $memberTotalAtLeastOneAction / $memberTotal) .'%)').'</p>';
 		$organizationOverview .= '</section>'; // .tvptd__widget-section
 
-		$this->setTransient(TVP_TD()->prefix . '-organization-overview', $lastFetch, 'all', base64_encode($organizationOverview));
+		$this->setTransient($transientKey, $lastFetch, 'all', base64_encode($organizationOverview));
 
-		header('HTTP/1.1 200 OK');
-		header('Content-Type: text/html; charset=utf-8');
-		die(json_encode(['html' => $organizationOverview, 'code' => 200]));
+		return $organizationOverview;
 	}
 
 	/**
@@ -263,17 +271,9 @@ class Ajax
 	 */
 	public function getOrganizationStatistics($timeRange = false)
 	{
-
 		if (isset($_GET['timeRange']) && !empty($_GET['timeRange'])) {
 			$timeRange = explode(',', $_GET['timeRange']);
 		}
-
-		$metaQueryDate = [
-			[
-				'value' => $timeRange,
-				'compare' => 'BETWEEN',
-			]
-		];
 
 		$lastFetch = get_option(TVP_TD()->Trello->DataProcessor->optionLastFetch);
 		$transient = get_transient(TVP_TD()->prefix . '-organization-statistics');
@@ -284,6 +284,22 @@ class Ajax
 			header('Content-Type: text/html; charset=utf-8');
 			die(json_encode(['html' => base64_decode($transient[$lastFetch][$timeRangeKey]), 'code' => 200]));
 		}
+
+		$organizationStatistics = $this->organizationStatistics($lastFetch, $timeRange, $timeRangeKey, $transient);
+
+		header('HTTP/1.1 200 OK');
+		header('Content-Type: text/html; charset=utf-8');
+		die(json_encode(['html' => $organizationStatistics, 'code' => 200]));
+	}
+
+	public function organizationStatistics($lastFetch, $timeRange, $timeRangeKey, $transient)
+	{
+		$metaQueryDate = [
+			[
+				'value' => $timeRange,
+				'compare' => 'BETWEEN',
+			]
+		];
 
 		$organizationStatistics = '<section class="tvptd__widget-section">';
 		$organizationStatistics .= '<p>'.sprintf(
@@ -376,9 +392,7 @@ class Ajax
 
 		$this->setTransient(TVP_TD()->prefix . '-organization-statistics', $lastFetch, $timeRangeKey, base64_encode($organizationStatistics));
 
-		header('HTTP/1.1 200 OK');
-		header('Content-Type: text/html; charset=utf-8');
-		die(json_encode(['html' => $organizationStatistics, 'code' => 200]));
+		return $organizationStatistics;
 	}
 
 	public function setTransient($key, $fetch, $subkey, $value)
