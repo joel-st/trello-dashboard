@@ -74,7 +74,7 @@ class OptionPages
 				'menu_title' => __('Dashboard Manager', 'tvp-trello-dashboard'),
 				'page_title' => __('Dashboard Manager', 'tvp-trello-dashboard'),
 				'parent_slug' => $this->optionSlug,
-				'capability'  => 'edit_theme_options',
+				'capability'  => TVP_TD()->Member->Role->editorRole,
 			],
 		];
 

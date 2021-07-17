@@ -2,3 +2,31 @@
 @import 'admin/admin-menu';
 @import 'admin/notification-overlay';
 @import 'admin/trello-integration';
+
+// Hide trello user meta
+
+// Hide role checkboxes from HH Multiple Roles Plugin for non admins
+.hmmr-roles-container {
+    display: none;
+}
+
+// body.tvptd-editor-role .hmmr-roles-container {
+//     display: block;
+//
+//     label[for=user_role_administrator],
+//     label[for=user_role_author],
+//     label[for=user_role_contributor],
+//     label[for=user_role_editor],
+//     label[for=user_role_subscriber],
+//     label[for=user_role_translator] {
+//         display: none;
+//
+//         + br {
+//             display: none;
+//         }
+//     }
+// }
+
+body.administrator .hmmr-roles-container {
+    display: block;
+}

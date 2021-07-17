@@ -83,6 +83,11 @@ class UserMeta
 						'operator' => '==',
 						'value' => TVP_TD()->Member->Role->role,
 					],
+					[
+						'param' => 'current_user_role',
+						'operator' => '==',
+						'value' => 'administrator',
+					],
 				],
 			],
 			'menu_order' => 0,

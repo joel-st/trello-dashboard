@@ -13,6 +13,7 @@ class Role
 	 * Class Properties
 	 */
 	public $role = '';
+	public $editorRole = '';
 
 	/**
 	 * Set Class Properties
@@ -20,6 +21,7 @@ class Role
 	public function __construct()
 	{
 		$this->role = TVP_TD()->prefix . '-role';
+		$this->editorRole = TVP_TD()->prefix . '-editor-role';
 	}
 
 	/**
@@ -32,6 +34,32 @@ class Role
 		add_action('admin_menu', [$this, 'adminAreaRestrictions']);
 		add_action('user_profile_update_errors', [$this, 'suppressEmptyEmailError'], 10, 3);
 		add_action('admin_bar_menu', [$this, 'addToolBarItem'], 100);
+		add_action('admin_body_class', [$this, 'adminBodyClass']);
+	}
+
+	/**
+	 * Add body class to modify admin area based on role
+	 */
+	public function adminBodyClass($classes)
+	{
+		$userObject = wp_get_current_user();
+
+		if (in_array($this->role, $userObject->roles)) {
+			// Add a leading space and a trailing space.
+			$classes .= ' ' . $this->role . ' ';
+		}
+
+		if (in_array($this->editorRole, $userObject->roles)) {
+			// Add a leading space and a trailing space.
+			$classes .= ' ' . $this->editorRole . ' ';
+		}
+
+		if (in_array('administrator', $userObject->roles)) {
+			// Add a leading space and a trailing space.
+			$classes .= ' ' . 'administrator' . ' ';
+		}
+
+		return $classes;
 	}
 
 	/**
@@ -39,12 +67,21 @@ class Role
 	 */
 	public function addRole()
 	{
-		// remove_role($this->role);
-
 		// if role does not exist
-		if (!$GLOBALS['wp_roles']->is_role( $this->role )) {
+		if (!$GLOBALS['wp_roles']->is_role($this->role)) {
 			add_role($this->role, 'TVP Trello Member', [ 'read' => true ]);
 		}
+
+		if (!$GLOBALS['wp_roles']->is_role($this->editorRole)) {
+			add_role($this->editorRole, 'TVP Trello Editor', [ 'read' => true ]);
+		}
+
+		// add custom role caps to admin
+		// get the the role object
+		$adminRole = get_role('administrator');
+		// grant the unfiltered_html capability
+		$adminRole->add_cap($this->role, true);
+		$adminRole->add_cap($this->editorRole, true);
 	}
 
 	/**
@@ -55,10 +92,11 @@ class Role
 	{
 		global $current_user, $menu, $submenu;
 		get_currentuserinfo();
-		if (sizeof($current_user->caps) === 1 && isset($current_user->caps[$this->role]) && $current_user->caps[$this->role]) {
+
+		if (! in_array('administrator', $current_user->roles)) {
 			reset($menu);
 			$page = key($menu);
-			while ((__('Dashboard') != $menu[$page][0]) && next($menu)) {
+			while (( __('Dashboard') != $menu[$page][0] ) && next($menu)) {
 				$page = key($menu);
 			}
 			if (__('Dashboard') == $menu[$page][0]) {
@@ -66,11 +104,12 @@ class Role
 			}
 			reset($menu);
 			$page = key($menu);
-			while (!$current_user->has_cap($menu[$page][1]) && next($menu)) {
+			while (! $current_user->has_cap($menu[$page][1]) && next($menu)) {
 				$page = key($menu);
 			}
-			if (preg_match('#wp-admin/?(index.php)?$#', $_SERVER['REQUEST_URI']) && ('index.php' != $menu[$page][2])) {
-				wp_redirect(get_option('siteurl'));
+			if (preg_match('#wp-admin/?(index.php)?$#', $_SERVER['REQUEST_URI']) &&
+			( 'index.php' != $menu[$page][2] )) {
+				wp_redirect(get_option('siteurl') . '/wp-admin/edit.php');
 			}
 		}
 	}
