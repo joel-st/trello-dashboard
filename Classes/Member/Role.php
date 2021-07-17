@@ -40,7 +40,11 @@ class Role
 	public function addRole()
 	{
 		// remove_role($this->role);
-		add_role($this->role, 'TVP Trello Member', [ 'read' => true ]);
+
+		// if role does not exist
+		if (!$GLOBALS['wp_roles']->is_role( $this->role )) {
+			add_role($this->role, 'TVP Trello Member', [ 'read' => true ]);
+		}
 	}
 
 	/**
