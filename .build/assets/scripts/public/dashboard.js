@@ -28,10 +28,13 @@ export function loadStatistics(timeRange = false) {
     const $statisticsContent = $('#tvptd-organization-statistics .tvptd__widget-content');
     const $timeRange = $('#tvptd-organization-statistics-timerange');
 
-    $timeRange.on('change', (event) => {
-        $timeRange.attr('disabled', true);
-        loadStatistics(event.target.value);
-    });
+    if(!$timeRange.attr('initialized')) {
+        $timeRange.on('change', (event) => {
+            $timeRange.attr('initialized', true);
+            $timeRange.attr('disabled', true);
+            loadStatistics(event.target.value);
+        });
+    }
 
     if(!timeRange) {
         timeRange = $timeRange.val();

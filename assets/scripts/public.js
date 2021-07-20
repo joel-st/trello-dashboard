@@ -183,10 +183,14 @@ function loadStatistics() {
   var $statistics = $('#tvptd-organization-statistics');
   var $statisticsContent = $('#tvptd-organization-statistics .tvptd__widget-content');
   var $timeRange = $('#tvptd-organization-statistics-timerange');
-  $timeRange.on('change', function (event) {
-    $timeRange.attr('disabled', true);
-    loadStatistics(event.target.value);
-  });
+
+  if (!$timeRange.attr('initialized')) {
+    $timeRange.on('change', function (event) {
+      $timeRange.attr('initialized', true);
+      $timeRange.attr('disabled', true);
+      loadStatistics(event.target.value);
+    });
+  }
 
   if (!timeRange) {
     timeRange = $timeRange.val();
