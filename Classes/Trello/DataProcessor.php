@@ -1039,18 +1039,25 @@ class DataProcessor
 	 */
 	public function generateDashboardTransients()
 	{
-		// overview
-		$lastFetch = get_option(TVP_TD()->Trello->DataProcessor->optionLastFetch);
-		$transientKeyOverview = TVP_TD()->prefix . '-organization-overview';
+		// we have to run those function on the init hook,
+		// if not we cannot acces the taxonomies because they are not yet registered
+		add_action('init', function () {
+			// overview
+			$lastFetch = get_option(TVP_TD()->Trello->DataProcessor->optionLastFetch);
+			$transientKeyOverview = TVP_TD()->prefix . '-organization-overview';
 
-		$overview = TVP_TD()->View->Ajax->organizationOverview($lastFetch, $transientKeyOverview);
+			$overview = TVP_TD()->View->Ajax->organizationOverview($lastFetch, $transientKeyOverview);
 
-		// statistics
-		$transient = get_transient(TVP_TD()->prefix . '-organization-statistics');
+			// statistics
+			$transient = get_transient(TVP_TD()->prefix . '-organization-statistics');
 
-		foreach (TVP_TD()->View->Dashboard->statisticTimeRanges as $key => $timeRange) {
-			$timeRangeKey = !empty($timeRange['value']) ? implode('-', $timeRange['value']) : 'all';
-			$statistics = TVP_TD()->View->Ajax->organizationStatistics($lastFetch, $timeRange, $timeRangeKey, $transient);
-		}
+			foreach (TVP_TD()->View->Dashboard->statisticTimeRanges as $key => $timeRange) {
+				$tr = explode(',', $timeRange['value']);
+				$timeRangeKey = !empty($tr) ? implode('-', $tr) : 'all';
+				$statistics = TVP_TD()->View->Ajax->organizationStatistics($lastFetch, $tr, $timeRangeKey, $transient);
+			}
+
+			return true;
+		});
 	}
 }
