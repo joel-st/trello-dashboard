@@ -42,6 +42,7 @@ class DataProcessor
 		// cron
 		add_action('init', [$this, 'scheduleImport']);
 		add_action(TVP_TD()->prefix . '-cron-import', [ $this, 'cronImport']);
+		add_action(TVP_TD()->prefix . '-generate-dashboard-transients', [ $this, 'generateDashboardTransients']);
 	}
 
 	/**
@@ -1017,6 +1018,9 @@ class DataProcessor
 		if (! wp_next_scheduled(TVP_TD()->prefix . '-cron-import')) {
 			wp_schedule_event(strtotime('02:00:00'), 'daily', TVP_TD()->prefix . '-cron-import');
 		}
+		if (! wp_next_scheduled(TVP_TD()->prefix . '-generate-dashboard-transients')) {
+			wp_schedule_event(strtotime('02:30:00'), 'daily', TVP_TD()->prefix . '-generate-dashboard-transients');
+		}
 	}
 
 	public function cronImport()
@@ -1026,5 +1030,27 @@ class DataProcessor
 		$this->addUpdateLists();
 		$this->addUpdateCards();
 		$this->addUpdateActions();
+	}
+
+	/**
+	 * This cron function will regenerate the dashboard transients after new data has been fetched.
+	 * It always takes some time to generate theme since the dataset is huge.
+	 * So we pregenerate them after new data has been fetched.
+	 */
+	public function generateDashboardTransients()
+	{
+		// overview
+		$lastFetch = get_option(TVP_TD()->Trello->DataProcessor->optionLastFetch);
+		$transientKeyOverview = TVP_TD()->prefix . '-organization-overview';
+
+		$overview = TVP_TD()->View->Ajax->organizationOverview($lastFetch, $transientKeyOverview);
+
+		// statistics
+		$transient = get_transient(TVP_TD()->prefix . '-organization-statistics');
+
+		foreach (TVP_TD()->View->Dashboard->statisticTimeRanges as $key => $timeRange) {
+			$timeRangeKey = !empty($timeRange['value']) ? implode('-', $timeRange['value']) : 'all';
+			$statistics = TVP_TD()->View->Ajax->organizationStatistics($lastFetch, $timeRange, $timeRangeKey, $transient);
+		}
 	}
 }

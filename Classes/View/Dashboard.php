@@ -15,6 +15,7 @@ class Dashboard
 	public $prefix = '';
 	public $slug = 'trello-dashboard';
 	public $authCookie = '';
+	public $statisticTimeRanges = [];
 
 	/**
 	 * Set Class Properties
@@ -22,6 +23,28 @@ class Dashboard
 	public function __construct()
 	{
 		$this->authCookie = TVP_TD()->authCookie;
+
+		$lastMonthIni = new \DateTime("first day of last month");
+		$lastMonthEnd = new \DateTime("last day of last month");
+		$lastYear = date("Y") - 1;
+		$this->statisticTimeRanges = [
+			[
+				'label' => __('This Month', 'tvp-trello-dashbaord'),
+				'value' => implode(',', [date("Y-m-01"), date("Y-m-d")])
+			],
+			[
+				'label' => __('Last Month', 'tvp-trello-dashbaord'),
+				'value' => implode(',', [$lastMonthIni->format('Y-m-d'), $lastMonthEnd->format('Y-m-d')])
+			],
+			[
+				'label' => __('This Year', 'tvp-trello-dashbaord'),
+				'value' => implode(',', [date("Y-01-01"), date("Y-m-d")])
+			],
+			[
+				'label' => __('Last Year', 'tvp-trello-dashbaord'),
+				'value' => implode(',', [$lastYear . '-01-01', $lastYear . '-12-31'])
+			],
+		];
 	}
 
 	/**
@@ -411,18 +434,11 @@ class Dashboard
 		$organizationStatistics .= '<div class="tvptd__widget-actions">';
 		$organizationStatistics .= '<div class="tvptd__widget-action tvptd__widget-action--select tvptd__widget-action--timerange">';
 		$organizationStatistics .= '<select id="tvptd-organization-statistics-timerange">';
-		$organizationStatistics .= '<option value="'. implode(',', [date("Y-m-01"), date("Y-m-d")]) .'" selected="selected">'.__('This Month', 'tvp-trello-dashbaord').'</option>';
 
-		$lastMonthIni = new \DateTime("first day of last month");
-		$lastMonthEnd = new \DateTime("last day of last month");
-		$organizationStatistics .= '<option value="'. implode(',', [$lastMonthIni->format('Y-m-d'), $lastMonthEnd->format('Y-m-d')]) .'">'.__('Last Month', 'tvp-trello-dashbaord').'</option>';
+		foreach ($this->statisticTimeRanges as $key => $timeRange) {
+			$organizationStatistics .= '<option value="'. $timeRange['value'] .'" ' . (!$key ? 'selected="selected"' : '') . '>'.$timeRange['label'].'</option>';
+		}
 
-		$organizationStatistics .= '<option value="'. implode(',', [date("Y-01-01"), date("Y-m-d")]) .'">'.__('This Year', 'tvp-trello-dashbaord').'</option>';
-
-		$lastYear = date("Y") - 1;
-		$organizationStatistics .= '<option value="'. implode(',', [$lastYear . '-01-01', $lastYear . '-12-31']) .'">'.__('Last Year', 'tvp-trello-dashbaord').'</option>';
-
-		// $organizationStatistics .= '<option value="">'.__('All Time', 'tvp-trello-dashbaord').'</option>';
 		$organizationStatistics .= '</select>';
 		$organizationStatistics .= '<span class="tvptd__widget-action-arrow"></span>';
 		$organizationStatistics .= '</div>';
